@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Resources/Game/Game.uss?fileID=7433441132597879392&amp;guid=53c667ae3b11543439259f9682ed3b83&amp;type=3#Game" />
+    <Style src="project://database/Assets/UI%20Toolkit/Resources/Common.uss?fileID=7433441132597879392&amp;guid=d34eb923d98dfe649ac182ba6299624a&amp;type=3" />
+    <ui:VisualElement name="topPane" class="pane topPane">
+        <ui:VisualElement name="yearPeriodPane">
+            <ui:Label name="month" text="Month" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="tileInfo" class="pane tileInfoPane">
+        <ui:Label text="Terrain type" name="terrainType" />
+        <ui:VisualElement name="resourceInfo" style="flex-grow: 1;">
+            <ui:Label text="Resource:" />
+            <ui:Label text="Name" name="name" />
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Label text="Ripeness period:" />
+                <ui:Label name="ripenessPeriod" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Label text="Potential biomass:" />
+                <ui:Label name="potentialBiomass" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Label text="Ripe biomass:" />
+                <ui:Label name="ripeBiomass" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="endTurnPane" class="pane endTurnPane">
+        <ui:Button text="End turn" display-tooltip-when-elided="true" name="endTurnButton" class="text-only-button" />
+    </ui:VisualElement>
+</ui:UXML>

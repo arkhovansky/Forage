@@ -1,0 +1,41 @@
+.pane {
+    background-color: rgb(0, 0, 64);
+    color: rgb(204, 204, 122);
+}
+
+.topPane {
+    position: absolute;
+    top: 0;
+    flex-direction: row;
+    justify-content: center;
+    left: 0;
+    right: 0;
+}
+
+.tileInfoPane {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    height: 300px;
+}
+
+.endTurnPane {
+    width: 200px;
+    height: 100px;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+}
+
+#endTurnButton {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(204, 204, 122);
+}
+
+#endTurnButton:hover {
+    color: rgb(229, 229, 137);
+}

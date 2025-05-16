@@ -1,0 +1,67 @@
+.screenButton {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.text-only-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.dialog {
+    margin-top: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    color: var(--color-main-foreground);
+    background-color: var(--color-main-background);
+    border-top-left-radius: var(--window-border-radius);
+    border-top-right-radius: var(--window-border-radius);
+    border-bottom-right-radius: var(--window-border-radius);
+    border-bottom-left-radius: var(--window-border-radius);
+}
+
+.dialog > .header {
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: var(--color-dialogHeader-foreground);
+    background-color: var(--color-dialogHeader-background);
+    border-top-left-radius: var(--window-border-radius);
+    border-top-right-radius: var(--window-border-radius);
+}
+
+.dialog > .footer {
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: var(--color-dialogFooter-background);
+    border-bottom-right-radius: var(--window-border-radius);
+    border-bottom-left-radius: var(--window-border-radius);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    align-items: center;
+}
+
+.dialog > .content {
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.topPane {
+    position: absolute;
+    top: 0;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
