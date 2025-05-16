@@ -28,23 +28,12 @@ public class RunningGameController : Controller
 {
 	private readonly IGameInstance _game;
 
-	private readonly HexLayout _hexLayout;
+	private readonly VisualHexGrid _grid;
 
-	private readonly ITerrainTypeRepository _terrainTypeRepository;
-	private readonly IResourceTypeRepository _resourceTypeRepository;
+	private readonly GameVM _viewModel;
+	private readonly GameView _uiView;
 
-	private readonly IGameService _gameService;
-
-	private readonly IGui _gui;
-	private readonly IVvmBinder _vvmBinder;
-	private readonly ICommandRouter _commandRouter;
-
-	private GameVM? _viewModel;
-	private GameView? _uiView;
-
-	private VisualHexGrid? _grid;
-
-	private InputAction _pointAction;
+	private readonly InputAction _pointAction;
 
 	private AxialPosition? _hoveredTilePosition;
 
@@ -59,35 +48,29 @@ public class RunningGameController : Controller
 		: base(commandRouter)
 	{
 		_game = game;
-		_hexLayout = hexLayout;
 
-		_terrainTypeRepository = terrainTypeRepository;
-		_resourceTypeRepository = resourceTypeRepository;
+		_grid = new VisualHexGrid(hexLayout, _game.Scene.Grid);
 
-		_gameService = gameService;
+		_viewModel = new GameVM(this,
+			commandRouter,
+			terrainTypeRepository, resourceTypeRepository);
+		_uiView = new GameView(_viewModel,
+			gui, vvmBinder);
+		gui.AddView(_uiView);
 
-		_gui = gui;
-		_vvmBinder = vvmBinder;
-		_commandRouter = commandRouter;
+		_pointAction = InputSystem.actions.FindAction("Point");
 
 		base.AddCommandHandler<EndTurnCommand>(OnEndTurn);
 
-		_pointAction = InputSystem.actions.FindAction("Point");
+
+
+
+		gameService.PopulateWorld(_game.Scene);
 	}
 
 
 	public override void Start()
 	{
-		_gameService.PopulateWorld(_game.Scene);
-
-		_grid = new VisualHexGrid(_hexLayout, _game.Scene.Grid);
-
-		_viewModel = new GameVM(this,
-		                        _commandRouter,
-		                        _terrainTypeRepository, _resourceTypeRepository);
-		_uiView = new GameView(_viewModel,
-		                       _gui, _vvmBinder);
-		_gui.AddView(_uiView);
 	}
 
 
@@ -99,7 +82,7 @@ public class RunningGameController : Controller
 
 	public override void UpdateViewModel()
 	{
-		_viewModel!.Update();
+		_viewModel.Update();
 	}
 
 
@@ -131,7 +114,7 @@ public class RunningGameController : Controller
 		Vector3 point3 = mouseCameraRay.GetPoint(enter);
 		var gridPoint = new Vector2(point3.x, point3.z);
 
-		return _grid!.GetAxialPosition(gridPoint);
+		return _grid.GetAxialPosition(gridPoint);
 	}
 
 
