@@ -12,9 +12,6 @@ using App.Game.Ecs.Components.Singletons.YearPeriod;
 using App.Services.Resources;
 using App.Services.Terrain;
 
-using ICommand = App.Client.Framework.UICore.Mvvm.ICommand;
-
-
 
 
 namespace App.Client.UI.GameInstance.RunningGame {
@@ -28,7 +25,8 @@ public class GameVM : IViewModel
 
 	public TileInfoVM TileInfoVM { get; }
 
-	public ICommand EndTurnCommand { get; }
+	public EnterPlaceCampMode_CommandVM EnterPlaceCampModeCommand { get; }
+	public EndTurn_CommandVM EndTurnCommand { get; }
 
 
 
@@ -40,7 +38,10 @@ public class GameVM : IViewModel
 
 		TileInfoVM = new TileInfoVM(terrainTypeRepository, resourceTypeRepository);
 
-		EndTurnCommand = new Command(() => commandRouter.EmitCommand(new EndTurnCommand(), controller));
+		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
+			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));
+		EndTurnCommand = new EndTurn_CommandVM(
+			() => commandRouter.EmitCommand(new EndTurnCommand(), controller));
 	}
 
 

@@ -39,3 +39,13 @@
 #endTurnButton:hover {
     color: rgb(229, 229, 137);
 }
+
+#enterPlaceCampModeButton {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(204, 204, 122);
+}
+
+#enterPlaceCampModeButton:hover {
+    color: rgb(229, 229, 137);
+}

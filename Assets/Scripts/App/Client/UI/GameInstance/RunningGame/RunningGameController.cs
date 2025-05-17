@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 using Lib.Grid;
 using Lib.VisualGrid;
@@ -10,8 +10,8 @@ using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
-
-using App.Game.Ecs.Components.Singletons.HoveredTile;
+using App.Game.Ecs.Components;
+using App.Game.Ecs.Components.Singletons;
 using App.Game.Ecs.Components.Singletons.YearPeriod;
 using App.Game.Meta;
 using App.Services;
@@ -37,6 +37,13 @@ public class RunningGameController : Controller
 
 	private AxialPosition? _hoveredTilePosition;
 
+	private IUIMode _uiMode;
+
+	private readonly DefaultUIMode _defaultUIMode;
+	private readonly PlaceCampUIMode _placeCampUIMode;
+
+	private bool _campPlaced;
+
 
 
 	public RunningGameController(IGameInstance game,
@@ -61,8 +68,16 @@ public class RunningGameController : Controller
 		_pointAction = InputSystem.actions.FindAction("Point");
 
 		base.AddCommandHandler<EndTurnCommand>(OnEndTurn);
+		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
+		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
 
+		_defaultUIMode = new DefaultUIMode();
+		_placeCampUIMode = new PlaceCampUIMode(commandRouter, this);
 
+		_uiMode = _defaultUIMode;
+
+		_viewModel.EnterPlaceCampModeCommand.IsVisible = true;
+		_viewModel.EndTurnCommand.IsVisible = false;
 
 
 		gameService.PopulateWorld(_game.Scene);
@@ -76,7 +91,11 @@ public class RunningGameController : Controller
 
 	protected override void DoUpdate()
 	{
-		UpdateHoveredTile();
+		var newHoveredTilePosition = GetHoveredTilePosition();
+
+		_uiMode.Update(_hoveredTilePosition, newHoveredTilePosition);
+
+		_hoveredTilePosition = newHoveredTilePosition;
 	}
 
 
@@ -86,16 +105,43 @@ public class RunningGameController : Controller
 	}
 
 
-	private void UpdateHoveredTile()
-	{
-		AxialPosition? tilePosition = GetHoveredTilePosition();
+	#region Command handlers
 
-		if (tilePosition == _hoveredTilePosition)
+	private void OnEndTurn(EndTurnCommand command)
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
+		var singletonEntity = entityQuery.GetSingletonEntity();
+
+		entityManager.AddComponentData(singletonEntity, new AdvanceYearPeriod_Command());
+	}
+
+
+	private void OnEnterPlaceCampMode(EnterPlaceCampMode command)
+	{
+		if (_campPlaced)
+			return;
+		if (_uiMode == _placeCampUIMode)
 			return;
 
-		NotifySystems_HoveredTileChanged(tilePosition);
-		_hoveredTilePosition = tilePosition;
+		_uiMode = _placeCampUIMode;
 	}
+
+
+	private void OnPlaceCamp(PlaceCamp command)
+	{
+		PlaceCamp(command.Position);
+
+		_campPlaced = true;
+
+		_uiMode = _defaultUIMode;
+
+		_viewModel.EnterPlaceCampModeCommand.IsVisible = false;
+		_viewModel.EndTurnCommand.IsVisible = true;
+	}
+
+	#endregion
 
 
 	private AxialPosition? GetHoveredTilePosition()
@@ -118,25 +164,21 @@ public class RunningGameController : Controller
 	}
 
 
-	private void NotifySystems_HoveredTileChanged(AxialPosition? tilePosition)
+	private void PlaceCamp(AxialPosition position)
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
-		var singletonEntity = entityQuery.GetSingletonEntity();
+		var prefabReferences = entityManager.CreateEntityQuery(typeof(PrefabReferences))
+			.GetSingleton<PrefabReferences>();
 
-		entityManager.AddComponentData(singletonEntity, new HoveredTileChanged_Event(tilePosition));
-	}
+		var campEntity = entityManager.Instantiate(prefabReferences.Camp);
 
+		entityManager.SetComponentData(campEntity, new TilePosition(position));
 
-	private void OnEndTurn(EndTurnCommand command)
-	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
-		var singletonEntity = entityQuery.GetSingletonEntity();
-
-		entityManager.AddComponentData(singletonEntity, new AdvanceYearPeriod_Command());
+		entityManager.SetComponentData(campEntity,
+			_grid.Layout.GetCellLocalTransform(position)
+				.Translate(new float3(0.5f, 0.01f, -0.75f))
+				.ApplyScale(0.25f));
 	}
 }
 
