@@ -67,7 +67,12 @@ public class VvmBinder : IVvmBinder
 					var matchingElement = FindMatchingElement<Button>(names);
 
 					if (matchingElement != null) {
-						matchingElement.BindCommand((ICommand)property.GetValue(_viewModel));
+						var command = property.GetValue(_viewModel);
+
+						matchingElement.BindCommand((ICommand)command);
+
+						// Assume there can be IsVisible inside command object
+						(new Binder(matchingElement, command)).Bind();
 					}
 					// else
 				}
