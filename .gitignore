@@ -18,6 +18,21 @@
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
+
+#---
+# From https://github.com/Unity-Technologies/megacity-metro/blob/master/.gitignore
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
+
+# Dependency caches
+**/[Aa]ssets/GlobalEntitiesDependencies*
+**/[Aa]ssets/SceneDependencyCache*
+**/[Aa]ssets/TypeDependencyCache*
+
+#---
+
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 
