@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -78,6 +79,9 @@ public class VvmBinder : IVvmBinder
 				}
 				else if (property.PropertyType == typeof(bool) && property.Name == "IsVisible") {
 					BindUITKVisibility(_rootElement, property.Name);
+				}
+				else if (typeof(IList).IsAssignableFrom(property.PropertyType)) {
+					BindList(property);
 				}
 				else if (property.PropertyType.IsClass) {
 					var elementNames = GetVisualElementNames(property.Name,
@@ -221,6 +225,18 @@ public class VvmBinder : IVvmBinder
 				(ref bool b) => (StyleEnum<DisplayStyle>) (b ? DisplayStyle.Flex : DisplayStyle.None));
 
 			element.SetBinding("style.display", binding);
+		}
+
+
+		private void BindList(PropertyInfo property)
+		{
+			var listView = FindMatchingElement<MultiColumnListView>(property.Name);
+
+			if (listView != null) {
+				var list = property.GetValue(_viewModel);
+				listView.itemsSource = (IList)list;
+			}
+			// else
 		}
 	}
 }
