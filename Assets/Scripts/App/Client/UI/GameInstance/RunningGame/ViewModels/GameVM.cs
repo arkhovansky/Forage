@@ -47,15 +47,19 @@ public class GameVM : IViewModel
 
 	public void Update()
 	{
+		UpdateYearPeriod();
+		TileInfoVM.Update();
+	}
+
+
+	private void UpdateYearPeriod()
+	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
 		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<CurrentYearPeriod>());
 		var yearPeriod = query.GetSingleton<CurrentYearPeriod>();
 
 		Month = yearPeriod.Value.Month.ToString();
-
-
-		TileInfoVM.Update();
 	}
 }
 
