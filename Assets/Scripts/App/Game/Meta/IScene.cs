@@ -20,6 +20,8 @@ public interface IScene
 	IReadOnlyList<float> PotentialBiomass { get; }
 
 	YearPeriod StartYearPeriod { get; }
+
+	IDictionary<uint, uint> BandMemberTypeCounts { get; }
 }
 
 

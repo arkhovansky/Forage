@@ -13,6 +13,7 @@ using App.Client.Framework.UnityUICore.Mvvm;
 
 using App.Client.UI;
 using App.Services;
+using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
 
@@ -32,9 +33,11 @@ public class Application : MonoBehaviour
 	private TerrainTypePresentationRepository? _terrainTypePresentationRepository;
 	private ResourceTypeRepository? _resourceTypeRepository;
 	private ResourceTypePresentationRepository? _resourceTypePresentationRepository;
+	private BandMemberTypeRepository? _bandMemberTypeRepository;
 	private TerrainInitializer? _terrainInitializer;
 	private ResourcesInitializer? _resourcesInitializer;
 	private GameTimeInitializer? _gameTimeInitializer;
+	private BandInitializer? _bandInitializer;
 	private GameService? _gameService;
 
 
@@ -50,11 +53,13 @@ public class Application : MonoBehaviour
 		_terrainTypePresentationRepository = new TerrainTypePresentationRepository(_hexLayout);
 		_resourceTypeRepository = new ResourceTypeRepository();
 		_resourceTypePresentationRepository = new ResourceTypePresentationRepository();
+		_bandMemberTypeRepository = new BandMemberTypeRepository();
 		_terrainInitializer = new TerrainInitializer(_hexLayout, _terrainTypePresentationRepository);
 		_resourcesInitializer = new ResourcesInitializer(_resourceTypeRepository);
 		_gameTimeInitializer = new GameTimeInitializer();
+		_bandInitializer = new BandInitializer(_bandMemberTypeRepository);
 		_gameService = new GameService(
-			_terrainInitializer, _resourcesInitializer, _gameTimeInitializer,
+			_terrainInitializer, _resourcesInitializer, _gameTimeInitializer, _bandInitializer,
 			_hexLayout, _resourceTypePresentationRepository);
 	}
 
@@ -64,7 +69,7 @@ public class Application : MonoBehaviour
 	{
 		_applicationController = new ApplicationController(
 			_hexLayout,
-			_terrainTypeRepository!, _resourceTypeRepository!,
+			_terrainTypeRepository!, _resourceTypeRepository!, _bandMemberTypeRepository!,
 			_gameService!,
 			_gui!, _vvmBinder!, _commandRouter!);
 		// _commandRouter.SetRootController(applicationController);

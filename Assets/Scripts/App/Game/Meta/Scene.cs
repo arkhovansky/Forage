@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using App.Services.BandMembers;
+
 using Lib.Grid;
 
 
@@ -20,6 +22,8 @@ public class Scene : IScene
 	public IReadOnlyList<float> PotentialBiomass { get; }
 
 	public YearPeriod StartYearPeriod { get; }
+
+	public IDictionary<uint, uint> BandMemberTypeCounts { get; }
 
 
 
@@ -114,6 +118,12 @@ public class Scene : IScene
 
 
 		StartYearPeriod = new YearPeriod {Month = Month.June};
+
+
+
+		BandMemberTypeCounts = new Dictionary<uint, uint>();
+		BandMemberTypeCounts.Add((uint)Gender.Male, 2);
+		BandMemberTypeCounts.Add((uint)Gender.Female, 2);
 	}
 }
 

@@ -8,6 +8,7 @@ using App.Client.Framework.UnityUICore.HighLevel;
 using App.Client.UI.GameInstance.RunningGame;
 using App.Game.Meta;
 using App.Services;
+using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
 
@@ -23,6 +24,7 @@ public class ApplicationController : ApplicationController_Base
 
 	private readonly ITerrainTypeRepository _terrainTypeRepository;
 	private readonly IResourceTypeRepository _resourceTypeRepository;
+	private readonly IBandMemberTypeRepository _bandMemberTypeRepository;
 
 	private readonly IGameService _gameService;
 
@@ -37,6 +39,7 @@ public class ApplicationController : ApplicationController_Base
 	public ApplicationController(HexLayout hexLayout,
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
+	                             IBandMemberTypeRepository bandMemberTypeRepository,
 	                             IGameService gameService,
 	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
@@ -45,6 +48,7 @@ public class ApplicationController : ApplicationController_Base
 
 		_terrainTypeRepository = terrainTypeRepository;
 		_resourceTypeRepository = resourceTypeRepository;
+		_bandMemberTypeRepository = bandMemberTypeRepository;
 
 		_gameService = gameService;
 
@@ -59,10 +63,10 @@ public class ApplicationController : ApplicationController_Base
 		_gameInstance = new Game.Meta.GameInstance();
 
 		var child = new RunningGameController(_gameInstance,
-		                                      _hexLayout,
-		                                      _terrainTypeRepository, _resourceTypeRepository,
-		                                      _gameService,
-		                                      _gui, _vvmBinder, _commandRouter);
+			_hexLayout,
+			_terrainTypeRepository, _resourceTypeRepository, _bandMemberTypeRepository,
+			_gameService,
+			_gui, _vvmBinder, _commandRouter);
 		AddChildController(child);
 		child.Start();
 	}

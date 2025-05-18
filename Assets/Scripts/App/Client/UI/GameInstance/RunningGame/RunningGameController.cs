@@ -15,6 +15,7 @@ using App.Game.Ecs.Components.Singletons;
 using App.Game.Ecs.Components.Singletons.YearPeriod;
 using App.Game.Meta;
 using App.Services;
+using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
 
@@ -50,6 +51,7 @@ public class RunningGameController : Controller
 	                             HexLayout hexLayout,
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
+	                             IBandMemberTypeRepository bandMemberTypeRepository,
 	                             IGameService gameService,
 	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
@@ -60,7 +62,7 @@ public class RunningGameController : Controller
 
 		_viewModel = new GameVM(this,
 			commandRouter,
-			terrainTypeRepository, resourceTypeRepository);
+			terrainTypeRepository, resourceTypeRepository, bandMemberTypeRepository);
 		_uiView = new GameView(_viewModel,
 			gui, vvmBinder);
 		gui.AddView(_uiView);
