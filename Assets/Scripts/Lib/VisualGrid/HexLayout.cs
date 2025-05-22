@@ -31,12 +31,24 @@ public readonly struct HexOrientationData
 
 
 	public static readonly HexOrientationData FlatTop = new HexOrientationData(
-		3.0f / 2.0f, 0.0f, Mathf.Sqrt(3.0f) / 2.0f, Mathf.Sqrt(3.0f),
-		2.0f / 3.0f, 0.0f, -1.0f / 3.0f, Mathf.Sqrt(3.0f) / 3.0f);
+		// Axial and Cartesian systems have the same orientation (handedness)
+		// 3f/2f, 0f, Mathf.Sqrt(3f) / 2f, Mathf.Sqrt(3f),
+		// 2f/3f, 0f, -1f/3f, Mathf.Sqrt(3f) / 3f
+
+		// Axial and Cartesian systems have different orientations (handedness)
+		3f/2f, 0f, - Mathf.Sqrt(3f) / 2f, - Mathf.Sqrt(3f),
+		2f/3f, 0f, -1f/3f, - Mathf.Sqrt(3f) / 3f
+	);
 
 	public static readonly HexOrientationData PointyTop = new HexOrientationData(
-		Mathf.Sqrt(3.0f), Mathf.Sqrt(3.0f) / 2.0f, 0.0f, 3.0f / 2.0f,
-		Mathf.Sqrt(3.0f) / 3.0f, -1.0f / 3.0f, 0.0f, 2.0f / 3.0f);
+		// Axial and Cartesian systems have the same orientation (handedness)
+		// Mathf.Sqrt(3f), Mathf.Sqrt(3f) / 2f, 0f, 3f/2f,
+		// Mathf.Sqrt(3f) / 3f, -1f/3f, 0f, 2f/3f
+
+		// Axial and Cartesian systems have different orientations (handedness)
+		Mathf.Sqrt(3f), Mathf.Sqrt(3f) / 2f, 0f, -3f/2f,
+		Mathf.Sqrt(3f) / 3f, 1f/3f, 0f, -2f/3f
+	);
 }
 
 
@@ -152,9 +164,8 @@ public struct HexLayout
 
 	public AxialPosition GetAxialPosition(Vector2 point)
 	{
-		// The Y axes of the grid and the input point are opposite, hence '-' in Y expression
 		var pt = new Vector2((point.x - Origin.x) / ScaleFactor.x,
-			                 -(point.y - Origin.y) / ScaleFactor.y);
+			                 (point.y - Origin.y) / ScaleFactor.y);
 
 		float q = _orientationData.B0 * pt.x + _orientationData.B1 * pt.y;
 		float r = _orientationData.B2 * pt.x + _orientationData.B3 * pt.y;
