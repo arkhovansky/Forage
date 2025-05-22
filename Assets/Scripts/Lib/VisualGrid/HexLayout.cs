@@ -41,14 +41,37 @@ public readonly struct HexOrientationData
 
 
 
+/// <summary>
+/// Represents geometry of infinite hex grid in Cartesian coordinate system.
+/// </summary>
+/// <remarks>
+/// Cartesian coordinate system has positive / standard / right-handed orientation (X -> Y counter-clockwise),
+/// while grid's axial system is left-handed (Q -> R clockwise).
+/// </remarks>
 public struct HexLayout
 {
+	/// <summary>
+	/// Cell orientation.
+	/// </summary>
 	public HexOrientation Orientation { get; }
 
+	/// <summary>
+	/// Coordinates of the center of the origin cell.
+	/// </summary>
 	public Vector2 Origin { get; }
 
+	/// <summary>
+	/// Scale factor.
+	/// </summary>
+	/// <remarks>
+	/// Can be heterogeneous (different values for x and y).
+	/// In the homogeneous case equals to the outer radius of a cell.
+	/// </remarks>
 	public Vector2 ScaleFactor { get; }
 
+	/// <summary>
+	/// Size of the cell bounding rectangle.
+	/// </summary>
 	public Vector2 CellSize { get; }
 
 
@@ -80,6 +103,15 @@ public struct HexLayout
 	//----------------------------------------------------------------------------------------------
 
 
+	/// <summary>
+	/// Constructor.
+	/// </summary>
+	/// <param name="orientation">The cell orientation.</param>
+	/// <param name="scaleFactor">The scale factor.
+	/// If not specified, set to (0.5, 0.5).</param>
+	/// <param name="origin">Coordinates of the center of the origin cell.
+	/// If not specified, set so that the left top of the origin cell's bounding rectangle is at the Cartesian origin.
+	/// </param>
 	public HexLayout(
 		HexOrientation orientation,
 		Vector2? scaleFactor = null,
