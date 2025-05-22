@@ -47,7 +47,7 @@ public struct HexLayout
 
 	public Vector2 Origin { get; }
 
-	public Vector2 CellScaleSize { get; }
+	public Vector2 ScaleFactor { get; }
 
 	public Vector2 CellSize { get; }
 
@@ -82,14 +82,14 @@ public struct HexLayout
 
 	public HexLayout(
 		HexOrientation orientation,
-		Vector2? cellScaleSize = null,
+		Vector2? scaleFactor = null,
 		Vector2? origin = null
 	)
 	{
 		Orientation = orientation;
 
-		CellScaleSize = cellScaleSize ?? new Vector2(.5f, .5f);
-		CellSize = GetCellSize(orientation, CellScaleSize);
+		ScaleFactor = scaleFactor ?? new Vector2(.5f, .5f);
+		CellSize = GetCellSize(orientation, ScaleFactor);
 		Origin = origin ?? GetLeftTopOrigin(CellSize);
 
 		_cellHalfSize = CellSize * 0.5f;
@@ -121,8 +121,8 @@ public struct HexLayout
 	public AxialPosition GetAxialPosition(Vector2 point)
 	{
 		// The Y axes of the grid and the input point are opposite, hence '-' in Y expression
-		var pt = new Vector2((point.x - Origin.x) / CellScaleSize.x,
-			                 -(point.y - Origin.y) / CellScaleSize.y);
+		var pt = new Vector2((point.x - Origin.x) / ScaleFactor.x,
+			                 -(point.y - Origin.y) / ScaleFactor.y);
 
 		float q = _orientationData.B0 * pt.x + _orientationData.B1 * pt.y;
 		float r = _orientationData.B2 * pt.x + _orientationData.B3 * pt.y;
@@ -267,14 +267,14 @@ public struct HexLayout
 
 
 
-	public static Vector2 GetCellSize(HexOrientation orientation, Vector2 cellScaleSize)
+	public static Vector2 GetCellSize(HexOrientation orientation, Vector2 scaleFactor)
 	{
 		switch (orientation) {
 			case HexOrientation.FlatTop:
-				return new Vector2(2 * cellScaleSize.x, Mathf.Sqrt(3) * cellScaleSize.y);
+				return new Vector2(2 * scaleFactor.x, Mathf.Sqrt(3) * scaleFactor.y);
 
 			case HexOrientation.PointyTop:
-				return new Vector2(Mathf.Sqrt(3) * cellScaleSize.x, 2 * cellScaleSize.y);
+				return new Vector2(Mathf.Sqrt(3) * scaleFactor.x, 2 * scaleFactor.y);
 
 			default:
 				throw new ArgumentOutOfRangeException();
