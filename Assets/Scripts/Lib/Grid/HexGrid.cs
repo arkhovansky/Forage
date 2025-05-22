@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
+
 namespace Lib.Grid {
 
 
@@ -25,29 +27,28 @@ public class AbstractHexGrid
 	}
 
 
-
 	public IReadOnlyList<AxialPosition> GetCellsWithinRadius(AxialPosition center, uint radius)
 	{
-        // r c          n  total
+		// r c          n  total
 		// 0 1          1
-        // 1 2          6   7
-        // 2 3  6+2*3 =12  19
-        // 3 4  8+2*5 =18  37
+		// 1 2          6   7
+		// 2 3  6+2*3 =12  19
+		// 3 4  8+2*5 =18  37
 
-        // 1 + 6 * r*(r+1)/2
+		// 1 + 6 * r*(r+1)/2
 
-        // ReSharper disable once InconsistentNaming
-        var R = (int)radius;
+		// ReSharper disable once InconsistentNaming
+		var R = (int) radius;
 
-        var cellCount = 1 + 6 * (R*(R+1)/2);
-        var cellPositions = new AxialPosition[cellCount];
+		var cellCount = 1 + 6 * (R * (R + 1) / 2);
+		var cellPositions = new AxialPosition[cellCount];
 
-        var i = 0;
-        for (var q = -R; q <= R; ++q)
-	        for (var r = Math.Max(-R, -q-R); r <= Math.Min(R, -q+R); ++r)
-		        cellPositions[i++] = center + new AxialPosition(q, r);
+		var i = 0;
+		for (var q = -R; q <= R; ++q)
+			for (var r = Math.Max(-R, -q - R); r <= Math.Min(R, -q + R); ++r)
+				cellPositions[i++] = center + new AxialPosition(q, r);
 
-        return cellPositions;
+		return cellPositions;
 	}
 }
 
@@ -87,7 +88,6 @@ public class HexGrid : AbstractHexGrid
 		Height = height;
 		LineOffset = lineOffset;
 	}
-
 
 
 	public OffsetPosition OffsetPositionFromCellIndex(uint cellIndex)
@@ -143,8 +143,8 @@ public class HexGrid : AbstractHexGrid
 
 	public AxialPosition AxialPositionFrom(OffsetPosition offsetPosition)
 	{
-		int col = (int)offsetPosition.Col;
-		int row = (int)offsetPosition.Row;
+		int col = (int) offsetPosition.Col;
+		int row = (int) offsetPosition.Row;
 
 		int q, r;
 
