@@ -13,8 +13,8 @@ namespace Lib.VisualGrid {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout.
 /// </summary>
-public class VisualHexGrid
-	: HexGrid
+public class VisualRectangularHexMap
+	: RectangularHexMap
 {
 	public HexLayout Layout { get; }
 
@@ -22,19 +22,19 @@ public class VisualHexGrid
 	//----------------------------------------------------------------------------------------------
 
 
-	public VisualHexGrid(HexLayout layout,
-	                     uint width, uint height,
-	                     HexGridLineOffset lineOffset)
+	public VisualRectangularHexMap(HexLayout layout,
+	                               uint width, uint height,
+	                               HexMapLineOffset lineOffset)
 		: base(width, height, layout.Orientation, lineOffset)
 	{
 		Layout = layout;
 	}
 
 
-	public VisualHexGrid(HexLayout layout, HexGrid grid)
-		: base(grid.Width, grid.Height, layout.Orientation, grid.LineOffset)
+	public VisualRectangularHexMap(HexLayout layout, RectangularHexMap map)
+		: base(map.Width, map.Height, layout.Orientation, map.LineOffset)
 	{
-		if (layout.Orientation != grid.Orientation)
+		if (layout.Orientation != map.Orientation)
 			throw new ArgumentException();
 
 		Layout = layout;

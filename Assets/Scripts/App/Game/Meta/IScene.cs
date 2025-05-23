@@ -10,7 +10,7 @@ namespace App.Game.Meta {
 
 public interface IScene
 {
-	HexGrid Grid { get; }
+	RectangularHexMap Map { get; }
 
 	IReadOnlyList<uint> TileTerrainTypes { get; }
 	IReadOnlyList<AxialPosition> TileAxialPositions { get; }

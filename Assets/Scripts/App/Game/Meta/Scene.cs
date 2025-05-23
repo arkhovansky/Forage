@@ -12,7 +12,7 @@ namespace App.Game.Meta {
 
 public class Scene : IScene
 {
-	public HexGrid Grid { get; }
+	public RectangularHexMap Map { get; }
 
 	public IReadOnlyList<uint> TileTerrainTypes { get; }
 	public IReadOnlyList<AxialPosition> TileAxialPositions => _tileAxialPositions;
@@ -36,7 +36,7 @@ public class Scene : IScene
 
 	public Scene()
 	{
-		Grid = new HexGrid(_width, _height, HexOrientation.FlatTop, HexGridLineOffset.Odd);
+		Map = new RectangularHexMap(_width, _height, HexOrientation.FlatTop, HexMapLineOffset.Odd);
 
 		uint tileCount = _width * _height;
 
@@ -59,7 +59,7 @@ public class Scene : IScene
 			for (uint x = 0; x < _width; ++x) {
 				var tileIndex = y * _width + x;
 
-				_tileAxialPositions[tileIndex] = Grid.AxialPositionFromCellIndex(tileIndex);
+				_tileAxialPositions[tileIndex] = Map.AxialPositionFromCellIndex(tileIndex);
 			}
 		}
 
@@ -80,18 +80,18 @@ public class Scene : IScene
 		};
 
 		ResourceAxialPositions = new AxialPosition[resourceCount] {
-			Grid.AxialPositionFrom(new OffsetPosition(0, 0)),
-			Grid.AxialPositionFrom(new OffsetPosition(2, 1)),
-			Grid.AxialPositionFrom(new OffsetPosition(1, 3)),
+			Map.AxialPositionFrom(new OffsetPosition(0, 0)),
+			Map.AxialPositionFrom(new OffsetPosition(2, 1)),
+			Map.AxialPositionFrom(new OffsetPosition(1, 3)),
 
-			Grid.AxialPositionFrom(new OffsetPosition(1, 6)),
-			Grid.AxialPositionFrom(new OffsetPosition(3, 6)),
+			Map.AxialPositionFrom(new OffsetPosition(1, 6)),
+			Map.AxialPositionFrom(new OffsetPosition(3, 6)),
 
-			Grid.AxialPositionFrom(new OffsetPosition(1, 5)),
+			Map.AxialPositionFrom(new OffsetPosition(1, 5)),
 
-			Grid.AxialPositionFrom(new OffsetPosition(9, 1)),
-			Grid.AxialPositionFrom(new OffsetPosition(8, 3)),
-			Grid.AxialPositionFrom(new OffsetPosition(7, 5))
+			Map.AxialPositionFrom(new OffsetPosition(9, 1)),
+			Map.AxialPositionFrom(new OffsetPosition(8, 3)),
+			Map.AxialPositionFrom(new OffsetPosition(7, 5))
 		};
 
 		PotentialBiomass = new float[resourceCount] {

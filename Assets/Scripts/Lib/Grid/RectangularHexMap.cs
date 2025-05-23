@@ -7,7 +7,7 @@ namespace Lib.Grid {
 
 
 
-public enum HexGridLineOffset
+public enum HexMapLineOffset
 {
 	Even = 1,  // 0, 2, ...
 	Odd = -1
@@ -54,12 +54,12 @@ public class AbstractHexGrid
 
 
 
-public class HexGrid : AbstractHexGrid
+public class RectangularHexMap : AbstractHexGrid
 {
 	public uint Width { get; }
 	public uint Height { get; }
 
-	public HexGridLineOffset LineOffset { get; }
+	public HexMapLineOffset LineOffset { get; }
 
 
 	//----------------------------------------------------------------------------------------------
@@ -79,9 +79,9 @@ public class HexGrid : AbstractHexGrid
 	//----------------------------------------------------------------------------------------------
 
 
-	public HexGrid(uint width, uint height,
-	               HexOrientation orientation,
-	               HexGridLineOffset lineOffset)
+	public RectangularHexMap(uint width, uint height,
+	                         HexOrientation orientation,
+	                         HexMapLineOffset lineOffset)
 		: base(orientation)
 	{
 		Width = width;

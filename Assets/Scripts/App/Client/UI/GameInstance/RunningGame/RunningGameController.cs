@@ -29,7 +29,7 @@ public class RunningGameController : Controller
 {
 	private readonly IGameInstance _game;
 
-	private readonly VisualHexGrid3D _grid;
+	private readonly VisualRectangularHexMap3D _map;
 
 	private readonly GameVM _viewModel;
 	private readonly GameView _uiView;
@@ -58,7 +58,7 @@ public class RunningGameController : Controller
 	{
 		_game = game;
 
-		_grid = new VisualHexGrid3D(hexLayout, _game.Scene.Grid);
+		_map = new VisualRectangularHexMap3D(hexLayout, _game.Scene.Map);
 
 		_viewModel = new GameVM(this,
 			commandRouter,
@@ -155,7 +155,7 @@ public class RunningGameController : Controller
 
 		var mouseCameraRay = Camera.main.ScreenPointToRay(new Vector3(point.x, point.y, 0));
 
-		return _grid.GetAxialPosition(mouseCameraRay);
+		return _map.GetAxialPosition(mouseCameraRay);
 	}
 
 
@@ -171,7 +171,7 @@ public class RunningGameController : Controller
 		entityManager.SetComponentData(campEntity, new TilePosition(position));
 
 		entityManager.SetComponentData(campEntity,
-			_grid.Layout.GetCellLocalTransform(position)
+			_map.Layout.GetCellLocalTransform(position)
 				.Translate(new float3(0.5f, 0.01f, -0.75f))
 				.ApplyScale(0.25f));
 	}
