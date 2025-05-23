@@ -29,7 +29,7 @@ public class RunningGameController : Controller
 {
 	private readonly IGameInstance _game;
 
-	private readonly VisualHexGrid _grid;
+	private readonly VisualHexGrid3D _grid;
 
 	private readonly GameVM _viewModel;
 	private readonly GameView _uiView;
@@ -48,7 +48,7 @@ public class RunningGameController : Controller
 
 
 	public RunningGameController(IGameInstance game,
-	                             HexLayout hexLayout,
+	                             HexLayout3D hexLayout,
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
 	                             IBandMemberTypeRepository bandMemberTypeRepository,
@@ -58,7 +58,7 @@ public class RunningGameController : Controller
 	{
 		_game = game;
 
-		_grid = new VisualHexGrid(hexLayout, _game.Scene.Grid);
+		_grid = new VisualHexGrid3D(hexLayout, _game.Scene.Grid);
 
 		_viewModel = new GameVM(this,
 			commandRouter,
@@ -154,15 +154,8 @@ public class RunningGameController : Controller
 		var point = _pointAction.ReadValue<Vector2>();
 
 		var mouseCameraRay = Camera.main.ScreenPointToRay(new Vector3(point.x, point.y, 0));
-		var plane = new Plane(Vector3.up, Vector3.zero);
 
-		if (!plane.Raycast(mouseCameraRay, out float enter))
-			return null;
-
-		Vector3 point3 = mouseCameraRay.GetPoint(enter);
-		var gridPoint = new Vector2(point3.x, point3.z);
-
-		return _grid.GetAxialPosition(gridPoint);
+		return _grid.GetAxialPosition(mouseCameraRay);
 	}
 
 

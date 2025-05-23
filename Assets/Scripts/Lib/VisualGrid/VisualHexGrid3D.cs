@@ -11,27 +11,27 @@ namespace Lib.VisualGrid {
 
 
 /// <summary>
-/// Hex grid with specific dimensions and geometry layout.
+/// Hex grid with specific dimensions and geometry layout in 3D coordinate system.
 /// </summary>
-public class VisualHexGrid
+public class VisualHexGrid3D
 	: HexGrid
 {
-	public HexLayout Layout { get; }
+	public HexLayout3D Layout { get; }
 
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public VisualHexGrid(HexLayout layout,
-	                     uint width, uint height,
-	                     HexGridLineOffset lineOffset)
+	public VisualHexGrid3D(HexLayout3D layout,
+	                       uint width, uint height,
+	                       HexGridLineOffset lineOffset)
 		: base(width, height, layout.Orientation, lineOffset)
 	{
 		Layout = layout;
 	}
 
 
-	public VisualHexGrid(HexLayout layout, HexGrid grid)
+	public VisualHexGrid3D(HexLayout3D layout, HexGrid grid)
 		: base(grid.Width, grid.Height, layout.Orientation, grid.LineOffset)
 	{
 		if (layout.Orientation != grid.Orientation)
@@ -41,9 +41,10 @@ public class VisualHexGrid
 	}
 
 
-	public AxialPosition? GetAxialPosition(Vector2 point)
+	public AxialPosition? GetAxialPosition(Ray ray)
 	{
-		AxialPosition freePos = Layout.GetAxialPosition(point);
+		if (! Layout.GetAxialPosition(ray, out var freePos))
+			return null;
 		return IsInside(freePos) ? freePos : null;
 	}
 }

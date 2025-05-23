@@ -41,7 +41,7 @@ public partial class PlantResourcePresentation : SystemBase
 	}
 
 
-	private HexLayout _grid;
+	private HexLayout3D _grid;
 
 	private RenderMeshArray _renderMeshArray;
 
@@ -52,7 +52,7 @@ public partial class PlantResourcePresentation : SystemBase
 
 
 	public void InitForScene(
-		HexLayout grid,
+		HexLayout3D grid,
 		IResourceTypePresentationRepository resourceTypePresentationRepository,
 		IReadOnlyList<uint> resourceTypes)
 	{

@@ -24,14 +24,14 @@ namespace App.Services.Terrain {
 
 public class TerrainInitializer : ITerrainInitializer
 {
-	private readonly HexLayout _grid;
+	private readonly HexLayout3D _grid;
 
 	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
 
 
 
 	public TerrainInitializer(
-		HexLayout grid,
+		HexLayout3D grid,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository)
 	{
 		_grid = grid;

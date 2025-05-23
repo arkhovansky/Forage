@@ -20,7 +20,7 @@ namespace App.Client.UI {
 
 public class ApplicationController : ApplicationController_Base
 {
-	private readonly HexLayout _hexLayout;
+	private readonly HexLayout3D _hexLayout;
 
 	private readonly ITerrainTypeRepository _terrainTypeRepository;
 	private readonly IResourceTypeRepository _resourceTypeRepository;
@@ -36,7 +36,7 @@ public class ApplicationController : ApplicationController_Base
 
 
 
-	public ApplicationController(HexLayout hexLayout,
+	public ApplicationController(HexLayout3D hexLayout,
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
 	                             IBandMemberTypeRepository bandMemberTypeRepository,

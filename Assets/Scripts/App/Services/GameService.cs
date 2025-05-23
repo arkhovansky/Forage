@@ -21,7 +21,7 @@ public class GameService : IGameService
 	private readonly IResourcesInitializer _resourcesInitializer;
 	private readonly IGameTimeInitializer _gameTimeInitializer;
 	private readonly IBandInitializer _bandInitializer;
-	private readonly HexLayout _grid;
+	private readonly HexLayout3D _grid;
 	private readonly ResourceTypePresentationRepository _resourceTypePresentationRepository;
 
 
@@ -31,7 +31,7 @@ public class GameService : IGameService
 		IResourcesInitializer resourcesInitializer,
 		IGameTimeInitializer gameTimeInitializer,
 		IBandInitializer bandInitializer,
-		HexLayout grid,
+		HexLayout3D grid,
 		ResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		_terrainInitializer = terrainInitializer;

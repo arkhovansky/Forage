@@ -45,7 +45,7 @@ public class AbstractHexGrid
 
 		var i = 0;
 		for (var q = -R; q <= R; ++q)
-			for (var r = Math.Max(-R, -q - R); r <= Math.Min(R, -q + R); ++r)
+			for (var r = System.Math.Max(-R, -q - R); r <= System.Math.Min(R, -q + R); ++r)
 				cellPositions[i++] = center + new AxialPosition(q, r);
 
 		return cellPositions;

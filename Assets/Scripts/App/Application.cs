@@ -17,6 +17,8 @@ using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
 
+using Lib.Math;
+
 
 
 public class Application : MonoBehaviour
@@ -28,7 +30,7 @@ public class Application : MonoBehaviour
 	private ApplicationController? _applicationController;
 
 	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
-	private HexLayout _hexLayout;
+	private HexLayout3D _hexLayout;
 	private TerrainTypeRepository? _terrainTypeRepository;
 	private TerrainTypePresentationRepository? _terrainTypePresentationRepository;
 	private ResourceTypeRepository? _resourceTypeRepository;
@@ -48,7 +50,9 @@ public class Application : MonoBehaviour
 		_vvmBinder = new VvmBinder();
 		_commandRouter = new CommandRouter();
 
-		_hexLayout = new HexLayout(HexOrientation);
+		_hexLayout = new HexLayout3D(
+			new HexLayout(HexOrientation),
+			new Matrix3x2(Vector3.right, Vector3.forward));
 		_terrainTypeRepository = new TerrainTypeRepository();
 		_terrainTypePresentationRepository = new TerrainTypePresentationRepository(_hexLayout);
 		_resourceTypeRepository = new ResourceTypeRepository();

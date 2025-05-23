@@ -162,7 +162,7 @@ public struct HexLayout
 
 
 
-	public AxialPosition GetAxialPosition(Vector2 point)
+	public readonly AxialPosition GetAxialPosition(Vector2 point)
 	{
 		var pt = new Vector2((point.x - Origin.x) / ScaleFactor.x,
 			                 (point.y - Origin.y) / ScaleFactor.y);
@@ -173,6 +173,31 @@ public struct HexLayout
 		var fCubePos = new FractionalCubePosition(q, r, -q - r);
 
 		return Round(fCubePos);
+	}
+
+
+	public readonly Vector2 GetPoint(AxialPosition position)
+	{
+		Vector2 point;
+
+		switch (Orientation) {
+			case HexOrientation.FlatTop:
+				point.x = position.Q * _horizontalSpacing;
+				point.y = -0.5f * (position.Q + 2 * position.R) * _verticalSpacing;
+
+				break;
+
+			case HexOrientation.PointyTop:
+				point.x = 0.5f * (2 * position.Q + position.R) * _horizontalSpacing;
+				point.y = -(position.R * _verticalSpacing);
+
+				break;
+
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+
+		return point + Origin;
 	}
 
 
@@ -197,115 +222,6 @@ public struct HexLayout
 		// }
 
 		return new AxialPosition(q, r);
-	}
-
-
-
-	public readonly Mesh GetOriginCellMesh()
-	{
-		Vector2[] vertices2;  // Origin at the center
-
-		switch (Orientation) {
-			case HexOrientation.FlatTop:
-				vertices2 = new Vector2[] {
-					new (-_cellHalfSize.x, 0),
-					new (-0.25f * CellSize.x, _cellHalfSize.y),
-					new (0.25f * CellSize.x, _cellHalfSize.y),
-					new (_cellHalfSize.x, 0),
-					new (0.25f * CellSize.x, -_cellHalfSize.y),
-					new (-0.25f * CellSize.x, -_cellHalfSize.y),
-					new (0, 0)
-				};
-
-				break;
-
-			case HexOrientation.PointyTop:
-				throw new NotImplementedException();
-
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		var origin = Origin;
-
-		var mesh = new Mesh {
-			vertices = Array.ConvertAll(vertices2, v => new Vector3(v.x + origin.x, 0, v.y + origin.y)),
-			triangles = new[] {
-				0, 1, 6,
-				1, 2, 6,
-				2, 3, 6,
-				3, 4, 6,
-				4, 5, 6,
-				5, 0, 6
-			}
-		};
-
-		mesh.RecalculateNormals();
-
-		return mesh;
-	}
-
-
-
-	public readonly IReadOnlyList<Vector3> GetOriginCellBorderVertices()
-	{
-		Vector2[] vertices2;  // Origin at the center
-
-		switch (Orientation) {
-			case HexOrientation.FlatTop:
-				vertices2 = new Vector2[] {
-					new (-_cellHalfSize.x, 0),
-					new (-0.25f * CellSize.x, _cellHalfSize.y),
-					new (0.25f * CellSize.x, _cellHalfSize.y),
-					new (_cellHalfSize.x, 0),
-					new (0.25f * CellSize.x, -_cellHalfSize.y),
-					new (-0.25f * CellSize.x, -_cellHalfSize.y)
-				};
-
-				break;
-
-			case HexOrientation.PointyTop:
-				throw new NotImplementedException();
-
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		var origin = Origin;
-		return Array.ConvertAll(vertices2, v => new Vector3(v.x + origin.x, 0, v.y + origin.y));
-	}
-
-
-
-	public readonly Vector3 GetOriginCellCenter()
-	{
-		return new Vector3(Origin.x, 0, Origin.y);
-	}
-
-
-
-	public readonly LocalTransform GetCellLocalTransform(AxialPosition position)
-	{
-		float x, z;
-
-		switch (Orientation) {
-			case HexOrientation.FlatTop:
-				x = position.Q * _horizontalSpacing;
-				z = -0.5f * (position.Q + 2 * position.R) * _verticalSpacing;
-
-				break;
-
-			case HexOrientation.PointyTop:
-				x = 0.5f * (2 * position.Q + position.R) * _horizontalSpacing;
-				z = -(position.R * _verticalSpacing);
-
-				break;
-
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		return LocalTransform.FromPosition(x, 0, z);
 	}
 
 

@@ -12,7 +12,7 @@ namespace App.Services.Terrain {
 
 public class TerrainTypePresentationRepository : ITerrainTypePresentationRepository
 {
-	private readonly HexLayout _hexLayout;
+	private readonly HexLayout3D _hexLayout;
 
 	private readonly Dictionary<uint, TerrainTypePresentation> _terrainTypes = new();
 
@@ -20,7 +20,7 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 	//----------------------------------------------------------------------------------------------
 
 
-	public TerrainTypePresentationRepository(HexLayout hexLayout)
+	public TerrainTypePresentationRepository(HexLayout3D hexLayout)
 	{
 		_hexLayout = hexLayout;
 
