@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-using App.Game.Ecs.Components.BandMember;
-
 using Unity.Collections;
 using Unity.Entities;
 
 using Lib.Util;
+
+using App.Game.Ecs.Components.BandMember;
 
 
 
