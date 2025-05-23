@@ -58,7 +58,7 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 
 	private Mesh CreateFlatTileMesh()
 	{
-		return _hexLayout.GetOriginCellMesh();
+		return _hexLayout.GetCellMesh();
 	}
 
 
@@ -75,8 +75,8 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 
 	private Mesh CreateElevationsMesh(float elevationHeight)
 	{
-		IReadOnlyList<Vector3> borderVertices = _hexLayout.GetOriginCellBorderVertices();
-		Vector3 center = _hexLayout.GetOriginCellCenter();
+		IReadOnlyList<Vector3> borderVertices = _hexLayout.GetCellBorderVertices();
+		var center = Vector3.zero;
 
 		var vertices = new Vector3[6 * 3 * 3];
 		var triangles = new int[6 * 3 * 3];

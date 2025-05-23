@@ -72,9 +72,18 @@ public struct HexLayout3D
 
 
 
-	public readonly Mesh GetOriginCellMesh()
+	/// <summary>
+	/// Get cell mesh.
+	/// </summary>
+	/// <remarks>
+	/// The mesh center is at the coordinate system origin.
+	/// </remarks>
+	/// <returns>The cell mesh.</returns>
+	/// <exception cref="NotImplementedException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public readonly Mesh GetCellMesh()
 	{
-		Vector2[] vertices2;  // Origin at the center
+		Vector2[] vertices2;
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
@@ -98,10 +107,9 @@ public struct HexLayout3D
 		}
 
 		var projectionMatrix = ProjectionMatrix;
-		var origin2D = _layout2D.Origin;
 
 		var mesh = new Mesh {
-			vertices = Array.ConvertAll(vertices2, v => projectionMatrix.ProjectPoint(v + origin2D)),
+			vertices = Array.ConvertAll(vertices2, v => projectionMatrix.ProjectPoint(v)),
 			triangles = new[] {
 				0, 1, 6,
 				1, 2, 6,
@@ -118,9 +126,18 @@ public struct HexLayout3D
 	}
 
 
-	public readonly IReadOnlyList<Vector3> GetOriginCellBorderVertices()
+	/// <summary>
+	/// Get the list of cell border vertices.
+	/// </summary>
+	/// <remarks>
+	/// The cell center is at the coordinate system origin.
+	/// </remarks>
+	/// <returns>The list of cell border vertices in clockwise order.</returns>
+	/// <exception cref="NotImplementedException"></exception>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public readonly IReadOnlyList<Vector3> GetCellBorderVertices()
 	{
-		Vector2[] vertices2;  // Origin at the center
+		Vector2[] vertices2;
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
@@ -143,20 +160,13 @@ public struct HexLayout3D
 		}
 
 		var projectionMatrix = ProjectionMatrix;
-		var origin2D = _layout2D.Origin;
-		return Array.ConvertAll(vertices2, v => projectionMatrix.ProjectPoint(v + origin2D));
-	}
-
-
-	public readonly Vector3 GetOriginCellCenter()
-	{
-		return Origin;
+		return Array.ConvertAll(vertices2, v => projectionMatrix.ProjectPoint(v));
 	}
 
 
 	public readonly LocalTransform GetCellLocalTransform(AxialPosition position)
 	{
-		Vector2 point2 = _layout2D.GetPoint(position) - _layout2D.Origin;
+		Vector2 point2 = _layout2D.GetPoint(position);
 		Vector3 point3 = ProjectionMatrix.ProjectPoint(point2);
 		return LocalTransform.FromPosition(point3);
 	}

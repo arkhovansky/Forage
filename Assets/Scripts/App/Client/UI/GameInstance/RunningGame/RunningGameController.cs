@@ -170,9 +170,10 @@ public class RunningGameController : Controller
 
 		entityManager.SetComponentData(campEntity, new TilePosition(position));
 
+		var inTilePosition = new Vector2(0f, (_map.Layout.CellSize.y / 2) * -0.75f);
 		entityManager.SetComponentData(campEntity,
 			_map.Layout.GetCellLocalTransform(position)
-				.Translate(new float3(0.5f, 0.01f, -0.75f))
+				.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
 				.ApplyScale(0.25f));
 	}
 }

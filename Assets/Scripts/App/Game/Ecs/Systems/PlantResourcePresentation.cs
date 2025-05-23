@@ -169,9 +169,11 @@ public partial class PlantResourcePresentation : SystemBase
 				EntityManager.SetComponentData(entity, new PlantResourceType {TypeId = resourceData.ResourceType});
 				EntityManager.SetComponentData(entity, new TilePosition(resourceData.TilePosition));
 
-				var inTilePosition = new Vector2((iResourceIcon + 1) * 0.1f, 0.5f);
+				var inTilePosition = new Vector2(
+					((iResourceIcon + 1) * (1f / (10+1)) - 0.5f) * _grid.CellSize.x,
+					0f);
 				var localTransform = _grid.GetCellLocalTransform(resourceData.TilePosition)
-					.Translate(new float3(inTilePosition.x, 0.01f, -inTilePosition.y))
+					.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
 					.ApplyScale(0.5f);
 				EntityManager.SetComponentData(entity, localTransform);
 
