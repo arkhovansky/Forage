@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44fa01dfa3ddde4dbd6c82e72cff358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  campPrefab: {fileID: 4796801232074610291, guid: b3498fae81439da40909b824c1519c7c, type: 3}
+  CampPrefab: {fileID: 4796801232074610291, guid: b3498fae81439da40909b824c1519c7c, type: 3}
 --- !u!4 &221970836
 Transform:
   m_ObjectHideFlags: 0
