@@ -12,8 +12,6 @@ public enum Gender
 public class BandMemberType
 {
 	public Gender Gender;
-
-	public float GatheringSpeed;
 }
 
 

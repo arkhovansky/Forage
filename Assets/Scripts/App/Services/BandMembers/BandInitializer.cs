@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Unity.Collections;
 using Unity.Entities;
 
-using Lib.Util;
-
 using App.Game.Ecs.Components.BandMember;
+using App.Game.Ecs.Components.Singletons;
 
 
 
@@ -32,40 +32,30 @@ public class BandInitializer : IBandInitializer
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var prototype = entityManager.CreateEntity();
-		entityManager.AddComponent<BandMember>(prototype);
-		entityManager.AddComponent<Human>(prototype);
-		entityManager.AddComponent<Forager>(prototype);
-
-		var count = bandMemberTypeCounts.Values.Sum();
-
-		var clonedEntities = new NativeArray<Entity>((int)count, Allocator.Temp);
-		entityManager.Instantiate(prototype, clonedEntities);
-
+		var prefabReferences =
+			entityManager.CreateEntityQuery(typeof(PrefabReferences)).GetSingleton<PrefabReferences>();
 
 		int iBandMember = 0;
-		foreach (var bandMemberTypeKV in bandMemberTypeCounts) {
-			var bandMemberTypeId = bandMemberTypeKV.Key;
+		foreach (var (bandMemberTypeId, memberCountOfType) in bandMemberTypeCounts) {
 			var bandMemberType = _bandMemberTypeRepository.Get(bandMemberTypeId);
 
-			var memberCountOfType = bandMemberTypeKV.Value;
+			var prefabEntity = bandMemberType.Gender switch {
+				Gender.Male => prefabReferences.Man,
+				Gender.Female => prefabReferences.Woman,
+				_ => throw new ArgumentOutOfRangeException()
+			};
+
+			var clonedEntities = new NativeArray<Entity>((int)memberCountOfType, Allocator.Temp);
+			entityManager.Instantiate(prefabEntity, clonedEntities);
+
 			for (int i = 0; i < memberCountOfType; i++) {
-				var entity = clonedEntities[iBandMember++];
+				var entity = clonedEntities[i];
 
-				entityManager.SetComponentData(entity, new BandMember {Id = iBandMember});
-
-				entityManager.SetComponentData(entity, new Human {TypeId = bandMemberTypeId});
-
-				entityManager.SetComponentData(entity, new Forager {
-					GatheringSpeed = bandMemberType.GatheringSpeed,
-					Activity = Activity.Idle
-				});
+				entityManager.SetComponentData(entity, new BandMember {Id = iBandMember++});
 			}
+
+			clonedEntities.Dispose();
 		}
-
-		clonedEntities.Dispose();
-
-		entityManager.DestroyEntity(prototype);
 	}
 }
 

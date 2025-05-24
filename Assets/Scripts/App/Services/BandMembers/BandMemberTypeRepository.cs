@@ -15,12 +15,10 @@ public class BandMemberTypeRepository : IBandMemberTypeRepository
 	public BandMemberTypeRepository()
 	{
 		_bandMemberTypes[(uint)Gender.Male] = new BandMemberType {
-			Gender = Gender.Male,
-			GatheringSpeed = 1
+			Gender = Gender.Male
 		};
 		_bandMemberTypes[(uint)Gender.Female] = new BandMemberType {
-			Gender = Gender.Female,
-			GatheringSpeed = 1
+			Gender = Gender.Female
 		};
 	}
 
