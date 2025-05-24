@@ -24,7 +24,8 @@ public class PrefabReferences : MonoBehaviour
 			var entity = GetEntity(TransformUsageFlags.None);
 			AddComponent(entity,
 				new Ecs.Components.Singletons.PrefabReferences {
-					Camp = GetEntity(authoring.CampPrefab, TransformUsageFlags.Dynamic)
+					// TransformUsageFlags.None for entities having their own bakers
+					Camp = GetEntity(authoring.CampPrefab, TransformUsageFlags.None)
 				});
 		}
 	}
