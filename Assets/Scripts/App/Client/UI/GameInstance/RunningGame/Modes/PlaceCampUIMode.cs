@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 using Lib.Grid;
 
 using App.Client.Framework.UICore.HighLevel;
-using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.UI.HoveredTile.Components;
+using App.Game.ECS.Util.Components;
 
 
 
@@ -46,7 +46,7 @@ public class PlaceCampUIMode : IUIMode
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
+		var entityQuery = entityManager.CreateEntityQuery(typeof(SingletonEntity_Tag));
 		var singletonEntity = entityQuery.GetSingletonEntity();
 
 		entityManager.AddComponentData(singletonEntity, new HoveredTileChanged_Event(tilePosition));

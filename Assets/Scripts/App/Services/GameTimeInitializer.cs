@@ -3,6 +3,7 @@
 using App.Game;
 using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.Util.Components;
 
 
 
@@ -16,7 +17,7 @@ public class GameTimeInitializer : IGameTimeInitializer
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
+		var entityQuery = entityManager.CreateEntityQuery(typeof(SingletonEntity_Tag));
 		var entity = entityQuery.GetSingletonEntity();
 
 		entityManager.SetComponentData(entity, new CurrentYearPeriod {Value = yearPeriod});

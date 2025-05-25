@@ -4,6 +4,8 @@ using Unity.Entities;
 using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.Util;
+using App.Game.ECS.Util.Components;
 
 
 
@@ -11,19 +13,21 @@ namespace App.Game.ECS.GameTime {
 
 
 
+[CreateAfter(typeof(InitializationSystem))]
 public partial struct GameTimeSystem : ISystem
 {
 	[BurstCompile]
 	public void OnCreate(ref SystemState state)
 	{
-		state.EntityManager.CreateSingleton<CurrentYearPeriod>();
+		var singletonEntity = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
+		state.EntityManager.AddComponent<CurrentYearPeriod>(singletonEntity);
 	}
 
 
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		var singleton = SystemAPI.GetSingletonEntity<CurrentYearPeriod>();
+		var singleton = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
 
 		if (SystemAPI.HasSingleton<Initialization_Tag>()) {
 			state.EntityManager.AddComponentData(singleton, new YearPeriodChanged_Event());
