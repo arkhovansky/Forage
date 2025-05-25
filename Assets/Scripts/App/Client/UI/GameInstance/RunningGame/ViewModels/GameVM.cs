@@ -9,10 +9,12 @@ using Lib.Grid;
 
 using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.Mvvm;
-using App.Game.Ecs.Components;
-using App.Game.Ecs.Components.BandMember;
-using App.Game.Ecs.Components.Singletons.HoveredTile;
-using App.Game.Ecs.Components.Singletons.YearPeriod;
+using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.Components;
+using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.Resource.Plant.Components;
+using App.Game.ECS.Terrain.Components;
+using App.Game.ECS.UI.HoveredTile.Components;
 using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;

@@ -1,9 +1,8 @@
-using App.Game.Ecs.Systems;
-
 using Unity.Entities;
 
 using Lib.VisualGrid;
 
+using App.Game.ECS.Resource.Plant;
 using App.Game.Meta;
 using App.Services.BandMembers;
 using App.Services.Resources;

@@ -5,7 +5,8 @@ using Unity.Entities;
 
 using Lib.Grid;
 
-using App.Game.Ecs.Components;
+using App.Game.ECS.Components;
+using App.Game.ECS.Resource.Plant.Components;
 
 
 

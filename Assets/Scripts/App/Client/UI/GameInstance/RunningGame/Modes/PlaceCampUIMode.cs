@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 using Lib.Grid;
 
 using App.Client.Framework.UICore.HighLevel;
-using App.Game.Ecs.Components.Singletons.HoveredTile;
-using App.Game.Ecs.Components.Singletons.YearPeriod;
+using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.UI.HoveredTile.Components;
 
 
 

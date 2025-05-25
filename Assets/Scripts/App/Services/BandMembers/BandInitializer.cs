@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 
-using App.Game.Ecs.Components.BandMember;
-using App.Game.Ecs.Components.Singletons;
+using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.Prefabs.Components;
 
 
 

@@ -14,7 +14,8 @@ using Lib.Grid;
 using Lib.Util;
 using Lib.VisualGrid;
 
-using App.Game.Ecs.Components;
+using App.Game.ECS.Components;
+using App.Game.ECS.Terrain.Components;
 
 
 

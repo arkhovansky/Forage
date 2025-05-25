@@ -10,9 +10,10 @@ using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
-using App.Game.Ecs.Components;
-using App.Game.Ecs.Components.Singletons;
-using App.Game.Ecs.Components.Singletons.YearPeriod;
+using App.Game.ECS.Components;
+using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.Prefabs.Components;
 using App.Game.Meta;
 using App.Services;
 using App.Services.BandMembers;
@@ -116,7 +117,7 @@ public class RunningGameController : Controller
 		var entityQuery = entityManager.CreateEntityQuery(typeof(CurrentYearPeriod));
 		var singletonEntity = entityQuery.GetSingletonEntity();
 
-		entityManager.AddComponentData(singletonEntity, new AdvanceYearPeriod_Command());
+		entityManager.AddComponentData(singletonEntity, new AdvanceYearPeriod());
 	}
 
 

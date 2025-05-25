@@ -1,9 +1,8 @@
-﻿using App.Game;
+﻿using Unity.Entities;
 
-using Unity.Entities;
-
-using App.Game.Ecs.Components.Singletons;
-using App.Game.Ecs.Components.Singletons.YearPeriod;
+using App.Game;
+using App.Game.ECS.Components.Singletons;
+using App.Game.ECS.GameTime.Components;
 
 
 
