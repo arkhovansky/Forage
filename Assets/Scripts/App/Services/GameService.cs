@@ -2,7 +2,9 @@ using Unity.Entities;
 
 using Lib.VisualGrid;
 
+using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.Resource.Plant;
+using App.Game.ECS.Util.Components;
 using App.Game.Meta;
 using App.Services.BandMembers;
 using App.Services.Resources;
@@ -44,6 +46,8 @@ public class GameService : IGameService
 
 	public void PopulateWorld(IScene scene)
 	{
+		InitHexLayout();
+
 		_terrainInitializer.Create(scene.TileTerrainTypes, scene.TileAxialPositions);
 		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
@@ -52,6 +56,16 @@ public class GameService : IGameService
 		var plantResourcePresentation =
 			World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<PlantResourcePresentation>();
 		plantResourcePresentation.InitForScene(_grid, _resourceTypePresentationRepository, scene.ResourceTypes);
+	}
+
+
+	private void InitHexLayout()
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var singletonEntity = entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>())
+			.GetSingletonEntity();
+
+		entityManager.AddComponentData(singletonEntity, new HexLayout3D_Component(_grid));
 	}
 }
 
