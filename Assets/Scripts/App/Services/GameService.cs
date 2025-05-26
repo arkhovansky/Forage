@@ -4,7 +4,6 @@ using Lib.VisualGrid;
 
 using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.Resource.Plant;
-using App.Game.ECS.Util.Components;
 using App.Game.Meta;
 using App.Services.BandMembers;
 using App.Services.Resources;
@@ -61,11 +60,7 @@ public class GameService : IGameService
 
 	private void InitHexLayout()
 	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>())
-			.GetSingletonEntity();
-
-		entityManager.AddComponentData(singletonEntity, new HexLayout3D_Component(_grid));
+		EcsService.AddSingletonComponent(new HexLayout3D_Component(_grid));
 	}
 }
 

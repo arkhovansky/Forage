@@ -1,5 +1,4 @@
-﻿using Unity.Entities;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 using Lib.Grid;
@@ -10,7 +9,6 @@ using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.GameTime.Components.Commands;
-using App.Game.ECS.Util.Components;
 using App.Game.Meta;
 using App.Services;
 using App.Services.BandMembers;
@@ -109,12 +107,7 @@ public class RunningGameController : Controller
 
 	private void OnEndTurn(EndTurnCommand command)
 	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var entityQuery = entityManager.CreateEntityQuery(typeof(SingletonEntity_Tag));
-		var singletonEntity = entityQuery.GetSingletonEntity();
-
-		entityManager.AddComponentData(singletonEntity, new AdvanceYearPeriod());
+		EcsService.SendEcsCommand(new AdvanceYearPeriod());
 	}
 
 
@@ -131,7 +124,7 @@ public class RunningGameController : Controller
 
 	private void OnPlaceCamp(PlaceCamp command)
 	{
-		PlaceCamp(command.Position);
+		EcsService.SendEcsCommand(new App.Game.ECS.Camp.Components.Commands.PlaceCamp(command.Position));
 
 		_campPlaced = true;
 
@@ -154,16 +147,6 @@ public class RunningGameController : Controller
 		var mouseCameraRay = Camera.main.ScreenPointToRay(new Vector3(point.x, point.y, 0));
 
 		return _map.GetAxialPosition(mouseCameraRay);
-	}
-
-
-	private static void PlaceCamp(AxialPosition position)
-	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>())
-			.GetSingletonEntity();
-
-		entityManager.AddComponentData(singletonEntity, new App.Game.ECS.Camp.Components.Commands.PlaceCamp(position));
 	}
 }
 
