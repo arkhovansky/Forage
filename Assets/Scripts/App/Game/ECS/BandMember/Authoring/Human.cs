@@ -2,6 +2,8 @@
 
 using UnityEngine;
 
+using App.Game.ECS.Components;
+
 
 
 namespace App.Game.ECS.BandMember.Authoring {
@@ -20,6 +22,7 @@ public class Human : MonoBehaviour
 			var entity = GetEntity(TransformUsageFlags.Dynamic);
 			AddComponent(entity, new Components.Human {TypeId = authoring.TypeId});
 			AddComponent<Components.BandMember>(entity);
+			AddComponent<TilePosition>(entity);
 		}
 	}
 }
