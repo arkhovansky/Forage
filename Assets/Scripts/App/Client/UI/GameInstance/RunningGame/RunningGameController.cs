@@ -1,5 +1,4 @@
 ﻿using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +9,7 @@ using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
-using App.Game.ECS.Components;
 using App.Game.ECS.GameTime.Components.Commands;
-using App.Game.ECS.Prefabs.Components;
 using App.Game.ECS.Util.Components;
 using App.Game.Meta;
 using App.Services;
@@ -160,22 +157,13 @@ public class RunningGameController : Controller
 	}
 
 
-	private void PlaceCamp(AxialPosition position)
+	private static void PlaceCamp(AxialPosition position)
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var singletonEntity = entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>())
+			.GetSingletonEntity();
 
-		var prefabReferences = entityManager.CreateEntityQuery(typeof(PrefabReferences))
-			.GetSingleton<PrefabReferences>();
-
-		var campEntity = entityManager.Instantiate(prefabReferences.Camp);
-
-		entityManager.SetComponentData(campEntity, new TilePosition(position));
-
-		var inTilePosition = new Vector2(0f, (_map.Layout.CellSize.y / 2) * -0.75f);
-		entityManager.SetComponentData(campEntity,
-			_map.Layout.GetCellLocalTransform(position)
-				.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-				.ApplyScale(0.25f));
+		entityManager.AddComponentData(singletonEntity, new App.Game.ECS.Camp.Components.Commands.PlaceCamp(position));
 	}
 }
 
