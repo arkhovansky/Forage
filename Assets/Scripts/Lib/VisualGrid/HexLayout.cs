@@ -107,6 +107,10 @@ public struct HexLayout
 			Q = q; R = r; S = s;
 		}
 
+		public FractionalCubePosition(float q, float r) {
+			Q = q; R = r; S = -q - r;
+		}
+
 		public override string ToString()
 			=> $"({Q}, {R}, {S})";
 	}
@@ -198,6 +202,43 @@ public struct HexLayout
 		}
 
 		return point + Origin;
+	}
+
+
+
+	public static uint Distance(AxialPosition start, AxialPosition end)
+	{
+		var vec = end - start;
+		return (uint) (System.Math.Abs(vec.Q) + System.Math.Abs(vec.Q + vec.R) + System.Math.Abs(vec.R)) / 2;
+	}
+
+
+	public static AxialPosition[] GetLinearPath(AxialPosition start, AxialPosition end)
+	{
+		var distance = Distance(start, end);
+		var path = new AxialPosition[distance];
+
+		if (distance == 0)
+			return path;
+
+		for (var i = 0; i < distance - 1; i++) {
+			path[i] = Round(Lerp(start, end, (float)(i+1) / distance));
+		}
+		path[distance - 1] = end;
+
+		return path;
+	}
+
+
+
+	private static FractionalCubePosition Lerp(AxialPosition start, AxialPosition end, float t)
+	{
+		return new FractionalCubePosition(Lerp(start.Q, end.Q, t), Lerp(start.R, end.R, t));
+	}
+
+	private static float Lerp(int a, int b, float t)
+	{
+		return a + (b - a) * t;
 	}
 
 
