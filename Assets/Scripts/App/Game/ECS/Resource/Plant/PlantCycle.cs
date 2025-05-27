@@ -4,6 +4,7 @@ using Unity.Entities;
 using App.Game.ECS.GameTime;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.Resource.Plant.Components;
+using App.Game.ECS.SystemGroups;
 
 
 
@@ -11,6 +12,7 @@ namespace App.Game.ECS.Resource.Plant {
 
 
 
+[UpdateInGroup(typeof(DiscreteActions))]
 [UpdateAfter(typeof(GameTimeSystem))]
 public partial struct PlantCycle : ISystem
 {

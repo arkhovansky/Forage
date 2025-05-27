@@ -17,6 +17,7 @@ using Lib.Util;
 using App.Game.ECS.Components;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.Resource.Plant.Components;
+using App.Game.ECS.SystemGroups;
 using App.Services.Resources;
 
 
@@ -25,6 +26,7 @@ namespace App.Game.ECS.Resource.Plant {
 
 
 
+[UpdateInGroup(typeof(DiscreteActions))]
 [UpdateAfter(typeof(PlantCycle))]
 public partial class PlantResourcePresentation : SystemBase
 {

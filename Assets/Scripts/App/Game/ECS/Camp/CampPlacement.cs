@@ -11,6 +11,7 @@ using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.Components;
 using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.Prefabs.Components;
+using App.Game.ECS.SystemGroups;
 
 
 
@@ -18,6 +19,7 @@ namespace App.Game.ECS.Camp {
 
 
 
+[UpdateInGroup(typeof(DiscreteActions))]
 public partial struct CampPlacement : ISystem
 {
 	[BurstCompile]

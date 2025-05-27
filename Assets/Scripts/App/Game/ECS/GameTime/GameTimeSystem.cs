@@ -3,6 +3,7 @@ using Unity.Entities;
 
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util;
 using App.Game.ECS.Util.Components;
 
@@ -13,6 +14,7 @@ namespace App.Game.ECS.GameTime {
 
 
 [CreateAfter(typeof(InitializationSystem))]
+[UpdateInGroup(typeof(DiscreteActions))]
 public partial struct GameTimeSystem : ISystem
 {
 	[BurstCompile]

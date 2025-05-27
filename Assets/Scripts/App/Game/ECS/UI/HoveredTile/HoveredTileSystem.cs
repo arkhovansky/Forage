@@ -16,6 +16,7 @@ namespace App.Game.ECS.UI.HoveredTile {
 
 
 
+[UpdateInGroup(typeof(StructuralChangePresentationSystemGroup))]
 public partial struct HoveredTileSystem : ISystem
 {
 	[BurstCompile]
