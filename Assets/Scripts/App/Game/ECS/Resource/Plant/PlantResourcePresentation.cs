@@ -78,7 +78,7 @@ public partial class PlantResourcePresentation : SystemBase
 		var creationData = new List<ResourceIconsCreationData>();
 
 		foreach (var (resource, tilePosition, ripeBiomass)
-		         in SystemAPI.Query<RefRO<PlantResource>, RefRO<TilePosition>, RefRO<RemainingRipeBiomass>>())
+		         in SystemAPI.Query<RefRO<PlantResource>, RefRO<TilePosition>, RefRO<RipeBiomass>>())
 		{
 			if (SystemAPI.HasSingleton<YearPeriodChanged_Event>()) {
 				if (ripeBiomass.ValueRO.Value > 0) {

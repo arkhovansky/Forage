@@ -17,11 +17,4 @@ public struct PlantResource : IComponentData
 
 
 
-public struct RemainingRipeBiomass : IComponentData
-{
-	public float Value;
-}
-
-
-
 }

@@ -30,7 +30,7 @@ public partial struct PlantCycle : ISystem
 		var currentYearPeriod = SystemAPI.GetSingleton<CurrentYearPeriod>();
 
 		foreach (var (resource, ripeBiomass)
-		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RemainingRipeBiomass>>()) {
+		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RipeBiomass>>()) {
 			if (resource.ValueRO.RipenessPeriod == currentYearPeriod.Value)
 				ripeBiomass.ValueRW.Value = resource.ValueRO.PotentialBiomass;
 			else

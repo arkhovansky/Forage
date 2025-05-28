@@ -55,7 +55,7 @@ public class ResourceInfoVM : IViewModel
 		PotentialBiomass = (uint) resource.PotentialBiomass;
 		RipenessPeriod = resource.RipenessPeriod.Month.ToString();
 
-		RipeBiomass = (uint) entityManager.GetComponentData<RemainingRipeBiomass>(resourceEntity).Value;
+		RipeBiomass = (uint) entityManager.GetComponentData<RipeBiomass>(resourceEntity).Value;
 
 		IsVisible = true;
 	}

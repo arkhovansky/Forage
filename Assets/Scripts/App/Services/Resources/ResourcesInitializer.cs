@@ -37,7 +37,7 @@ public class ResourcesInitializer : IResourcesInitializer
 		var prototype = entityManager.CreateEntity();
 		entityManager.AddComponent<TilePosition>(prototype);
 		entityManager.AddComponent<PlantResource>(prototype);
-		entityManager.AddComponent<RemainingRipeBiomass>(prototype);
+		entityManager.AddComponent<RipeBiomass>(prototype);
 
 		var count = resourceTypes.Count;
 
@@ -59,7 +59,7 @@ public class ResourcesInitializer : IResourcesInitializer
 				PotentialBiomass = potentialBiomass[i]
 			});
 
-			entityManager.SetComponentData(entity, new RemainingRipeBiomass());
+			entityManager.SetComponentData(entity, new RipeBiomass());
 		}
 
 		clonedEntities.Dispose();
