@@ -37,20 +37,17 @@ public class BandMembersVM : IViewModel
 
 		var query = entityManager.CreateEntityQuery(
 			ComponentType.ReadOnly<BandMember>(),
-			ComponentType.ReadOnly<Human>(),
-			ComponentType.ReadOnly<Forager>());
+			ComponentType.ReadOnly<Human>());
 
+		var entities = query.ToEntityArray(Allocator.Temp);
 		var bandMembers = query.ToComponentDataArray<BandMember>(Allocator.Temp);
 		var humans = query.ToComponentDataArray<Human>(Allocator.Temp);
-		var foragers = query.ToComponentDataArray<Forager>(Allocator.Temp);
 
 		if (BandMembers.Count == 0) {
 			for (var i = 0; i < bandMembers.Length; i++) {
-				BandMembers.Add(new BandMemberVM() {
-					Id = bandMembers[i].Id,
-					Gender = _bandMemberTypeRepository.Get(humans[i].TypeId).Gender.ToString(),
-					Assignment = foragers[i].Activity.ToString()
-				});
+				var bandMemberVM = new BandMemberVM() {Id = bandMembers[i].Id};
+				SetBandMemberVM(bandMemberVM, entities[i], humans[i]);
+				BandMembers.Add(bandMemberVM);
 			}
 		}
 		else {
@@ -58,11 +55,25 @@ public class BandMembersVM : IViewModel
 
 			for (var i = 0; i < bandMembers.Length; i++) {
 				var bandMemberVM = BandMembers.Find(x => x.Id == bandMembers[i].Id);
-
-				bandMemberVM.Gender = _bandMemberTypeRepository.Get(humans[i].TypeId).Gender.ToString();
-				bandMemberVM.Assignment = foragers[i].Activity.ToString();
+				SetBandMemberVM(bandMemberVM, entities[i], humans[i]);
 			}
 		}
+	}
+
+
+	private void SetBandMemberVM(BandMemberVM bandMemberVM, Entity entity, Human human)
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		bandMemberVM.Gender = _bandMemberTypeRepository.Get(human.TypeId).Gender.ToString();
+
+		bandMemberVM.Goal = entityManager.IsComponentEnabled<GoalComponent>(entity)
+			? entityManager.GetComponentData<GoalComponent>(entity).Goal.ToString()
+			: string.Empty;
+
+		bandMemberVM.Activity = entityManager.IsComponentEnabled<Foraging>(entity)
+			? "Foraging"
+			: string.Empty;
 	}
 }
 

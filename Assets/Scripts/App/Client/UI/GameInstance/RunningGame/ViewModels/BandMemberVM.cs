@@ -12,7 +12,10 @@ public class BandMemberVM
 	public string Gender { get; set; } = string.Empty;
 
 	[CreateProperty]
-	public string Assignment { get; set; } = string.Empty;
+	public string Goal { get; set; } = string.Empty;
+
+	[CreateProperty]
+	public string Activity { get; set; } = string.Empty;
 
 
 	[DontCreateProperty]

@@ -5,9 +5,10 @@
 namespace App.Game.ECS.BandMember.Components {
 
 
-public struct Forager : IComponentData
+
+public struct Foraging : IComponentData, IEnableableComponent
 {
-	public float GatheringSpeed;
+
 }
 
 

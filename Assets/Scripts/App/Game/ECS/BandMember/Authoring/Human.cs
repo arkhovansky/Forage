@@ -3,6 +3,7 @@
 using UnityEngine;
 
 using App.Game.ECS.Components;
+using App.Game.ECS.BandMember.Components;
 
 
 
@@ -20,9 +21,21 @@ public class Human : MonoBehaviour
 		public override void Bake(Human authoring)
 		{
 			var entity = GetEntity(TransformUsageFlags.Dynamic);
+
 			AddComponent(entity, new Components.Human {TypeId = authoring.TypeId});
 			AddComponent<Components.BandMember>(entity);
 			AddComponent<TilePosition>(entity);
+
+			AddComponent<GoalComponent>(entity);
+			SetComponentEnabled<GoalComponent>(entity, false);
+
+			AddComponent<TargetTile>(entity);
+			SetComponentEnabled<TargetTile>(entity, false);
+
+			AddBuffer<PathTile>(entity);
+
+			AddComponent<Foraging>(entity);
+			SetComponentEnabled<Foraging>(entity, false);
 		}
 	}
 }
