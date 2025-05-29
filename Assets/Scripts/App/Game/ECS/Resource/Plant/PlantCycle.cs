@@ -32,9 +32,9 @@ public partial struct PlantCycle : ISystem
 		foreach (var (resource, ripeBiomass)
 		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RipeBiomass>>()) {
 			if (resource.ValueRO.RipenessPeriod == currentYearPeriod.Value)
-				ripeBiomass.ValueRW.Value = resource.ValueRO.PotentialBiomass;
+				ripeBiomass.ValueRW.Reset(resource.ValueRO.PotentialBiomass);
 			else
-				ripeBiomass.ValueRW.Value = 0;
+				ripeBiomass.ValueRW.Reset(0);
 		}
 	}
 
