@@ -2,7 +2,6 @@
 using Unity.Entities;
 
 using App.Game.ECS.BandMember.Components;
-using App.Game.ECS.Components;
 using App.Game.ECS.SystemGroups;
 
 
@@ -25,21 +24,29 @@ public partial struct HumanAI_GoalSelector : ISystem
 	public void OnUpdate(ref SystemState state)
 	{
 		foreach (
-			var (position, entity)
+			var (foodConsumer, entity)
 			in SystemAPI.Query<
-				RefRO<TilePosition>
+				FoodConsumer
 				>()
 				.WithAll<Human>()
-				.WithNone<GoalComponent>()
+				.WithNone<Activity>()
 				.WithEntityAccess())
 		{
-			Goal goal = Goal.Forage;
+			if (!foodConsumer.IsSatiated) {
+				Goal goal = Goal.Forage;
 
-			SystemAPI.SetComponent(entity, new GoalComponent(goal));
-			SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+				SystemAPI.SetComponent(entity, new GoalComponent(goal));
+				SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
 
-			SystemAPI.SetComponent(entity, new Foraging());
-			SystemAPI.SetComponentEnabled<Foraging>(entity, true);
+				SystemAPI.SetComponent(entity, new Foraging());
+				SystemAPI.SetComponentEnabled<Foraging>(entity, true);
+			}
+			else {  // Satiated
+				SystemAPI.SetComponentEnabled<Foraging>(entity, false);
+
+				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Leisure));
+				SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+			}
 		}
 	}
 }

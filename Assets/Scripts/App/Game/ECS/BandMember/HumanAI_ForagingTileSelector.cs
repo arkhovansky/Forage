@@ -10,6 +10,7 @@ using Lib.VisualGrid;
 
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.Components;
+using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.SystemGroups;
 
 
@@ -27,9 +28,10 @@ public partial class HumanAI_ForagingTileSelector : SystemBase
 		float Cost
 	);
 
-	private record TargetResource(
+	private record TargetResourceInfo(
 		AxialPosition Position,
-		PathInfo PathInfo
+		PathInfo PathInfo,
+		Entity Entity
 	);
 
 
@@ -52,30 +54,38 @@ public partial class HumanAI_ForagingTileSelector : SystemBase
 		foreach (var (foragerPosition, path, foragerEntity) in
 		         SystemAPI.Query<RefRO<TilePosition>, DynamicBuffer<PathTile>>()
 			         .WithAll<Foraging>()
-			         .WithDisabled<TargetTile>()
+			         .WithDisabled<TargetResource>()
 			         .WithEntityAccess())
 		{
-			TargetResource? target = null;
+			TargetResourceInfo? target = null;
 
-			foreach (var resourcePosition in
-			         SystemAPI.Query<RefRO<TilePosition>>())
+			// Select resource by distance
+			foreach (var (resourcePosition, resourceEntity) in
+			         SystemAPI.Query<TilePosition>()
+				         .WithAll<PlantResource>()
+				         .WithEntityAccess())
 			{
-				var pathInfo = CalculatePath(foragerPosition.ValueRO.Position, resourcePosition.ValueRO.Position);
+				var pathInfo = CalculatePath(foragerPosition.ValueRO.Position, resourcePosition.Position);
 				if (target == null || pathInfo.Cost < target.PathInfo.Cost) {
-					target = new TargetResource(resourcePosition.ValueRO.Position, pathInfo);
+					target = new TargetResourceInfo(resourcePosition.Position, pathInfo, resourceEntity);
 				}
 			}
 
 			if (target == null)
 				continue;
 
-			SystemAPI.SetComponent(foragerEntity, new TargetTile(target.Position));
-			SystemAPI.SetComponentEnabled<TargetTile>(foragerEntity, true);
+			if (target.Position != foragerPosition.ValueRO.Position) {
+				SystemAPI.SetComponent(foragerEntity, new TargetTile(target.Position));
+				SystemAPI.SetComponentEnabled<TargetTile>(foragerEntity, true);
+			}
 
 			var path_ = path;
 			path_.Length = 0;
 			foreach (var position in target.PathInfo.Path)
 				path_.Add(new PathTile(position));
+
+			SystemAPI.SetComponent(foragerEntity, new TargetResource(target.Entity));
+			SystemAPI.SetComponentEnabled<TargetResource>(foragerEntity, true);
 		}
 	}
 

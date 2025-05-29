@@ -232,12 +232,43 @@ public class VvmBinder : IVvmBinder
 		{
 			var listView = FindMatchingElement<MultiColumnListView>(property.Name);
 
-			if (listView != null) {
-				var list = property.GetValue(_viewModel);
-				listView.itemsSource = (IList)list;
-			}
-			// else
+			if (listView == null)
+				return;
+
+			listView.itemsSource = (IList) property.GetValue(_viewModel);;
+
+			// CreateCellTemplates(listView);
+			// foreach (var column in listView.columns) {
+			// 	if (column.cellTemplate != null)
+			// 		continue;
+			//
+			//
+			// }
 		}
+
+
+		// private void CreateCellTemplates(MultiColumnListView listView)
+		// {
+		// 	foreach (var column in listView.columns) {
+		// 		if (column.cellTemplate == null)
+		// 			CreateCellTemplate(column);
+		// 	}
+		// }
+		//
+		//
+		// private void CreateCellTemplate(Column column)
+		// {
+		// 	var label = new Label();
+		//
+		// 	var binding = new DataBinding {
+		// 		dataSourcePath = PropertyPath.FromName(propertyName),
+		// 		bindingMode = BindingMode.ToTarget
+		// 	};
+		//
+		// 	label.SetBinding("text", binding);
+		//
+		// 	column.cellTemplate = label;
+		// }
 	}
 }
 

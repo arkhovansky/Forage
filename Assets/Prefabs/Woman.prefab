@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9143118567500116657, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
+      propertyPath: NeededEnergyPerDay
+      value: 2500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
