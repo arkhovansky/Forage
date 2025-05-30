@@ -5,6 +5,7 @@ using Unity.Entities;
 using UnityEngine.Assertions;
 
 using App.Client.Framework.UICore.Mvvm;
+using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
 using App.Services.BandMembers;
 

@@ -4,7 +4,7 @@ using Lib.Grid;
 
 
 
-namespace App.Game.ECS.BandMember.Components {
+namespace App.Game.ECS.BandMember.AI.Components {
 
 
 

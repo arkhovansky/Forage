@@ -1,12 +1,13 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 
+using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.SystemGroups;
 
 
 
-namespace App.Game.ECS.BandMember {
+namespace App.Game.ECS.BandMember.AI {
 
 
 
