@@ -86,14 +86,21 @@ public struct HexLayout
 	/// </summary>
 	public Vector2 CellSize { get; }
 
+	/// <summary>
+	/// Horizontal distance between adjacent hexagon centers.
+	/// </summary>
+	public float HorizontalSpacing { get; }
+
+	/// <summary>
+	/// Vertical distance between adjacent hexagon centers.
+	/// </summary>
+	public float VerticalSpacing { get; }
+
 
 
 	private readonly HexOrientationData _orientationData;
 
 	private readonly Vector2 _cellHalfSize;
-
-	private readonly float _horizontalSpacing;
-	private readonly float _verticalSpacing;
 
 
 	//----------------------------------------------------------------------------------------------
@@ -146,16 +153,16 @@ public struct HexLayout
 			case HexOrientation.FlatTop:
 				_orientationData = HexOrientationData.FlatTop;
 
-				_horizontalSpacing = 0.75f * CellSize.x;
-				_verticalSpacing = CellSize.y;
+				HorizontalSpacing = 0.75f * CellSize.x;
+				VerticalSpacing = CellSize.y;
 
 				break;
 
 			case HexOrientation.PointyTop:
 				_orientationData = HexOrientationData.PointyTop;
 
-				_horizontalSpacing = CellSize.x;
-				_verticalSpacing = 0.75f * CellSize.y;
+				HorizontalSpacing = CellSize.x;
+				VerticalSpacing = 0.75f * CellSize.y;
 
 				break;
 
@@ -186,14 +193,14 @@ public struct HexLayout
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
-				point.x = position.Q * _horizontalSpacing;
-				point.y = -0.5f * (position.Q + 2 * position.R) * _verticalSpacing;
+				point.x = position.Q * HorizontalSpacing;
+				point.y = -0.5f * (position.Q + 2 * position.R) * VerticalSpacing;
 
 				break;
 
 			case HexOrientation.PointyTop:
-				point.x = 0.5f * (2 * position.Q + position.R) * _horizontalSpacing;
-				point.y = -(position.R * _verticalSpacing);
+				point.x = 0.5f * (2 * position.Q + position.R) * HorizontalSpacing;
+				point.y = -(position.R * VerticalSpacing);
 
 				break;
 

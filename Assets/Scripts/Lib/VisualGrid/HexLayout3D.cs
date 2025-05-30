@@ -46,6 +46,18 @@ public struct HexLayout3D
 		=> _layout2D.CellSize;
 
 	/// <summary>
+	/// Horizontal distance between adjacent hexagon centers.
+	/// </summary>
+	public readonly float HorizontalSpacing
+		=> _layout2D.HorizontalSpacing;
+
+	/// <summary>
+	/// Vertical distance between adjacent hexagon centers.
+	/// </summary>
+	public readonly float VerticalSpacing
+		=> _layout2D.VerticalSpacing;
+
+	/// <summary>
 	/// Matrix for projecting from 2D to 3D and back.
 	/// </summary>
 	public Matrix3x2 ProjectionMatrix { get; }
