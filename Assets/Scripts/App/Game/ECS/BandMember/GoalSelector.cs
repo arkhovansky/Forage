@@ -10,8 +10,8 @@ namespace App.Game.ECS.BandMember {
 
 
 
-[UpdateInGroup(typeof(HumanAI), OrderFirst = true)]
-public partial struct HumanAI_GoalSelector : ISystem
+[UpdateInGroup(typeof(HumanAI))]
+public partial struct GoalSelector : ISystem
 {
 	[BurstCompile]
 	public void OnCreate(ref SystemState state)
@@ -29,24 +29,22 @@ public partial struct HumanAI_GoalSelector : ISystem
 				FoodConsumer
 				>()
 				.WithAll<Human>()
-				.WithNone<Activity>()
+				.WithDisabled<Task>()
 				.WithEntityAccess())
 		{
 			if (!foodConsumer.IsSatiated) {
-				Goal goal = Goal.Forage;
-
-				SystemAPI.SetComponent(entity, new GoalComponent(goal));
-				SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
-
-				SystemAPI.SetComponent(entity, new Foraging());
-				SystemAPI.SetComponentEnabled<Foraging>(entity, true);
+				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Forage));
+				SystemAPI.SetComponentEnabled<Forage_Goal>(entity, true);
 			}
 			else {  // Satiated
-				SystemAPI.SetComponentEnabled<Foraging>(entity, false);
+				// Remove current task
+				SystemAPI.SetComponentEnabled<Forage_Goal>(entity, false);
 
+				// Set new goal
 				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Leisure));
-				SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
 			}
+
+			SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
 		}
 	}
 }

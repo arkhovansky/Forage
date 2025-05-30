@@ -20,8 +20,8 @@ namespace App.Game.ECS.BandMember {
 
 
 [UpdateInGroup(typeof(HumanAI))]
-[UpdateAfter(typeof(HumanAI_GoalSelector))]
-public partial class HumanAI_ForagingTileSelector : SystemBase
+[UpdateAfter(typeof(GoalSelector))]
+public partial class ForageOnTile_TaskSelector : SystemBase
 {
 	private record PathInfo(
 		IReadOnlyList<AxialPosition> Path,
@@ -51,10 +51,16 @@ public partial class HumanAI_ForagingTileSelector : SystemBase
 		// if (_map == null)
 		// 	return;
 
-		foreach (var (foragerPosition, path, foragerEntity) in
-		         SystemAPI.Query<RefRO<TilePosition>, DynamicBuffer<PathTile>>()
-			         .WithAll<Foraging>()
-			         .WithDisabled<TargetResource>()
+		foreach (var (foragerPosition, path,
+			         taskEnabled, forageTaskEnabled,
+			         foragerEntity) in
+		         SystemAPI.Query<
+			         RefRO<TilePosition>,
+			         DynamicBuffer<PathTile>,
+			         EnabledRefRW<Task>, EnabledRefRW<ForageOnTile_Task>
+			         >()
+			         .WithAll<Forage_Goal>()
+			         .WithDisabled<Task, ForageOnTile_Task>()
 			         .WithEntityAccess())
 		{
 			TargetResourceInfo? target = null;
@@ -74,18 +80,27 @@ public partial class HumanAI_ForagingTileSelector : SystemBase
 			if (target == null)
 				continue;
 
+			SetPath(in path, target.PathInfo.Path);
+
+
+			// Create task
+
+			taskEnabled.ValueRW = true;
+
+			SystemAPI.SetComponent(foragerEntity, new ForageOnTile_Task(target.Position, target.Entity));
+			forageTaskEnabled.ValueRW = true;
+
+
+			// Start activity
 			if (target.Position != foragerPosition.ValueRO.Position) {
-				SystemAPI.SetComponent(foragerEntity, new TargetTile(target.Position));
-				SystemAPI.SetComponentEnabled<TargetTile>(foragerEntity, true);
+				//TODO
 			}
+			else {
+				SystemAPI.SetComponentEnabled<Activity>(foragerEntity, true);
 
-			var path_ = path;
-			path_.Length = 0;
-			foreach (var position in target.PathInfo.Path)
-				path_.Add(new PathTile(position));
-
-			SystemAPI.SetComponent(foragerEntity, new TargetResource(target.Entity));
-			SystemAPI.SetComponentEnabled<TargetResource>(foragerEntity, true);
+				SystemAPI.SetComponent(foragerEntity, new GatheringActivity(target.Entity));
+				SystemAPI.SetComponentEnabled<GatheringActivity>(foragerEntity, true);
+			}
 		}
 	}
 
@@ -96,6 +111,15 @@ public partial class HumanAI_ForagingTileSelector : SystemBase
 		var path = HexLayout.GetLinearPath(start, end);
 
 		return new PathInfo(path, path.Length * 1f);
+	}
+
+
+	private void SetPath(in DynamicBuffer<PathTile> pathBuffer, IReadOnlyList<AxialPosition> pathPositions)
+	{
+		var pathBuffer_ = pathBuffer;
+		pathBuffer_.Length = 0;
+		foreach (var position in pathPositions)
+			pathBuffer_.Add(new PathTile(position));
 	}
 }
 

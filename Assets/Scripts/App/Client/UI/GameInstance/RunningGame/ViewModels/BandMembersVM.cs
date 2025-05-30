@@ -71,7 +71,7 @@ public class BandMembersVM : IViewModel
 			? entityManager.GetComponentData<GoalComponent>(entity).Goal.ToString()
 			: string.Empty;
 
-		bandMemberVM.Activity = entityManager.IsComponentEnabled<Foraging>(entity)
+		bandMemberVM.Activity = entityManager.IsComponentEnabled<Forage_Goal>(entity)
 			? "Foraging"
 			: string.Empty;
 	}

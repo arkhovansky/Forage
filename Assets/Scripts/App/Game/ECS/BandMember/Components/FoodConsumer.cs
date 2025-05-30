@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using UnityEngine;
 
 
 
@@ -10,11 +11,16 @@ public struct FoodConsumer : IComponentData
 {
 	public readonly uint EnergyNeededPerDay;
 
-	public uint EnergyConsumedToday;
+	public float _energyConsumedToday;  // Public only for inspector
 
 
-	public readonly uint EnergyStillNeeded
-		=> EnergyConsumedToday < EnergyNeededPerDay ? EnergyNeededPerDay - EnergyConsumedToday : 0;
+	public float EnergyConsumedToday {
+		readonly get => _energyConsumedToday;
+		private set => _energyConsumedToday = value;
+	}
+
+	public readonly float EnergyStillNeeded
+		=> EnergyConsumedToday < EnergyNeededPerDay ? EnergyNeededPerDay - EnergyConsumedToday : 0f;
 
 	public readonly bool IsSatiated
 		=> EnergyConsumedToday >= EnergyNeededPerDay;
@@ -24,7 +30,16 @@ public struct FoodConsumer : IComponentData
 	public FoodConsumer(uint energyNeededPerDay)
 	{
 		EnergyNeededPerDay = energyNeededPerDay;
-		EnergyConsumedToday = 0;
+		_energyConsumedToday = 0f;
+	}
+
+
+	public void ConsumeEnergy(float energy)
+	{
+		EnergyConsumedToday += energy;
+
+		if (Mathf.Approximately(EnergyConsumedToday, EnergyNeededPerDay))
+			EnergyConsumedToday = EnergyNeededPerDay;
 	}
 }
 

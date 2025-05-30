@@ -29,16 +29,16 @@ public class Human : MonoBehaviour
 			AddComponent<GoalComponent>(entity);
 			SetComponentEnabled<GoalComponent>(entity, false);
 
-			AddComponent<Foraging>(entity);
-			SetComponentEnabled<Foraging>(entity, false);
+			AddComponent<Forage_Goal>(entity);
+			SetComponentEnabled<Forage_Goal>(entity, false);
 
-			AddComponent<TargetTile>(entity);
-			SetComponentEnabled<TargetTile>(entity, false);
+			AddComponent<Task>(entity);
+			SetComponentEnabled<Task>(entity, false);
 
 			AddBuffer<PathTile>(entity);
 
-			AddComponent<TargetResource>(entity);
-			SetComponentEnabled<TargetResource>(entity, false);
+			AddComponent<ForageOnTile_Task>(entity);
+			SetComponentEnabled<ForageOnTile_Task>(entity, false);
 
 			AddComponent<Activity>(entity);
 			SetComponentEnabled<Activity>(entity, false);

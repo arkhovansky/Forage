@@ -2,7 +2,6 @@
 
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
 
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.Resource.Plant.Components;
@@ -23,36 +22,38 @@ public partial struct Gathering : ISystem
 		const float gameTimeScale = 0.1f;
 		var hoursDelta = SystemAPI.Time.DeltaTime * gameTimeScale;
 
-		foreach (var (forager, gatheringActivity, foodConsumer, gathererEntity)
+		foreach (var (forager,
+			         gatheringActivity,
+			         gatheringActivityEnabled, activityEnabled,
+			         foodConsumer,
+			         entity)
 		         in SystemAPI.Query<
-			         RefRO<Forager>,
-			         RefRW<GatheringActivity>,
+			         Forager,
+			         GatheringActivity,
+			         EnabledRefRW<GatheringActivity>, EnabledRefRW<Activity>,
 			         RefRW<FoodConsumer>
 			         >()
 			         .WithEntityAccess())
 		{
-			var resourceEntity = gatheringActivity.ValueRW.ResourceEntity;
-
-			var ripeBiomass = state.EntityManager.GetComponentData<RipeBiomass>(resourceEntity);
+			var ripeBiomass = SystemAPI.GetComponentRW<RipeBiomass>(gatheringActivity.ResourceEntity);
 
 			const float EnergyDensity_kcalPerKg = 1000;
-			float massCanGather = forager.ValueRO.GatheringSpeed * hoursDelta;
+			float massCanGather = forager.GatheringSpeed * hoursDelta;
 			float neededMass = foodConsumer.ValueRO.EnergyStillNeeded / EnergyDensity_kcalPerKg;
 
 			float wantedMass = Math.Min(massCanGather, neededMass);
-			float gatheredMass = Math.Min(wantedMass, ripeBiomass.Value);
+			float gatheredMass = Math.Min(wantedMass, ripeBiomass.ValueRO.Value);
 
 			if (gatheredMass > 0) {
-				ripeBiomass.Decrease(gatheredMass);
-				state.EntityManager.SetComponentData(resourceEntity, ripeBiomass);
-
-				foodConsumer.ValueRW.EnergyConsumedToday +=
-					(uint) Mathf.RoundToInt(gatheredMass * EnergyDensity_kcalPerKg);
+				ripeBiomass.ValueRW.Decrease(gatheredMass);
+				foodConsumer.ValueRW.ConsumeEnergy(gatheredMass * EnergyDensity_kcalPerKg);
 			}
 
-			if (foodConsumer.ValueRO.IsSatiated || ripeBiomass.IsZero) {
-				state.EntityManager.SetComponentEnabled<Activity>(gathererEntity, false);
-				state.EntityManager.SetComponentEnabled<GatheringActivity>(gathererEntity, false);
+
+			// Possibly stop activity
+			if (foodConsumer.ValueRO.IsSatiated || ripeBiomass.ValueRO.IsZero) {
+				activityEnabled.ValueRW = false;
+				gatheringActivityEnabled.ValueRW = false;
 			}
 		}
 	}

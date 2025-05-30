@@ -6,10 +6,7 @@ namespace App.Game.ECS.BandMember.Components {
 
 
 
-public struct Foraging : IComponentData, IEnableableComponent
-{
-
-}
+public struct Task : IComponentData, IEnableableComponent { }
 
 
 
