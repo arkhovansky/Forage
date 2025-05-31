@@ -3,7 +3,7 @@ using Unity.Entities;
 using Lib.VisualGrid;
 
 using App.Game.ECS.Components.Singletons;
-using App.Game.ECS.Resource.Plant;
+using App.Game.ECS.Resource.Plant.Presentation;
 using App.Game.Meta;
 using App.Services.BandMembers;
 using App.Services.Resources;

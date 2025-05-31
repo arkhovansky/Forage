@@ -7,6 +7,7 @@ using Lib.Grid;
 
 using App.Game.ECS.Components;
 using App.Game.ECS.Resource.Plant.Components;
+using App.Game.ECS.Resource.Plant.Presentation.Components;
 
 
 
@@ -34,10 +35,8 @@ public class ResourcesInitializer : IResourcesInitializer
 		var world = World.DefaultGameObjectInjectionWorld;
 		var entityManager = world.EntityManager;
 
-		var prototype = entityManager.CreateEntity();
-		entityManager.AddComponent<TilePosition>(prototype);
-		entityManager.AddComponent<PlantResource>(prototype);
-		entityManager.AddComponent<RipeBiomass>(prototype);
+		var prototype = entityManager.CreateEntity(
+			typeof(TilePosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
 
 		var count = resourceTypes.Count;
 

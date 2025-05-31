@@ -95,18 +95,18 @@ public class Scene : IScene
 		};
 
 		PotentialBiomass = new float[resourceCount] {
-			1000,
-			300,
-			500,
+			100,
+			30,
+			50,
 
-			700,
-			600,
+			70,
+			60,
 
-			800,
+			80,
 
-			800,
-			600,
-			400
+			80,
+			60,
+			40
 		};
 
 
