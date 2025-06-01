@@ -106,20 +106,16 @@ public struct HexLayout
 	//----------------------------------------------------------------------------------------------
 
 
-	private struct FractionalCubePosition
+	private struct FractionalAxialPosition
 	{
-		public float Q, R, S;
+		public float Q, R;
 
-		public FractionalCubePosition(float q, float r, float s) {
-			Q = q; R = r; S = s;
-		}
-
-		public FractionalCubePosition(float q, float r) {
-			Q = q; R = r; S = -q - r;
+		public FractionalAxialPosition(float q, float r) {
+			Q = q; R = r;
 		}
 
 		public override string ToString()
-			=> $"({Q}, {R}, {S})";
+			=> $"({Q}, {R})";
 	}
 
 
@@ -181,9 +177,7 @@ public struct HexLayout
 		float q = _orientationData.B0 * pt.x + _orientationData.B1 * pt.y;
 		float r = _orientationData.B2 * pt.x + _orientationData.B3 * pt.y;
 
-		var fCubePos = new FractionalCubePosition(q, r, -q - r);
-
-		return Round(fCubePos);
+		return Round(new FractionalAxialPosition(q, r));
 	}
 
 
@@ -238,9 +232,9 @@ public struct HexLayout
 
 
 
-	private static FractionalCubePosition Lerp(AxialPosition start, AxialPosition end, float t)
+	private static FractionalAxialPosition Lerp(AxialPosition start, AxialPosition end, float t)
 	{
-		return new FractionalCubePosition(Lerp(start.Q, end.Q, t), Lerp(start.R, end.R, t));
+		return new FractionalAxialPosition(Lerp(start.Q, end.Q, t), Lerp(start.R, end.R, t));
 	}
 
 	private static float Lerp(int a, int b, float t)
@@ -250,24 +244,23 @@ public struct HexLayout
 
 
 
-	private static AxialPosition Round(FractionalCubePosition fCubePos)
+	private static AxialPosition Round(FractionalAxialPosition position)
 	{
-		int q = (int) Mathf.Round(fCubePos.Q);
-		int r = (int) Mathf.Round(fCubePos.R);
-		int s = (int) Mathf.Round(fCubePos.S);
+		float sFrac = - (position.Q + position.R);
 
-		float qDiff = Mathf.Abs(q - fCubePos.Q);
-		float rDiff = Mathf.Abs(r - fCubePos.R);
-		float sDiff = Mathf.Abs(s - fCubePos.S);
+		int q = Mathf.RoundToInt(position.Q);
+		int r = Mathf.RoundToInt(position.R);
+		int s = Mathf.RoundToInt(sFrac);
+
+		float qDiff = Mathf.Abs(q - position.Q);
+		float rDiff = Mathf.Abs(r - position.R);
+		float sDiff = Mathf.Abs(s - sFrac);
 
 		if (qDiff > rDiff && qDiff > sDiff) {
 			q = -r - s;
 		} else if (rDiff > sDiff) {
 			r = -q - s;
 		}
-		// else {
-		// 	s = -q - r;
-		// }
 
 		return new AxialPosition(q, r);
 	}
