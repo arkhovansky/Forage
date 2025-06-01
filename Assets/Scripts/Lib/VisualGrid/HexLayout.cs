@@ -206,6 +206,23 @@ public struct HexLayout
 	}
 
 
+	private readonly Vector2 GetPoint(FractionalAxialPosition position)
+	{
+		float x = _orientationData.F0 * position.Q + _orientationData.F1 * position.R;
+		float y = _orientationData.F2 * position.Q + _orientationData.F3 * position.R;
+
+		return new Vector2(x * ScaleFactor.x + Origin.x,
+		                   y * ScaleFactor.y + Origin.y);
+	}
+
+
+	public readonly Vector2 GetLerpPoint(AxialPosition start, AxialPosition end, float t)
+	{
+		return GetPoint(
+			Lerp(start, end, t));
+	}
+
+
 
 	public static uint Distance(AxialPosition start, AxialPosition end)
 	{

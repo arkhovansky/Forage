@@ -83,6 +83,20 @@ public struct HexLayout3D
 	}
 
 
+	public readonly Vector3 GetPoint(AxialPosition position)
+	{
+		return ProjectionMatrix.ProjectPoint(
+			_layout2D.GetPoint(position));
+	}
+
+
+	public readonly Vector3 GetLerpPoint(AxialPosition start, AxialPosition end, float t)
+	{
+		return ProjectionMatrix.ProjectPoint(
+			_layout2D.GetLerpPoint(start, end, t));
+	}
+
+
 
 	/// <summary>
 	/// Get cell mesh.
@@ -178,9 +192,8 @@ public struct HexLayout3D
 
 	public readonly LocalTransform GetCellLocalTransform(AxialPosition position)
 	{
-		Vector2 point2 = _layout2D.GetPoint(position);
-		Vector3 point3 = ProjectionMatrix.ProjectPoint(point2);
-		return LocalTransform.FromPosition(point3);
+		return LocalTransform.FromPosition(
+			GetPoint(position));
 	}
 
 
