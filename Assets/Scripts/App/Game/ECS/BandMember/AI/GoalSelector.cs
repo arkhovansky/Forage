@@ -43,6 +43,7 @@ public partial struct GoalSelector : ISystem
 
 				// Set new goal
 				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Leisure));
+				SystemAPI.SetComponentEnabled<Leisure_Goal>(entity, true);
 			}
 
 			SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);

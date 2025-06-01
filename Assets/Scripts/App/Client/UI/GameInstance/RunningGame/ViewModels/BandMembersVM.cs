@@ -77,6 +77,8 @@ public class BandMembersVM : IViewModel
 			bandMemberVM.Activity = "Moving";
 		else if (entityManager.IsComponentEnabled<GatheringActivity>(entity))
 			bandMemberVM.Activity = "Gathering";
+		else if (entityManager.IsComponentEnabled<LeisureActivity>(entity))
+			bandMemberVM.Activity = "Leisure";
 		else
 			bandMemberVM.Activity = string.Empty;
 	}
