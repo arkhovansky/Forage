@@ -10,6 +10,7 @@ using Lib.VisualGrid;
 
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.Components;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.SystemGroups;
@@ -94,12 +95,14 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 
 
 			// Start activity
+
+			SystemAPI.SetComponentEnabled<Activity>(foragerEntity, true);
+
 			if (target.Position != foragerPosition.ValueRO.Position) {
-				//TODO
+				SystemAPI.SetComponent(foragerEntity, new MovementActivity(target.Position));
+				SystemAPI.SetComponentEnabled<MovementActivity>(foragerEntity, true);
 			}
 			else {
-				SystemAPI.SetComponentEnabled<Activity>(foragerEntity, true);
-
 				SystemAPI.SetComponent(foragerEntity, new GatheringActivity(target.Entity));
 				SystemAPI.SetComponentEnabled<GatheringActivity>(foragerEntity, true);
 			}

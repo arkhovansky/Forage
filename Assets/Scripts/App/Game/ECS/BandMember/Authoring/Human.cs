@@ -36,8 +36,6 @@ public class Human : MonoBehaviour
 			AddComponent<Task>(entity);
 			SetComponentEnabled<Task>(entity, false);
 
-			AddBuffer<PathTile>(entity);
-
 			AddComponent<ForageOnTile_Task>(entity);
 			SetComponentEnabled<ForageOnTile_Task>(entity, false);
 

@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Movement.Components;
 using App.Services.BandMembers;
 
 
@@ -72,9 +73,12 @@ public class BandMembersVM : IViewModel
 			? entityManager.GetComponentData<GoalComponent>(entity).Goal.ToString()
 			: string.Empty;
 
-		bandMemberVM.Activity = entityManager.IsComponentEnabled<Forage_Goal>(entity)
-			? "Foraging"
-			: string.Empty;
+		if (entityManager.IsComponentEnabled<MovementActivity>(entity))
+			bandMemberVM.Activity = "Moving";
+		else if (entityManager.IsComponentEnabled<GatheringActivity>(entity))
+			bandMemberVM.Activity = "Gathering";
+		else
+			bandMemberVM.Activity = string.Empty;
 	}
 }
 
