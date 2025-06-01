@@ -67,11 +67,12 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 			TargetResourceInfo? target = null;
 
 			// Select resource by distance
-			foreach (var (resourcePosition, resourceEntity) in
-			         SystemAPI.Query<TilePosition>()
-				         .WithAll<PlantResource>()
-				         .WithEntityAccess())
+			foreach (var (resourcePosition, ripeBiomass, resourceEntity)
+			         in SystemAPI.Query<TilePosition, RipeBiomass>().WithEntityAccess())
 			{
+				if (ripeBiomass.IsZero)
+					continue;
+
 				var pathInfo = CalculatePath(foragerPosition.ValueRO.Position, resourcePosition.Position);
 				if (target == null || pathInfo.Cost < target.PathInfo.Cost) {
 					target = new TargetResourceInfo(resourcePosition.Position, pathInfo, resourceEntity);
