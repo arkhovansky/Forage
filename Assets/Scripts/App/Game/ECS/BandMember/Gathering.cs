@@ -19,8 +19,7 @@ public partial struct Gathering : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		const float gameTimeScale = 0.1f;
-		var hoursDelta = SystemAPI.Time.DeltaTime * gameTimeScale;
+		var hoursDelta = SystemAPI.GetSingleton<GameTime.Components.GameTime>().DeltaHours;
 
 		foreach (var (forager,
 			         gatheringActivity,

@@ -107,7 +107,7 @@ public class RunningGameController : Controller
 
 	private void OnEndTurn(EndTurnCommand command)
 	{
-		EcsService.SendEcsCommand(new AdvanceYearPeriod());
+		EcsService.SendEcsCommand(new PlayYearPeriod());
 	}
 
 

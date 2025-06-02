@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/UI%20Toolkit/Resources/Game/Game.uss?fileID=7433441132597879392&amp;guid=53c667ae3b11543439259f9682ed3b83&amp;type=3#Game" />
     <Style src="project://database/Assets/UI%20Toolkit/Resources/Common.uss?fileID=7433441132597879392&amp;guid=d34eb923d98dfe649ac182ba6299624a&amp;type=3#Common" />
     <ui:VisualElement name="topPane" class="pane topPane">
-        <ui:VisualElement name="yearPeriodPane">
-            <ui:Label name="month" text="Month" />
+        <ui:VisualElement name="gameTimePane">
+            <ui:Label name="gameTime" text="GameTime" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="bandPane" class="bandPane pane">

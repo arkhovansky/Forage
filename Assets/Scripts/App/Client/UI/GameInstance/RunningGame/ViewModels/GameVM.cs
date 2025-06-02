@@ -17,7 +17,7 @@ namespace App.Client.UI.GameInstance.RunningGame {
 public class GameVM : IViewModel
 {
 	[CreateProperty]
-	public string Month { get; private set; }
+	public string GameTime { get; private set; }
 
 	public BandMembersVM BandMembersVM { get; }
 
@@ -34,7 +34,7 @@ public class GameVM : IViewModel
 	              IResourceTypeRepository resourceTypeRepository,
 	              IBandMemberTypeRepository bandMemberTypeRepository)
 	{
-		Month = string.Empty;
+		GameTime = string.Empty;
 
 		BandMembersVM = new BandMembersVM(bandMemberTypeRepository);
 
@@ -49,20 +49,19 @@ public class GameVM : IViewModel
 
 	public void Update()
 	{
-		UpdateYearPeriod();
+		UpdateGameTime();
 		BandMembersVM.Update();
 		TileInfoVM.Update();
 	}
 
 
-	private void UpdateYearPeriod()
+	private void UpdateGameTime()
 	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var gameTime = World.DefaultGameObjectInjectionWorld.EntityManager
+			.CreateEntityQuery(ComponentType.ReadOnly<GameTime>())
+			.GetSingleton<GameTime>();
 
-		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<CurrentYearPeriod>());
-		var yearPeriod = query.GetSingleton<CurrentYearPeriod>();
-
-		Month = yearPeriod.Value.Month.ToString();
+		GameTime = $"{gameTime.YearPeriod.Month.ToString()}   Day: {gameTime.Day}   Hour: {(uint)gameTime.Hours}";
 	}
 }
 

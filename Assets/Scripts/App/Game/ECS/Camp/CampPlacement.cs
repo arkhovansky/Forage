@@ -10,8 +10,10 @@ using Lib.VisualGrid;
 using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.Components;
 using App.Game.ECS.Components.Singletons;
+using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.ECS.SystemGroups;
+using App.Game.ECS.Util.Components;
 
 
 
@@ -32,13 +34,15 @@ public partial struct CampPlacement : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var singletonEntity = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
+
 		var placeCampCommand = SystemAPI.GetSingleton<PlaceCamp>();
 
 		PlaceCamp(placeCampCommand.Position, ref state);
 		MoveBandMembersToCamp(placeCampCommand.Position, ref state);
+		state.EntityManager.AddComponent<GameTimeRun>(singletonEntity);
 
-		state.EntityManager.RemoveComponent<PlaceCamp>(
-			SystemAPI.GetSingletonEntity<PlaceCamp>());
+		state.EntityManager.RemoveComponent<PlaceCamp>(singletonEntity);
 	}
 
 

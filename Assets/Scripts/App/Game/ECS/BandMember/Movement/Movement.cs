@@ -19,7 +19,6 @@ public partial struct Movement : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		const float hoursPerSecond = 0.1f;
 		const float cellEdgeDiameter_Km = 1f;
 		const float movementCost = 2f;
 
@@ -36,7 +35,7 @@ public partial struct Movement : ISystem
 
 			Assert.IsTrue(!(path.Length == 0 && intraCellMovement.ValueRO.IsAtCenter));
 
-			var hoursDelta = SystemAPI.Time.DeltaTime * hoursPerSecond;
+			var hoursDelta = SystemAPI.GetSingleton<GameTime.Components.GameTime>().DeltaHours;
 			var speed = walker.ValueRO.BaseSpeed_KmPerH / movementCost;
 			bool arrived;
 
