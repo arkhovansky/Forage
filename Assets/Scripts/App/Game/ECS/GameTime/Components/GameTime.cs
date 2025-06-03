@@ -21,6 +21,8 @@ public struct GameTime : IComponentData
 
 	public float DeltaHours;
 
+	public bool DayChanged;
+
 
 
 	public GameTime(YearPeriod yearPeriod, uint day, float hours)
@@ -30,12 +32,15 @@ public struct GameTime : IComponentData
 		Hours = hours;
 
 		DeltaHours = 0;
+		DayChanged = false;
 	}
 
 
 	public void Advance(float deltaHours)
 	{
 		Assert.IsTrue(deltaHours <= 24);
+
+		var previousDay = Day;
 
 		DeltaHours = deltaHours;
 
@@ -50,6 +55,8 @@ public struct GameTime : IComponentData
 			Day = 1;
 			YearPeriod.Advance();
 		}
+
+		DayChanged = (Day != previousDay);
 	}
 
 

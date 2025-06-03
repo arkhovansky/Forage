@@ -41,6 +41,10 @@ public struct FoodConsumer : IComponentData
 		if (Mathf.Approximately(EnergyConsumedToday, EnergyNeededPerDay))
 			EnergyConsumedToday = EnergyNeededPerDay;
 	}
+
+
+	public void Reset()
+		=> _energyConsumedToday = 0f;
 }
 
 
