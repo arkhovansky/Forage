@@ -202,7 +202,7 @@ public partial class PlantResourcePresentation : SystemBase
 		var inTilePosition = GetIconInTilePosition(iconIndexInResource);
 		return _grid.GetCellLocalTransform(tilePosition)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(0.5f);
+			.ApplyScale(0.2f);
 	}
 
 	private Vector2 GetIconInTilePosition(uint iconIndexInResource)

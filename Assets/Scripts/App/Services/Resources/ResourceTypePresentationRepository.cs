@@ -21,16 +21,17 @@ public class ResourceTypePresentationRepository : IResourceTypePresentationRepos
 	{
 		var quadMesh = CreateQuadMesh();
 
-		var appleMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Apple");
-		var bananasMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Bananas");
-		var citrusMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Citrus");
+		var acornMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Acorn");
+		var bananaMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Banana");
 		var wheatMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Wheat");
+		var yamMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Yam");
+		// var appleMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Apple");
+		// var citrusMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Citrus");
 
-
-		_resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = appleMaterial };
-		_resourceTypes[1] = new ResourceTypePresentation { Mesh = quadMesh, Material = bananasMaterial };
-		_resourceTypes[2] = new ResourceTypePresentation { Mesh = quadMesh, Material = citrusMaterial };
-		_resourceTypes[3] = new ResourceTypePresentation { Mesh = quadMesh, Material = wheatMaterial };
+		_resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = acornMaterial };
+		_resourceTypes[1] = new ResourceTypePresentation { Mesh = quadMesh, Material = bananaMaterial };
+		_resourceTypes[2] = new ResourceTypePresentation { Mesh = quadMesh, Material = wheatMaterial };
+		_resourceTypes[3] = new ResourceTypePresentation { Mesh = quadMesh, Material = yamMaterial };
 	}
 
 

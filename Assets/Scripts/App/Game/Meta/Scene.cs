@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using  System.Collections.Generic;
+using System.Linq;
 
 using App.Services.BandMembers;
 
@@ -17,9 +18,23 @@ public class Scene : IScene
 	public IReadOnlyList<uint> TileTerrainTypes { get; }
 	public IReadOnlyList<AxialPosition> TileAxialPositions => _tileAxialPositions;
 
-	public IReadOnlyList<uint> ResourceTypes { get; }
-	public IReadOnlyList<AxialPosition> ResourceAxialPositions { get; }
-	public IReadOnlyList<float> PotentialBiomass { get; }
+	public IReadOnlyList<uint> ResourceTypes {
+		get {
+			return _resources.Select(r => r.Resource.Type).ToArray();
+		}
+	}
+
+	public IReadOnlyList<AxialPosition> ResourceAxialPositions {
+		get {
+			return _resources.Select(r => r.Position).ToArray();
+		}
+	}
+
+	public IReadOnlyList<float> PotentialBiomass {
+		get {
+			return _resources.Select(r => r.Resource.Biomass).ToArray();
+		}
+	}
 
 	public YearPeriod StartYearPeriod { get; }
 
@@ -27,10 +42,24 @@ public class Scene : IScene
 
 
 
+	private record Resource(
+		uint Type,
+		float Biomass);
+
+
+
+	private record TileResource(
+		Resource Resource,
+		AxialPosition Position);
+
+
+
 	private readonly uint _width = 12;
 	private readonly uint _height = 8;
 
 	private readonly AxialPosition[] _tileAxialPositions;
+
+	private readonly List<TileResource> _resources = new();
 
 
 
@@ -42,13 +71,13 @@ public class Scene : IScene
 
 
 		TileTerrainTypes = new uint[] {
-			5, 5, 5, 5, 5, 5, 3, 3, 4, 4, 4, 7,
-			5, 5, 5, 5, 5, 0, 3, 4, 4, 4, 6, 7,
-			5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 6, 7,
-			5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 6,
-			5, 5, 5, 3, 3, 3, 3, 4, 4, 4, 6, 6,
-			5, 5, 5, 3, 3, 3, 4, 4, 4, 6, 6, 7,
-			5, 5, 5, 5, 1, 1, 1, 4, 4, 1, 4, 4,
+			5, 5, 5, 5, 5, 5, 3, 3, 4, 4, 4, 8,
+			5, 5, 5, 5, 5, 0, 3, 4, 4, 4, 7, 8,
+			5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 7, 8,
+			5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 7,
+			6, 5, 5, 3, 3, 3, 3, 4, 4, 4, 7, 7,
+			6, 6, 6, 3, 3, 3, 4, 4, 4, 7, 7, 8,
+			6, 6, 6, 6, 1, 1, 1, 4, 4, 1, 4, 4,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 		};
 
@@ -60,70 +89,34 @@ public class Scene : IScene
 				var tileIndex = y * _width + x;
 
 				_tileAxialPositions[tileIndex] = Map.AxialPositionFromCellIndex(tileIndex);
+
+				var resource = ResourceForTerrain(TileTerrainTypes[(int) tileIndex]);
+				if (resource != null)
+					_resources.Add(new TileResource(resource, _tileAxialPositions[tileIndex]));
 			}
 		}
-
-
-
-		const int resourceCount = 9;
-
-		ResourceTypes = new uint[resourceCount] {
-			0,
-			0,
-			0,
-			1,
-			1,
-			2,
-			3,
-			3,
-			3
-		};
-
-		ResourceAxialPositions = new AxialPosition[resourceCount] {
-			Map.AxialPositionFrom(new OffsetPosition(0, 0)),
-			Map.AxialPositionFrom(new OffsetPosition(2, 1)),
-			Map.AxialPositionFrom(new OffsetPosition(1, 3)),
-
-			Map.AxialPositionFrom(new OffsetPosition(1, 6)),
-			Map.AxialPositionFrom(new OffsetPosition(3, 6)),
-
-			Map.AxialPositionFrom(new OffsetPosition(1, 5)),
-
-			Map.AxialPositionFrom(new OffsetPosition(9, 1)),
-			Map.AxialPositionFrom(new OffsetPosition(8, 3)),
-			Map.AxialPositionFrom(new OffsetPosition(7, 5))
-		};
-
-		PotentialBiomass = new float[resourceCount] {
-			100,
-			30,
-			50,
-
-			70,
-			60,
-
-			80,
-
-			80,
-			60,
-			40
-		};
-
-
-
-		// _resourceInTilePositions = new Vector2[resourceCount] {
-		// 	new (0, 0)
-		// };
-
 
 
 		StartYearPeriod = new YearPeriod {Month = Month.June};
 
 
-
 		BandMemberTypeCounts = new Dictionary<uint, uint>();
-		BandMemberTypeCounts.Add((uint)Gender.Male, 2);
-		BandMemberTypeCounts.Add((uint)Gender.Female, 2);
+		BandMemberTypeCounts.Add((uint)Gender.Male, 5);
+		BandMemberTypeCounts.Add((uint)Gender.Female, 5);
+	}
+
+
+	private static Resource? ResourceForTerrain(uint terrainType)
+	{
+		const float scale = 1;
+
+		return terrainType switch {
+			3 => new Resource(2, 20 * scale),
+			4 => new Resource(3, 50 * scale),
+			5 => new Resource(0, 30 * scale),
+			6 => new Resource(1, 40 * scale),
+			_ => null
+		};
 	}
 }
 
