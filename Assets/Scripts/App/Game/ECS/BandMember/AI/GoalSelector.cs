@@ -3,6 +3,7 @@ using Unity.Entities;
 
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.SystemGroups;
 
 
@@ -24,6 +25,8 @@ public partial struct GoalSelector : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var daylight = SystemAPI.HasSingleton<Daylight>();
+
 		foreach (
 			var (foodConsumer, entity)
 			in SystemAPI.Query<
@@ -33,21 +36,54 @@ public partial struct GoalSelector : ISystem
 				.WithDisabled<Task>()
 				.WithEntityAccess())
 		{
-			if (!foodConsumer.IsSatiated) {
-				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Forage));
-				SystemAPI.SetComponentEnabled<Forage_Goal>(entity, true);
+			if (daylight) {
+				if (foodConsumer.IsSatiated)
+					SetLeisureGoal(entity, ref state);
+				else
+					SetForageGoal(entity, ref state);
 			}
-			else {  // Satiated
-				// Remove current task
-				SystemAPI.SetComponentEnabled<Forage_Goal>(entity, false);
-
-				// Set new goal
-				SystemAPI.SetComponent(entity, new GoalComponent(Goal.Leisure));
-				SystemAPI.SetComponentEnabled<Leisure_Goal>(entity, true);
-			}
-
-			SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+			else
+				SetSleepGoal(entity, ref state);
 		}
+	}
+
+
+	private void SetForageGoal(Entity entity, ref SystemState state)
+	{
+		DisableGoalTags(entity, ref state);
+
+		SystemAPI.SetComponent(entity, new GoalComponent(Goal.Forage));
+		SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+
+		SystemAPI.SetComponentEnabled<Forage_Goal>(entity, true);
+	}
+
+	private void SetLeisureGoal(Entity entity, ref SystemState state)
+	{
+		DisableGoalTags(entity, ref state);
+
+		SystemAPI.SetComponent(entity, new GoalComponent(Goal.Leisure));
+		SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+
+		SystemAPI.SetComponentEnabled<Leisure_Goal>(entity, true);
+	}
+
+	private void SetSleepGoal(Entity entity, ref SystemState state)
+	{
+		DisableGoalTags(entity, ref state);
+
+		SystemAPI.SetComponent(entity, new GoalComponent(Goal.Sleep));
+		SystemAPI.SetComponentEnabled<GoalComponent>(entity, true);
+
+		SystemAPI.SetComponentEnabled<Sleep_Goal>(entity, true);
+	}
+
+
+	private void DisableGoalTags(Entity entity, ref SystemState state)
+	{
+		SystemAPI.SetComponentEnabled<Forage_Goal>(entity, false);
+		SystemAPI.SetComponentEnabled<Leisure_Goal>(entity, false);
+		SystemAPI.SetComponentEnabled<Sleep_Goal>(entity, false);
 	}
 }
 

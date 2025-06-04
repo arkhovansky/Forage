@@ -1,6 +1,8 @@
 ﻿using Unity.Assertions;
 using Unity.Entities;
 
+using UnityEngine;
+
 
 
 namespace App.Game.ECS.GameTime.Components {
@@ -21,7 +23,10 @@ public struct GameTime : IComponentData
 
 	public float DeltaHours;
 
+
 	public bool DayChanged;
+
+	public bool IntegerHoursChanged;
 
 
 
@@ -33,6 +38,7 @@ public struct GameTime : IComponentData
 
 		DeltaHours = 0;
 		DayChanged = false;
+		IntegerHoursChanged = false;
 	}
 
 
@@ -41,10 +47,13 @@ public struct GameTime : IComponentData
 		Assert.IsTrue(deltaHours <= 24);
 
 		var previousDay = Day;
+		int previousIntHours = Mathf.FloorToInt(Hours);
 
 		DeltaHours = deltaHours;
 
 		Hours += deltaHours;
+
+		IntegerHoursChanged = Mathf.FloorToInt(Hours) > previousIntHours;
 
 		if (Hours >= 24) {
 			Hours -= 24;

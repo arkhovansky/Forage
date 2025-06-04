@@ -4,6 +4,7 @@ using Unity.Properties;
 using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.GameTime.Components;
+using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
@@ -57,11 +58,15 @@ public class GameVM : IViewModel
 
 	private void UpdateGameTime()
 	{
-		var gameTime = World.DefaultGameObjectInjectionWorld.EntityManager
-			.CreateEntityQuery(ComponentType.ReadOnly<GameTime>())
-			.GetSingleton<GameTime>();
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var singletonEntity = EcsService.GetSingletonEntity();
 
-		GameTime = $"{gameTime.YearPeriod.Month.ToString()}   Day: {gameTime.Day}   Hour: {(uint)gameTime.Hours}";
+		var gameTime = entityManager.GetComponentData<GameTime>(singletonEntity);
+		bool daylight = entityManager.HasComponent<Daylight>(singletonEntity);
+
+		var partOfDay = daylight ? "Day" : "Night";
+		GameTime = $"{gameTime.YearPeriod.Month.ToString()}   Day: {gameTime.Day}   Hour: {(uint)gameTime.Hours}   " +
+		           $"({partOfDay})";
 	}
 }
 

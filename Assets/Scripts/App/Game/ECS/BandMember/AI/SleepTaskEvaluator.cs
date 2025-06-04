@@ -16,7 +16,7 @@ namespace App.Game.ECS.BandMember.AI {
 
 [UpdateInGroup(typeof(HumanAI))]
 [UpdateBefore(typeof(GoalSelector))]
-public partial struct LeisureTaskEvaluator : ISystem
+public partial struct SleepTaskEvaluator : ISystem
 {
 	[BurstCompile]
 	public void OnCreate(ref SystemState state)
@@ -38,25 +38,24 @@ public partial struct LeisureTaskEvaluator : ISystem
 		         in SystemAPI.Query<
 			         TilePosition
 			         >()
-			         .WithAll<Leisure_Task>()
+			         .WithAll<Sleep_Task>()
 			         .WithDisabled<Activity>()
 			         .WithEntityAccess())
 		{
 			Assert.IsTrue(position.Position == campPosition);
 
-			if (daylight)
-				StartLeisureActivity(entity, ref state);
+			if (!daylight)
+				StartSleepActivity(entity, ref state);
 			else
 				StopTask(entity, ref state);
 		}
 	}
 
 
-	private void StartLeisureActivity(Entity entity, ref SystemState state)
+	private void StartSleepActivity(Entity entity, ref SystemState state)
 	{
 		SystemAPI.SetComponentEnabled<Activity>(entity, true);
-
-		SystemAPI.SetComponentEnabled<LeisureActivity>(entity, true);
+		SystemAPI.SetComponentEnabled<SleepingActivity>(entity, true);
 	}
 
 
