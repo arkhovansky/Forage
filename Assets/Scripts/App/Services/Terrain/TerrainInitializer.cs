@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Graphics;
+using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
@@ -44,56 +45,35 @@ public class TerrainInitializer : ITerrainInitializer
 	public void Create(IReadOnlyList<uint> tileTerrainTypes,
 	                   IReadOnlyList<AxialPosition> tilePositions)
 	{
-		var (renderMeshArray, terrainType_To_MaterialMeshInfo) = PrepareMeshMaterialData(tileTerrainTypes);
+		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
 
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var world = World.DefaultGameObjectInjectionWorld;
-		var entityManager = world.EntityManager;
-
-		var filterSettings = RenderFilterSettings.Default;
-		filterSettings.ShadowCastingMode = ShadowCastingMode.Off;
-		filterSettings.ReceiveShadows = false;
-
-		var renderMeshDescription = new RenderMeshDescription {
-			FilterSettings = filterSettings,
-			LightProbeUsage = LightProbeUsage.Off
-		};
-
-
-		var prototype = entityManager.CreateEntity();
-		entityManager.AddComponent<TerrainTile>(prototype);
-		entityManager.AddComponent<TilePosition>(prototype);
-		entityManager.AddComponent<LocalTransform>(prototype);
+		var prototype = entityManager.CreateEntity(typeof(TerrainTile), typeof(TilePosition));
 		RenderMeshUtility.AddComponents(
 			prototype,
 			entityManager,
-			renderMeshDescription,
+			GetRenderMeshDescription(),
 			renderMeshArray,
 			MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
-		entityManager.AddComponent<Static>(prototype);
 
 		var terrainTileCount = tileTerrainTypes.Count;
 
-		var clonedEntities = new NativeArray<Entity>(terrainTileCount, Allocator.Temp);
-		entityManager.Instantiate(prototype, clonedEntities);
+		using (var clonedEntities = new NativeArray<Entity>(terrainTileCount, Allocator.Temp)) {
+			entityManager.Instantiate(prototype, clonedEntities);
 
-		for (uint i = 0; i < terrainTileCount; ++i) {
-			var entity = clonedEntities[(int)i];
+			for (var i = 0; i < terrainTileCount; ++i) {
+				var entity = clonedEntities[i];
+				var terrainTypeId = tileTerrainTypes[i];
+				var axialPosition = tilePositions[i];
 
-			var terrainTypeId = tileTerrainTypes[(int)i];
-
-			var axialPosition = tilePositions[(int)i];
-
-			entityManager.SetComponentData(entity, new TerrainTile(terrainTypeId));
-			entityManager.SetComponentData(entity, new TilePosition(axialPosition));
-
-			entityManager.SetComponentData(entity, _grid.GetCellLocalTransform(axialPosition));
-
-			entityManager.SetComponentData(entity, terrainType_To_MaterialMeshInfo[terrainTypeId]);
+				entityManager.SetComponentData(entity, new TerrainTile(terrainTypeId));
+				entityManager.SetComponentData(entity, new TilePosition(axialPosition));
+				entityManager.SetComponentData(entity,
+					new LocalToWorld {Value = float4x4.Translate(_grid.GetPoint(axialPosition))});
+				entityManager.SetComponentData(entity, materialMeshInfo_By_TerrainType[terrainTypeId]);
+			}
 		}
-
-		clonedEntities.Dispose();
-
 
 		entityManager.DestroyEntity(prototype);
 	}
@@ -109,7 +89,7 @@ public class TerrainInitializer : ITerrainInitializer
 	{
 		var terrainTypeIds = tileTerrainTypes.ToHashSet();
 
-		var terrainType_To_MaterialMeshInfo = new Dictionary<uint, MaterialMeshInfo>();
+		var materialMeshInfo_By_TerrainType = new Dictionary<uint, MaterialMeshInfo>();
 		var meshes = new SetList<Mesh>();
 		var materials = new SetList<Material>();
 
@@ -119,13 +99,26 @@ public class TerrainInitializer : ITerrainInitializer
 			var meshIndex = meshes.Add(terrainType.Mesh);
 			var materialIndex = materials.Add(terrainType.Material);
 
-			terrainType_To_MaterialMeshInfo[terrainTypeId] =
+			materialMeshInfo_By_TerrainType[terrainTypeId] =
 				MaterialMeshInfo.FromRenderMeshArrayIndices(materialIndex, meshIndex);
 		}
 
 		var renderMeshArray = new RenderMeshArray(materials.ToArray(), meshes.ToArray());
 
-		return (renderMeshArray, terrainType_To_MaterialMeshInfo);
+		return (renderMeshArray, materialMeshInfo_By_TerrainType);
+	}
+
+
+	private RenderMeshDescription GetRenderMeshDescription()
+	{
+		var filterSettings = RenderFilterSettings.Default;
+		filterSettings.ShadowCastingMode = ShadowCastingMode.Off;
+		filterSettings.ReceiveShadows = false;
+
+		return new RenderMeshDescription {
+			FilterSettings = filterSettings,
+			LightProbeUsage = LightProbeUsage.Off
+		};
 	}
 }
 
