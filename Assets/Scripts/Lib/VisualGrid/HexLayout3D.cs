@@ -113,13 +113,13 @@ public struct HexLayout3D
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
-				vertices2 = new Vector2[] {
-					new (-CellSize.x / 2, 0),
-					new (-0.25f * CellSize.x, CellSize.y / 2),
-					new (0.25f * CellSize.x, CellSize.y / 2),
-					new (CellSize.x / 2, 0),
-					new (0.25f * CellSize.x, -CellSize.y / 2),
-					new (-0.25f * CellSize.x, -CellSize.y / 2),
+				vertices2 = new [] {
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Left),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopLeft),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopRight),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Right),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomRight),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomLeft),
 					new (0, 0)
 				};
 
@@ -167,13 +167,13 @@ public struct HexLayout3D
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
-				vertices2 = new Vector2[] {
-					new (-CellSize.x / 2, 0),
-					new (-0.25f * CellSize.x, CellSize.y / 2),
-					new (0.25f * CellSize.x, CellSize.y / 2),
-					new (CellSize.x / 2, 0),
-					new (0.25f * CellSize.x, -CellSize.y / 2),
-					new (-0.25f * CellSize.x, -CellSize.y / 2)
+				vertices2 = new[] {
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Left),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopLeft),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopRight),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Right),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomRight),
+					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomLeft)
 				};
 
 				break;

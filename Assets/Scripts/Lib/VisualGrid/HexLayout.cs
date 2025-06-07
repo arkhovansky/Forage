@@ -12,6 +12,18 @@ namespace Lib.VisualGrid {
 
 
 
+public enum FlatTopHexVertex
+{
+	Left,
+	TopLeft,
+	TopRight,
+	Right,
+	BottomRight,
+	BottomLeft
+}
+
+
+
 public readonly struct HexOrientationData
 {
 	// Forward matrix
@@ -222,6 +234,22 @@ public struct HexLayout
 			Lerp(start, end, t));
 	}
 
+
+	public readonly Vector2 GetAbstractCellVertex(FlatTopHexVertex vertex)
+	{
+		if (Orientation != HexOrientation.FlatTop)
+			throw new InvalidOperationException("Orientation must be FlatTop");
+
+		return vertex switch {
+			FlatTopHexVertex.Left => new Vector2(-CellSize.x / 2, 0),
+			FlatTopHexVertex.TopLeft => new Vector2(-0.25f * CellSize.x, CellSize.y / 2),
+			FlatTopHexVertex.TopRight => new Vector2(0.25f * CellSize.x, CellSize.y / 2),
+			FlatTopHexVertex.Right => new Vector2(CellSize.x / 2, 0),
+			FlatTopHexVertex.BottomRight => new Vector2(0.25f * CellSize.x, -CellSize.y / 2),
+			FlatTopHexVertex.BottomLeft => new Vector2(-0.25f * CellSize.x, -CellSize.y / 2),
+			_ => throw new ArgumentOutOfRangeException(nameof(vertex), vertex, null)
+		};
+	}
 
 
 	public static uint Distance(AxialPosition start, AxialPosition end)
