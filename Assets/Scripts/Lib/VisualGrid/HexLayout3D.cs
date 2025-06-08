@@ -97,6 +97,13 @@ public struct HexLayout3D
 	}
 
 
+	public readonly Vector3 GetVertex(AxialPosition position, FlatTopHexVertex vertex)
+	{
+		return ProjectionMatrix.ProjectPoint(
+			_layout2D.GetVertex(position, vertex));
+	}
+
+
 
 	/// <summary>
 	/// Get cell mesh.

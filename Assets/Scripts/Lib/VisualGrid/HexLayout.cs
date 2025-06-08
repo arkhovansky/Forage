@@ -235,6 +235,12 @@ public struct HexLayout
 	}
 
 
+	public readonly Vector2 GetVertex(AxialPosition position, FlatTopHexVertex vertex)
+	{
+		return GetAbstractCellVertex(vertex) + GetPoint(position);
+	}
+
+
 	public readonly Vector2 GetAbstractCellVertex(FlatTopHexVertex vertex)
 	{
 		if (Orientation != HexOrientation.FlatTop)
