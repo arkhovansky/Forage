@@ -43,7 +43,8 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 	public void Create(IReadOnlyList<uint> tileTerrainTypes,
-	                   IReadOnlyList<AxialPosition> tilePositions)
+	                   IReadOnlyList<AxialPosition> tilePositions,
+	                   RectangularHexMap map)
 	{
 		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
 
@@ -76,6 +77,9 @@ public class TerrainInitializer : ITerrainInitializer
 		}
 
 		entityManager.DestroyEntity(prototype);
+
+
+		CreateGridLines(map);
 	}
 
 
@@ -119,6 +123,29 @@ public class TerrainInitializer : ITerrainInitializer
 			FilterSettings = filterSettings,
 			LightProbeUsage = LightProbeUsage.Off
 		};
+	}
+
+
+	private void CreateGridLines(RectangularHexMap map)
+	{
+		var visualMap = new VisualRectangularHexMap3D(_grid, map);
+
+		var mesh = visualMap.GetGridLinesMesh();
+		var material = UnityEngine.Resources.Load<Material>("Materials/GridLines");
+		var renderMeshArray = new RenderMeshArray(new [] { material }, new [] { mesh });
+
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var entity = entityManager.CreateEntity();
+
+		RenderMeshUtility.AddComponents(
+			entity,
+			entityManager,
+			GetRenderMeshDescription(),
+			renderMeshArray,
+			MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
+
+		entityManager.SetComponentData(entity, new LocalToWorld {Value = float4x4.Translate(new float3(0, 0.005f, 0))});
 	}
 }
 

@@ -47,7 +47,7 @@ public class GameService : IGameService
 	{
 		InitHexLayout();
 
-		_terrainInitializer.Create(scene.TileTerrainTypes, scene.TileAxialPositions);
+		_terrainInitializer.Create(scene.TileTerrainTypes, scene.TileAxialPositions, scene.Map);
 		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
 		_bandInitializer.Init(scene.BandMemberTypeCounts);
