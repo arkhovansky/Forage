@@ -3,6 +3,7 @@ using Unity.Entities;
 
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util;
 using App.Game.ECS.Util.Components;
@@ -32,6 +33,7 @@ public partial struct GameTimeSystem : ISystem
 
 		const float gameTimeScale = 2f;
 
+		bool dayChanged = false;
 		bool yearPeriodChanged = false;
 
 		if (SystemAPI.TryGetSingleton(out InitYearPeriod initYearPeriod)) {
@@ -58,17 +60,24 @@ public partial struct GameTimeSystem : ISystem
 
 			if (SystemAPI.HasSingleton<GameTimeRun>()) {
 				var gameTime = SystemAPI.GetSingletonRW<Components.GameTime>();
-				yearPeriodChanged =
-					gameTime.ValueRW.AdvanceTillNextYearPeriod(SystemAPI.Time.DeltaTime * gameTimeScale);
+				gameTime.ValueRW.Advance(SystemAPI.Time.DeltaTime * gameTimeScale);
+
+				dayChanged = gameTime.ValueRO.DayChanged;
+				yearPeriodChanged = gameTime.ValueRO.YearPeriodChanged;
 			}
 		}
 
+		if (dayChanged)
+			state.EntityManager.AddComponent<DayChanged>(singletonEntity);
+		else
+			state.EntityManager.RemoveComponent<DayChanged>(singletonEntity);
+
 		if (yearPeriodChanged) {
 			state.EntityManager.AddComponent<StopGameTime>(singletonEntity);
-			state.EntityManager.AddComponentData(singletonEntity, new YearPeriodChanged_Event());
+			state.EntityManager.AddComponent<YearPeriodChanged>(singletonEntity);
 		}
 		else {
-			state.EntityManager.RemoveComponent<YearPeriodChanged_Event>(singletonEntity);
+			state.EntityManager.RemoveComponent<YearPeriodChanged>(singletonEntity);
 		}
 	}
 

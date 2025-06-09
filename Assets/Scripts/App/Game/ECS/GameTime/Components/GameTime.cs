@@ -11,7 +11,7 @@ namespace App.Game.ECS.GameTime.Components {
 
 public struct GameTime : IComponentData
 {
-	public const uint DaysInYearPeriod = 2;
+	public const uint DaysInYearPeriod = 5;
 
 
 
@@ -25,6 +25,8 @@ public struct GameTime : IComponentData
 
 	public float DeltaHours;
 
+
+	public bool YearPeriodChanged;
 
 	public bool DayChanged;
 
@@ -40,6 +42,7 @@ public struct GameTime : IComponentData
 		IntegerHours = (int) hours;
 
 		DeltaHours = 0;
+		YearPeriodChanged = false;
 		DayChanged = false;
 		IntegerHoursChanged = false;
 	}
@@ -49,7 +52,6 @@ public struct GameTime : IComponentData
 	{
 		Assert.IsTrue(deltaHours <= 24);
 
-		var previousDay = Day;
 		int previousIntHours = IntegerHours;
 
 		DeltaHours = deltaHours;
@@ -70,32 +72,18 @@ public struct GameTime : IComponentData
 		if (Hours >= 24) {
 			Hours -= 24;
 			++Day;
+			DayChanged = true;
 		}
+		else
+			DayChanged = false;
 
 		if (Day > DaysInYearPeriod) {
 			Day = 1;
 			YearPeriod.Advance();
+			YearPeriodChanged = true;
 		}
-
-		DayChanged = (Day != previousDay);
-	}
-
-
-	public bool AdvanceTillNextYearPeriod(float deltaHours)
-	{
-		float hoursTillNextDay = 24 - Hours;
-		var previousYearPeriod = YearPeriod;
-
-		Advance(deltaHours);
-
-		if (YearPeriod != previousYearPeriod) {
-			Hours = 0;
-			DeltaHours = hoursTillNextDay;
-
-			return true;
-		}
-
-		return false;
+		else
+			YearPeriodChanged = false;
 	}
 }
 

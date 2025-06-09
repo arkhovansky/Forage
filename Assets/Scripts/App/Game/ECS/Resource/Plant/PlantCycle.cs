@@ -1,7 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 
-using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.SystemGroups;
 
@@ -18,7 +18,7 @@ public partial struct PlantCycle : ISystem
 	public void OnCreate(ref SystemState state)
 	{
 		state.RequireForUpdate<GameTime.Components.GameTime>();
-		state.RequireForUpdate<YearPeriodChanged_Event>();
+		state.RequireForUpdate<YearPeriodChanged>();
 	}
 
 
