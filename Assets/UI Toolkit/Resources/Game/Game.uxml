@@ -11,9 +11,9 @@
         <ui:VisualElement name="bandMembersBlock">
             <ui:MultiColumnListView name="bandMembers" binding-source-selection-mode="AutoAssign" selection-type="None" show-bound-collection-size="false" allow-remove="false" allow-add="false">
                 <ui:Columns reorderable="false">
-                    <ui:Column name="gender" title="Gender" optional="false" sortable="false" cell-template="project://database/Assets/UI%20Toolkit/Resources/Game/BandMember-Gender.uxml?fileID=9197481963319205126&amp;guid=b6fcf6c519fcc5542991d7974cda9e6f&amp;type=3#BandMember-Gender" stretchable="true" />
-                    <ui:Column name="goal" title="Goal" optional="false" sortable="false" cell-template="project://database/Assets/UI%20Toolkit/Resources/Game/BandMember-Goal.uxml?fileID=9197481963319205126&amp;guid=6614841c381a4519959203e07462b837&amp;type=3#BandMember-Goal" stretchable="true" />
-                    <ui:Column name="activity" title="Activity" sortable="false" optional="false" stretchable="true" cell-template="project://database/Assets/UI%20Toolkit/Resources/Game/BandMember-Activity.uxml?fileID=9197481963319205126&amp;guid=efac551c1c2f70e4990f5cf16bb58b54&amp;type=3#BandMember-Activity" />
+                    <ui:Column name="Gender" title="Gender" optional="false" sortable="false" stretchable="true" />
+                    <ui:Column name="Goal" title="Goal" optional="false" sortable="false" stretchable="true" />
+                    <ui:Column name="Activity" title="Activity" sortable="false" optional="false" stretchable="true" />
                 </ui:Columns>
             </ui:MultiColumnListView>
         </ui:VisualElement>

@@ -235,40 +235,32 @@ public class VvmBinder : IVvmBinder
 			if (listView == null)
 				return;
 
-			listView.itemsSource = (IList) property.GetValue(_viewModel);;
+			BindCells(listView);
 
-			// CreateCellTemplates(listView);
-			// foreach (var column in listView.columns) {
-			// 	if (column.cellTemplate != null)
-			// 		continue;
-			//
-			//
-			// }
+			listView.itemsSource = (IList) property.GetValue(_viewModel);;
 		}
 
 
-		// private void CreateCellTemplates(MultiColumnListView listView)
-		// {
-		// 	foreach (var column in listView.columns) {
-		// 		if (column.cellTemplate == null)
-		// 			CreateCellTemplate(column);
-		// 	}
-		// }
-		//
-		//
-		// private void CreateCellTemplate(Column column)
-		// {
-		// 	var label = new Label();
-		//
-		// 	var binding = new DataBinding {
-		// 		dataSourcePath = PropertyPath.FromName(propertyName),
-		// 		bindingMode = BindingMode.ToTarget
-		// 	};
-		//
-		// 	label.SetBinding("text", binding);
-		//
-		// 	column.cellTemplate = label;
-		// }
+		private void BindCells(MultiColumnListView listView)
+		{
+			foreach (var column in listView.columns) {
+				if (column.cellTemplate == null)
+					BindCells(column);
+			}
+		}
+
+
+		private void BindCells(Column column)
+		{
+			column.bindCell = (element, i) => {
+				var binding = new DataBinding {
+					dataSourcePath = PropertyPath.FromName(column.name),
+					bindingMode = BindingMode.ToTarget
+				};
+
+				element.SetBinding("text", binding);
+			};
+		}
 	}
 }
 
