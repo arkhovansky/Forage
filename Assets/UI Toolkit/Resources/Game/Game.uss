@@ -16,8 +16,8 @@
     position: absolute;
     left: 0;
     top: 35px;
-    width: 300px;
-    height: 380px;
+    width: 520px;
+    height: 350px;
 }
 
 .tileInfoPane {
@@ -40,6 +40,10 @@
 
 .paneHeader {
     align-self: center;
+}
+
+#bandMembers {
+    font-size: 10px;
 }
 
 #endTurnButton {

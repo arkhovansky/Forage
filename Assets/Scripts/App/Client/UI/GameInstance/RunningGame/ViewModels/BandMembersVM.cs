@@ -8,6 +8,9 @@ using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.BandMember.Movement.Components;
+using App.Game.ECS.BandMember.Statistics.Components;
+using App.Game.ECS.GameTime.Components.Events;
+using App.Services;
 using App.Services.BandMembers;
 
 
@@ -83,6 +86,18 @@ public class BandMembersVM : IViewModel
 			bandMemberVM.Activity = "Sleeping";
 		else
 			bandMemberVM.Activity = string.Empty;
+
+		if (entityManager.HasComponent<DayChanged>(EcsService.GetSingletonEntity())) {
+			var statistics = entityManager.GetComponentData<YearPeriodStatistics>(entity);
+
+			const string format = "F1";
+
+			bandMemberVM.AverageForagingHours = statistics.AverageForagingHours.ToString(format);
+			bandMemberVM.AverageGatheringHours = statistics.AverageGatheringHours.ToString(format);
+			bandMemberVM.AverageMovingHours = statistics.AverageMovingHours.ToString(format);
+			bandMemberVM.AverageLeisureHours = statistics.AverageLeisureHours.ToString(format);
+			bandMemberVM.AverageSleepingHours = statistics.AverageSleepingHours.ToString(format);
+		}
 	}
 }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using App.Game.ECS.Components;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Statistics.Components;
 
 
 
@@ -62,6 +63,9 @@ public class Human : MonoBehaviour
 
 			AddComponent<SleepingActivity>(entity);
 			SetComponentEnabled<SleepingActivity>(entity, false);
+
+			AddComponent<DayStatistics>(entity);
+			AddComponent<YearPeriodStatistics>(entity);
 		}
 	}
 }

@@ -14,6 +14,11 @@
                     <ui:Column name="Gender" title="Gender" optional="false" sortable="false" stretchable="true" />
                     <ui:Column name="Goal" title="Goal" optional="false" sortable="false" stretchable="true" />
                     <ui:Column name="Activity" title="Activity" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="AverageForagingHours" title="Forage, h" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="AverageGatheringHours" title="Gather, h" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="AverageMovingHours" title="Move, h" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="AverageLeisureHours" title="Leisure, h" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="AverageSleepingHours" title="Sleep, h" sortable="false" optional="false" stretchable="true" />
                 </ui:Columns>
             </ui:MultiColumnListView>
         </ui:VisualElement>
