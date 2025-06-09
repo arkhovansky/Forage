@@ -74,14 +74,14 @@ public partial struct CampPlacement : ISystem
 			var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 			var inTilePosition = GetCampInTilePosition(in hexLayout);
 			localTransform.ValueRW = hexLayout.GetCellLocalTransform(campPosition)
-				.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y));
+				.Translate(new float3(inTilePosition.x, 0.005f, inTilePosition.y));
 		}
 	}
 
 
 	private Vector2 GetCampInTilePosition(in HexLayout3D hexLayout)
 	{
-		return new Vector2(0f, (hexLayout.CellSize.y / 2) * -0.75f);
+		return new Vector2(0, 0);
 	}
 }
 

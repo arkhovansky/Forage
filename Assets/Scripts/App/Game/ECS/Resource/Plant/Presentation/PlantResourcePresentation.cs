@@ -19,6 +19,8 @@ using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 using App.Services.Resources;
 
+using Random = UnityEngine.Random;
+
 
 
 namespace App.Game.ECS.Resource.Plant.Presentation {
@@ -35,6 +37,13 @@ public partial class PlantResourcePresentation : SystemBase
 		public int IconCountToCreate;
 		public Entity ResourceEntity;
 	}
+
+
+
+	/// <summary>
+	/// Icon side length relative to inner cell diameter.
+	/// </summary>
+	private const float RelativeIconSize = 0.2f;
 
 
 	private HexLayout3D _grid;
@@ -202,13 +211,15 @@ public partial class PlantResourcePresentation : SystemBase
 		var inTilePosition = GetIconInTilePosition(iconIndexInResource);
 		return _grid.GetCellLocalTransform(tilePosition)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(0.2f);
+			.ApplyScale(_grid.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
 	}
 
+	// ReSharper disable once UnusedParameter.Local
 	private Vector2 GetIconInTilePosition(uint iconIndexInResource)
 	{
-		return new Vector2(((iconIndexInResource + 1) * (1f / (10+1)) - 0.5f) * _grid.CellSize.x,
-		                   0f);
+		var iconRadius = _grid.InnerCellRadius * RelativeIconSize;
+		var areaRadius = _grid.InnerCellRadius - iconRadius;
+		return Random.insideUnitCircle * areaRadius;
 	}
 }
 
