@@ -99,6 +99,16 @@ public struct HexLayout
 	public Vector2 CellSize { get; }
 
 	/// <summary>
+	/// Inner radius of a cell.
+	/// </summary>
+	public float InnerCellRadius { get; }
+
+	/// <summary>
+	/// Outer radius of a cell.
+	/// </summary>
+	public float OuterCellRadius { get; }
+
+	/// <summary>
 	/// Horizontal distance between adjacent hexagon centers.
 	/// </summary>
 	public float HorizontalSpacing { get; }
@@ -161,6 +171,9 @@ public struct HexLayout
 			case HexOrientation.FlatTop:
 				_orientationData = HexOrientationData.FlatTop;
 
+				InnerCellRadius = _cellHalfSize.y;
+				OuterCellRadius = _cellHalfSize.x;
+
 				HorizontalSpacing = 0.75f * CellSize.x;
 				VerticalSpacing = CellSize.y;
 
@@ -168,6 +181,9 @@ public struct HexLayout
 
 			case HexOrientation.PointyTop:
 				_orientationData = HexOrientationData.PointyTop;
+
+				InnerCellRadius = _cellHalfSize.x;
+				OuterCellRadius = _cellHalfSize.y;
 
 				HorizontalSpacing = CellSize.x;
 				VerticalSpacing = 0.75f * CellSize.y;

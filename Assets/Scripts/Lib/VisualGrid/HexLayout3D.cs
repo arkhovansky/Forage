@@ -46,6 +46,18 @@ public struct HexLayout3D
 		=> _layout2D.CellSize;
 
 	/// <summary>
+	/// Inner radius of a cell.
+	/// </summary>
+	public readonly float InnerCellRadius
+		=> _layout2D.InnerCellRadius;
+
+	/// <summary>
+	/// Outer radius of a cell.
+	/// </summary>
+	public readonly float OuterCellRadius
+		=> _layout2D.OuterCellRadius;
+
+	/// <summary>
 	/// Horizontal distance between adjacent hexagon centers.
 	/// </summary>
 	public readonly float HorizontalSpacing
