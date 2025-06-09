@@ -21,6 +21,8 @@ public struct GameTime : IComponentData
 
 	public float Hours;
 
+	public int IntegerHours;
+
 	public float DeltaHours;
 
 
@@ -35,6 +37,7 @@ public struct GameTime : IComponentData
 		YearPeriod = yearPeriod;
 		Day = day;
 		Hours = hours;
+		IntegerHours = (int) hours;
 
 		DeltaHours = 0;
 		DayChanged = false;
@@ -47,13 +50,22 @@ public struct GameTime : IComponentData
 		Assert.IsTrue(deltaHours <= 24);
 
 		var previousDay = Day;
-		int previousIntHours = Mathf.FloorToInt(Hours);
+		int previousIntHours = IntegerHours;
 
 		DeltaHours = deltaHours;
 
 		Hours += deltaHours;
 
-		IntegerHoursChanged = Mathf.FloorToInt(Hours) > previousIntHours;
+		// Fix up accumulating error
+		int intHours = Mathf.RoundToInt(Hours);
+		// Do not use Mathf.Approximately(), the error can be larger than default Epsilon
+		float epsilon = deltaHours / 100;  // Assuming one hour is multiple of deltaHours
+		if (Mathf.Abs(Hours - intHours) < epsilon)
+			Hours = intHours;
+
+		IntegerHours = (int) Hours;
+
+		IntegerHoursChanged = IntegerHours > previousIntHours;
 
 		if (Hours >= 24) {
 			Hours -= 24;
