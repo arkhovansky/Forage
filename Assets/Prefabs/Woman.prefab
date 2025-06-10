@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 61056054557385157, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
       propertyPath: GatheringSpeed
-      value: 0.8
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2634078648440320970, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
