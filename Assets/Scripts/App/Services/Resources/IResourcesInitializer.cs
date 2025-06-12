@@ -10,7 +10,7 @@ namespace App.Services.Resources {
 
 public interface IResourcesInitializer
 {
-	void Init(IReadOnlyList<AxialPosition> tilePositions,
+	void Init(IReadOnlyList<AxialPosition> mapPositions,
 	          IReadOnlyList<uint> resourceTypes,
 	          IReadOnlyList<float> potentialBiomass);
 }

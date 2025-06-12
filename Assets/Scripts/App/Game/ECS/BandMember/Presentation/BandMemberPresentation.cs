@@ -29,10 +29,10 @@ public partial struct BandMemberPresentation : ISystem
 	{
 		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 
-		foreach (var (tilePosition, intraCellMovement, path,
+		foreach (var (position, intraCellMovement, path,
 			         localTransform)
 		         in SystemAPI.Query<
-			         TilePosition, RefRO<IntraCellMovement>, DynamicBuffer<PathTile>,
+			         MapPosition, RefRO<IntraCellMovement>, DynamicBuffer<PathTile>,
 			         RefRW<LocalTransform>
 			         >()
 			         .WithAll<MovementActivity>())
@@ -40,30 +40,30 @@ public partial struct BandMemberPresentation : ISystem
 			Vector3 point;
 
 			if (intraCellMovement.ValueRO.IsBeforeCenter) {
-				point = hexLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, tilePosition.Position,
+				point = hexLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, position.Position,
 				                               intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else if (intraCellMovement.ValueRO.IsAfterCenter) {
-				point = hexLayout.GetLerpPoint(tilePosition.Position, path[0].Position,
+				point = hexLayout.GetLerpPoint(position.Position, path[0].Position,
 				                               intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else {
-				point = hexLayout.GetPoint(tilePosition.Position);
+				point = hexLayout.GetPoint(position.Position);
 			}
 
 			localTransform.ValueRW = LocalTransform.FromPosition(point);
 		}
 
-		foreach (var (tilePosition,
+		foreach (var (position,
 			         localTransform)
 		         in SystemAPI.Query<
-			         TilePosition,
+			         MapPosition,
 			         RefRW<LocalTransform>
 			         >()
 			         .WithDisabled<MovementActivity>())
 		{
 			localTransform.ValueRW = LocalTransform.FromPosition(
-				hexLayout.GetPoint(tilePosition.Position));
+				hexLayout.GetPoint(position.Position));
 		}
 	}
 }

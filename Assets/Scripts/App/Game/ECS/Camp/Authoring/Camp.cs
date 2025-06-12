@@ -17,7 +17,7 @@ public class Camp : MonoBehaviour
 		{
 			var entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 			AddComponent<Components.Camp>(entity);
-			AddComponent<TilePosition>(entity);
+			AddComponent<MapPosition>(entity);
 		}
 	}
 }

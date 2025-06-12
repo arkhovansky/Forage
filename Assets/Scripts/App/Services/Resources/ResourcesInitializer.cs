@@ -28,7 +28,7 @@ public class ResourcesInitializer : IResourcesInitializer
 
 
 
-	public void Init(IReadOnlyList<AxialPosition> tilePositions,
+	public void Init(IReadOnlyList<AxialPosition> mapPositions,
 	                 IReadOnlyList<uint> resourceTypes,
 	                 IReadOnlyList<float> potentialBiomass)
 	{
@@ -36,7 +36,7 @@ public class ResourcesInitializer : IResourcesInitializer
 		var entityManager = world.EntityManager;
 
 		var prototype = entityManager.CreateEntity(
-			typeof(TilePosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
+			typeof(MapPosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
 
 		var count = resourceTypes.Count;
 
@@ -50,7 +50,7 @@ public class ResourcesInitializer : IResourcesInitializer
 			var resourceTypeId = resourceTypes[i];
 			var resourceType = _resourceTypeRepository.Get(resourceTypeId);
 
-			entityManager.SetComponentData(entity, new TilePosition(tilePositions[i]));
+			entityManager.SetComponentData(entity, new MapPosition(mapPositions[i]));
 
 			entityManager.SetComponentData(entity, new PlantResource {
 				TypeId = resourceTypeId,

@@ -50,7 +50,7 @@ public class TerrainInitializer : ITerrainInitializer
 
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var prototype = entityManager.CreateEntity(typeof(TerrainTile), typeof(TilePosition));
+		var prototype = entityManager.CreateEntity(typeof(TerrainTile), typeof(MapPosition));
 		RenderMeshUtility.AddComponents(
 			prototype,
 			entityManager,
@@ -69,7 +69,7 @@ public class TerrainInitializer : ITerrainInitializer
 				var axialPosition = tilePositions[i];
 
 				entityManager.SetComponentData(entity, new TerrainTile(terrainTypeId));
-				entityManager.SetComponentData(entity, new TilePosition(axialPosition));
+				entityManager.SetComponentData(entity, new MapPosition(axialPosition));
 				entityManager.SetComponentData(entity,
 					new LocalToWorld {Value = float4x4.Translate(_grid.GetPoint(axialPosition))});
 				entityManager.SetComponentData(entity, materialMeshInfo_By_TerrainType[terrainTypeId]);

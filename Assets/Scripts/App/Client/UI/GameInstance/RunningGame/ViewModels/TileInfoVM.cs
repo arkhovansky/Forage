@@ -59,7 +59,7 @@ public class TileInfoVM : IViewModel
 			TerrainType = terrainType.Name;
 
 
-			var position = entityManager.GetComponentData<TilePosition>(hoveredTileEntity).Position;
+			var position = entityManager.GetComponentData<MapPosition>(hoveredTileEntity).Position;
 
 			if (TryGetResource(position, out Entity resourceEntity))
 				ResourceInfoVM.Show(resourceEntity);
@@ -78,10 +78,10 @@ public class TileInfoVM : IViewModel
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
 		var query = entityManager.CreateEntityQuery(
-			ComponentType.ReadOnly<TilePosition>(),
+			ComponentType.ReadOnly<MapPosition>(),
 			ComponentType.ReadOnly<PlantResource>());
 
-		var positions = query.ToComponentDataArray<TilePosition>(Allocator.Temp);
+		var positions = query.ToComponentDataArray<MapPosition>(Allocator.Temp);
 		var entities = query.ToEntityArray(Allocator.Temp);
 
 		for (var i = 0; i < positions.Length; i++) {

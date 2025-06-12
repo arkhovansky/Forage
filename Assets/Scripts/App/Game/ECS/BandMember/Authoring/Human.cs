@@ -26,7 +26,7 @@ public class Human : MonoBehaviour
 
 			AddComponent(entity, new Components.Human {TypeId = authoring.TypeId});
 			AddComponent<Components.BandMember>(entity);
-			AddComponent<TilePosition>(entity);
+			AddComponent<MapPosition>(entity);
 
 			AddComponent<GoalComponent>(entity);
 			SetComponentEnabled<GoalComponent>(entity, false);

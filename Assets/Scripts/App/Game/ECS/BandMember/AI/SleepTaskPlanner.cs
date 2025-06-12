@@ -53,14 +53,14 @@ public partial class SleepTaskPlanner : SystemBase
 		// 	return;
 
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
-		var campPosition = SystemAPI.GetComponent<TilePosition>(campEntity).Position;
+		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Position;
 
 		foreach (var (position,
 			         path,
 			         taskEnabled, sleepTaskEnabled,
 			         entity)
 		         in SystemAPI.Query<
-			         TilePosition,
+			         MapPosition,
 			         DynamicBuffer<PathTile>,
 			         EnabledRefRW<Task>, EnabledRefRW<Sleep_Task>
 			         >()

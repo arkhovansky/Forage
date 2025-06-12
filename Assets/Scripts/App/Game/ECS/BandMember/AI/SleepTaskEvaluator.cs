@@ -31,12 +31,12 @@ public partial struct SleepTaskEvaluator : ISystem
 		var daylight = SystemAPI.HasSingleton<Daylight>();
 
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
-		var campPosition = SystemAPI.GetComponent<TilePosition>(campEntity).Position;
+		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Position;
 
 		foreach (var (position,
 			         entity)
 		         in SystemAPI.Query<
-			         TilePosition
+			         MapPosition
 			         >()
 			         .WithAll<Sleep_Task>()
 			         .WithDisabled<Activity>()

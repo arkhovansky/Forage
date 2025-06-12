@@ -39,7 +39,7 @@ public partial struct HoveredTileSystem : ISystem
 		if (hoveredPosition.HasValue) {  // There is the new hovered tile
 			Entity? hoveredTileEntity = null;
 
-			foreach (var (pos, entity) in SystemAPI.Query<RefRO<TilePosition>>().WithEntityAccess()) {
+			foreach (var (pos, entity) in SystemAPI.Query<RefRO<MapPosition>>().WithEntityAccess()) {
 				if (pos.ValueRO.Position == hoveredPosition.Value) {
 					hoveredTileEntity = entity;
 					break;

@@ -52,7 +52,7 @@ public partial struct CampPlacement : ISystem
 
 		var campEntity = state.EntityManager.Instantiate(prefabReferences.Camp);
 
-		state.EntityManager.SetComponentData(campEntity, new TilePosition(position));
+		state.EntityManager.SetComponentData(campEntity, new MapPosition(position));
 
 		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 		var inTilePosition = GetCampInTilePosition(in hexLayout);
@@ -66,7 +66,7 @@ public partial struct CampPlacement : ISystem
 	private void MoveBandMembersToCamp(AxialPosition campPosition, ref SystemState state)
 	{
 		foreach (var (position, localTransform) in
-		         SystemAPI.Query<RefRW<TilePosition>, RefRW<LocalTransform>>()
+		         SystemAPI.Query<RefRW<MapPosition>, RefRW<LocalTransform>>()
 			         .WithAll<BandMember.Components.BandMember>())
 		{
 			position.ValueRW.Position = campPosition;

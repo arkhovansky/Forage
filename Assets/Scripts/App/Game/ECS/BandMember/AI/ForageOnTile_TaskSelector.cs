@@ -57,7 +57,7 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 			         taskEnabled, forageTaskEnabled,
 			         foragerEntity) in
 		         SystemAPI.Query<
-			         RefRO<TilePosition>,
+			         RefRO<MapPosition>,
 			         DynamicBuffer<PathTile>,
 			         EnabledRefRW<Task>, EnabledRefRW<ForageOnTile_Task>
 			         >()
@@ -69,7 +69,7 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 
 			// Select resource by distance
 			foreach (var (resourcePosition, ripeBiomass, resourceEntity)
-			         in SystemAPI.Query<TilePosition, RipeBiomass>().WithEntityAccess())
+			         in SystemAPI.Query<MapPosition, RipeBiomass>().WithEntityAccess())
 			{
 				if (ripeBiomass.IsZero)
 					continue;

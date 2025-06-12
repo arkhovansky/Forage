@@ -8,13 +8,13 @@ namespace App.Game.ECS.Map.Components {
 
 
 
-public struct TilePosition : IComponentData
+public struct MapPosition : IComponentData
 {
 	public AxialPosition Position;
 
 
 
-	public TilePosition(AxialPosition position)
+	public MapPosition(AxialPosition position)
 	{
 		Position = position;
 	}

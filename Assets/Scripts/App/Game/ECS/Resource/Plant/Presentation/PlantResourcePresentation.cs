@@ -33,7 +33,7 @@ public partial class PlantResourcePresentation : SystemBase
 	private struct ResourceIconsCreationData
 	{
 		public uint ResourceType;
-		public AxialPosition TilePosition;
+		public AxialPosition MapPosition;
 		public int IconCountToCreate;
 		public Entity ResourceEntity;
 	}
@@ -89,9 +89,9 @@ public partial class PlantResourcePresentation : SystemBase
 		var creationData = new List<ResourceIconsCreationData>();
 		var entitiesToDestroy = new NativeList<Entity>(Allocator.Temp);
 
-		foreach (var (resource, tilePosition, ripeBiomass, icons, entity)
+		foreach (var (resource, position, ripeBiomass, icons, entity)
 		         in SystemAPI.Query<
-			         RefRO<PlantResource>, TilePosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
+			         RefRO<PlantResource>, MapPosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
 			         .WithEntityAccess())
 		{
 			const uint biomassPerIcon = 10;
@@ -103,7 +103,7 @@ public partial class PlantResourcePresentation : SystemBase
 			if (icons.Length < neededIconCount) {
 				creationData.Add(new ResourceIconsCreationData {
 					ResourceType = resource.ValueRO.TypeId,
-					TilePosition = tilePosition.Position,
+					MapPosition = position.Position,
 					IconCountToCreate = neededIconCount - icons.Length,
 					ResourceEntity = entity
 				});
@@ -185,7 +185,7 @@ public partial class PlantResourcePresentation : SystemBase
 				uint iconIndexInResource = (uint) resourceIconsBuffer.Length;
 
 				EntityManager.SetComponentData(entity,
-					GetIconLocalTransform(resourceData.TilePosition, iconIndexInResource));
+					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource));
 
 				EntityManager.SetComponentData(entity, materialMeshInfo);
 
