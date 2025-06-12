@@ -165,7 +165,7 @@ public class RectangularHexMap : AbstractHexGrid
 	}
 
 
-	public bool IsInside(AxialPosition position)
+	public bool Contains(AxialPosition position)
 	{
 		var freeOffset = FreeOffsetPositionFrom(position);
 		return freeOffset.Col >= 0 && freeOffset.Col < Width &&

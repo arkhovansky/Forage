@@ -44,7 +44,7 @@ public class VisualRectangularHexMap
 	public AxialPosition? GetAxialPosition(Vector2 point)
 	{
 		AxialPosition freePos = Layout.GetAxialPosition(point);
-		return IsInside(freePos) ? freePos : null;
+		return Contains(freePos) ? freePos : null;
 	}
 }
 

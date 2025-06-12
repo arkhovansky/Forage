@@ -75,7 +75,7 @@ public class VisualRectangularHexMap3D
 	{
 		if (! Layout.GetAxialPosition(ray, out var freePos))
 			return null;
-		return IsInside(freePos) ? freePos : null;
+		return Contains(freePos) ? freePos : null;
 	}
 
 
