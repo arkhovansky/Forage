@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-using App.Game.ECS.Components;
+using App.Game.ECS.Map.Components;
 
 
 

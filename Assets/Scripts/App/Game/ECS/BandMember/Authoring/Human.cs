@@ -2,10 +2,10 @@
 
 using UnityEngine;
 
-using App.Game.ECS.Components;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.BandMember.Statistics.Components;
+using App.Game.ECS.Map.Components;
 
 
 

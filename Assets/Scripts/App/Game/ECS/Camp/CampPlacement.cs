@@ -8,9 +8,9 @@ using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Game.ECS.Camp.Components.Commands;
-using App.Game.ECS.Components;
-using App.Game.ECS.Components.Singletons;
 using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util.Components;

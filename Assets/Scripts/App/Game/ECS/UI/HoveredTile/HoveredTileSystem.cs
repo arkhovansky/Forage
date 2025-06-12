@@ -7,7 +7,7 @@ using Unity.Rendering;
 
 using Lib.Grid;
 
-using App.Game.ECS.Components;
+using App.Game.ECS.Map.Components;
 using App.Game.ECS.UI.HoveredTile.Components;
 
 

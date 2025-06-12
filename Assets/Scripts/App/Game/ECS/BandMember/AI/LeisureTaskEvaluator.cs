@@ -4,8 +4,8 @@ using Unity.Entities;
 
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
-using App.Game.ECS.Components;
 using App.Game.ECS.GameTime.Components;
+using App.Game.ECS.Map.Components;
 using App.Game.ECS.SystemGroups;
 
 

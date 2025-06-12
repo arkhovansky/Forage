@@ -4,7 +4,7 @@ using Lib.Grid;
 
 
 
-namespace App.Game.ECS.Components {
+namespace App.Game.ECS.Map.Components {
 
 
 

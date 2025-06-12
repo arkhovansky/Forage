@@ -4,7 +4,7 @@ using Lib.VisualGrid;
 
 
 
-namespace App.Game.ECS.Components.Singletons {
+namespace App.Game.ECS.Map.Components.Singletons {
 
 
 

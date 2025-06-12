@@ -4,8 +4,8 @@ using Unity.Transforms;
 using UnityEngine;
 
 using App.Game.ECS.BandMember.Movement.Components;
-using App.Game.ECS.Components;
-using App.Game.ECS.Components.Singletons;
+using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 
 
 
