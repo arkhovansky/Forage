@@ -57,7 +57,7 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 			         taskEnabled, forageTaskEnabled,
 			         foragerEntity) in
 		         SystemAPI.Query<
-			         RefRO<MapPosition>,
+			         MapPosition,
 			         DynamicBuffer<PathTile>,
 			         EnabledRefRW<Task>, EnabledRefRW<ForageOnTile_Task>
 			         >()
@@ -74,9 +74,9 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 				if (ripeBiomass.IsZero)
 					continue;
 
-				var pathInfo = CalculatePath(foragerPosition.ValueRO.Position, resourcePosition.Position);
+				var pathInfo = CalculatePath(foragerPosition, resourcePosition);
 				if (target == null || pathInfo.Cost < target.PathInfo.Cost) {
-					target = new TargetResourceInfo(resourcePosition.Position, pathInfo, resourceEntity);
+					target = new TargetResourceInfo(resourcePosition, pathInfo, resourceEntity);
 				}
 			}
 
@@ -98,7 +98,7 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 
 			SystemAPI.SetComponentEnabled<Activity>(foragerEntity, true);
 
-			if (target.Position != foragerPosition.ValueRO.Position) {
+			if (target.Position != foragerPosition) {
 				SystemAPI.SetComponent(foragerEntity, new MovementActivity(target.Position));
 				SystemAPI.SetComponentEnabled<MovementActivity>(foragerEntity, true);
 			}

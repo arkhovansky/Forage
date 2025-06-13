@@ -69,7 +69,7 @@ public partial struct CampPlacement : ISystem
 		         SystemAPI.Query<RefRW<MapPosition>, RefRW<LocalTransform>>()
 			         .WithAll<BandMember.Components.BandMember>())
 		{
-			position.ValueRW.Position = campPosition;
+			position.ValueRW.Value = campPosition;
 
 			var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 			var inTilePosition = GetCampInTilePosition(in hexLayout);

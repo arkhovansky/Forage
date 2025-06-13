@@ -53,7 +53,7 @@ public partial class LeisureTaskPlanner : SystemBase
 		// 	return;
 
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
-		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Position;
+		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Value;
 
 		foreach (var (position,
 			         path,
@@ -68,7 +68,7 @@ public partial class LeisureTaskPlanner : SystemBase
 			         .WithDisabled<Task, Leisure_Task>()
 			         .WithEntityAccess())
 		{
-			var pathInfo = CalculatePath(position.Position, campPosition);
+			var pathInfo = CalculatePath(position, campPosition);
 
 			SetPath(in path, pathInfo.Path);
 
@@ -83,7 +83,7 @@ public partial class LeisureTaskPlanner : SystemBase
 
 			SystemAPI.SetComponentEnabled<Activity>(entity, true);
 
-			if (position.Position != campPosition) {
+			if (position != campPosition) {
 				SystemAPI.SetComponent(entity, new MovementActivity(campPosition));
 				SystemAPI.SetComponentEnabled<MovementActivity>(entity, true);
 			}

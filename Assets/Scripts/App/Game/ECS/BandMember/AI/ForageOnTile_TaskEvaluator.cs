@@ -33,7 +33,7 @@ public partial struct ForageOnTile_TaskEvaluator : ISystem
 		{
 			var resourceBiomass = SystemAPI.GetComponent<RipeBiomass>(forageTask.ValueRO.TargetResourceEntity);
 
-			Assert.IsTrue(SystemAPI.GetComponent<MapPosition>(entity).Position == forageTask.ValueRO.Position);
+			Assert.IsTrue(SystemAPI.GetComponent<MapPosition>(entity) == forageTask.ValueRO.Position);
 
 			if (foodConsumer.IsSatiated || resourceBiomass.IsZero) {
 				taskEnabled.ValueRW = false;

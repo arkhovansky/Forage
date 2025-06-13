@@ -103,7 +103,7 @@ public partial class PlantResourcePresentation : SystemBase
 			if (icons.Length < neededIconCount) {
 				creationData.Add(new ResourceIconsCreationData {
 					ResourceType = resource.ValueRO.TypeId,
-					MapPosition = position.Position,
+					MapPosition = position,
 					IconCountToCreate = neededIconCount - icons.Length,
 					ResourceEntity = entity
 				});

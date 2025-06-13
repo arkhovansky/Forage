@@ -40,15 +40,15 @@ public partial struct BandMemberPresentation : ISystem
 			Vector3 point;
 
 			if (intraCellMovement.ValueRO.IsBeforeCenter) {
-				point = hexLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, position.Position,
+				point = hexLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, position,
 				                               intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else if (intraCellMovement.ValueRO.IsAfterCenter) {
-				point = hexLayout.GetLerpPoint(position.Position, path[0].Position,
+				point = hexLayout.GetLerpPoint(position, path[0].Position,
 				                               intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else {
-				point = hexLayout.GetPoint(position.Position);
+				point = hexLayout.GetPoint(position);
 			}
 
 			localTransform.ValueRW = LocalTransform.FromPosition(point);
@@ -63,7 +63,7 @@ public partial struct BandMemberPresentation : ISystem
 			         .WithDisabled<MovementActivity>())
 		{
 			localTransform.ValueRW = LocalTransform.FromPosition(
-				hexLayout.GetPoint(position.Position));
+				hexLayout.GetPoint(position));
 		}
 	}
 }

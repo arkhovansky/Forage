@@ -42,7 +42,7 @@ public partial struct Movement : ISystem
 			do {
 				if (path.Length == 0) {  // Inside target cell
 					Assert.IsTrue(intraCellMovement.ValueRO.IsBeforeCenter);
-					Assert.IsTrue(mapPosition.ValueRO.Position == movementActivity.TargetPosition);
+					Assert.IsTrue(mapPosition.ValueRO.Value == movementActivity.TargetPosition);
 
 					var distanceToCellCenter = intraCellMovement.ValueRO.DistanceToCenter * cellEdgeDiameter_Km;
 					var hoursToCellCenter = distanceToCellCenter / speed;
@@ -66,8 +66,8 @@ public partial struct Movement : ISystem
 					var hoursToCellEdge = distanceToCellEdge / speed;
 
 					if (hoursDelta > hoursToCellEdge) {  // Reached cell edge and beyond
-						intraCellMovement.ValueRW.SetAtStartEdge(previousPosition: mapPosition.ValueRW.Position);
-						mapPosition.ValueRW.Position = path[0].Position;
+						intraCellMovement.ValueRW.SetAtStartEdge(previousPosition: mapPosition.ValueRW.Value);
+						mapPosition.ValueRW.Value = path[0].Position;
 						path.RemoveAt(0);
 
 						hoursDelta -= hoursToCellEdge;

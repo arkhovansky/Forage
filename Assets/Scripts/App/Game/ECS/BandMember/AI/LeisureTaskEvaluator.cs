@@ -31,7 +31,7 @@ public partial struct LeisureTaskEvaluator : ISystem
 		var daylight = SystemAPI.HasSingleton<Daylight>();
 
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
-		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Position;
+		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Value;
 
 		foreach (var (position,
 			         entity)
@@ -42,7 +42,7 @@ public partial struct LeisureTaskEvaluator : ISystem
 			         .WithDisabled<Activity>()
 			         .WithEntityAccess())
 		{
-			Assert.IsTrue(position.Position == campPosition);
+			Assert.IsTrue(position == campPosition);
 
 			if (daylight)
 				StartLeisureActivity(entity, ref state);

@@ -10,14 +10,18 @@ namespace App.Game.ECS.Map.Components {
 
 public struct MapPosition : IComponentData
 {
-	public AxialPosition Position;
+	public AxialPosition Value;
 
 
 
-	public MapPosition(AxialPosition position)
+	public MapPosition(AxialPosition value)
 	{
-		Position = position;
+		Value = value;
 	}
+
+
+	public static implicit operator AxialPosition(MapPosition position)
+		=> position.Value;
 }
 
 
