@@ -66,7 +66,7 @@ public partial struct Movement : ISystem
 					var hoursToCellEdge = distanceToCellEdge / speed;
 
 					if (hoursDelta > hoursToCellEdge) {  // Reached cell edge and beyond
-						intraCellMovement.ValueRW.SetAtStartEdge(previousPosition: mapPosition.ValueRW.Value);
+						intraCellMovement.ValueRW.SetAtStartEdge(previousPosition: mapPosition.ValueRO.Value);
 						mapPosition.ValueRW.Value = path[0].Position;
 						path.RemoveAt(0);
 
