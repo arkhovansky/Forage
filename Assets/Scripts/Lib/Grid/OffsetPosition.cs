@@ -4,11 +4,11 @@
 
 public struct OffsetPosition
 {
-	public uint Col;
-	public uint Row;
+	public int Col;
+	public int Row;
 
 
-	public OffsetPosition(uint col, uint row)
+	public OffsetPosition(int col, int row)
 	{
 		Col = col;
 		Row = row;

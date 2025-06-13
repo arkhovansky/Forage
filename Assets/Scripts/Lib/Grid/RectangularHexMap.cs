@@ -27,20 +27,6 @@ public struct RectangularHexMap
 	//----------------------------------------------------------------------------------------------
 
 
-	private struct FreeOffsetPosition
-	{
-		public int Col, Row;
-
-		public FreeOffsetPosition(int col, int row) {
-			Col = col;
-			Row = row;
-		}
-	}
-
-
-	//----------------------------------------------------------------------------------------------
-
-
 	public RectangularHexMap(uint width, uint height,
 	                         HexOrientation orientation,
 	                         HexMapLineOffset lineOffset)
@@ -53,28 +39,17 @@ public struct RectangularHexMap
 
 
 	public OffsetPosition OffsetPositionFromCellIndex(uint cellIndex)
-		=> new(cellIndex % Width, cellIndex / Width);
+		=> new((int)(cellIndex % Width), (int)(cellIndex / Width));
 
 
 	public uint CellIndexFrom(OffsetPosition offsetPosition)
-		=> offsetPosition.Row * Height + offsetPosition.Col;
+		=> (uint) (offsetPosition.Row * Height + offsetPosition.Col);
 
 	public uint CellIndexFrom(AxialPosition axial)
 		=> CellIndexFrom(OffsetPositionFrom(axial));
 
 
 	public OffsetPosition OffsetPositionFrom(AxialPosition axial)
-	{
-		var freeOffset = FreeOffsetPositionFrom(axial);
-
-		if (freeOffset.Col < 0 || freeOffset.Row < 0)
-			throw new ArgumentOutOfRangeException();
-
-		return new OffsetPosition((uint)freeOffset.Col, (uint)freeOffset.Row);
-	}
-
-
-	private FreeOffsetPosition FreeOffsetPositionFrom(AxialPosition axial)
 	{
 		int col, row;
 
@@ -95,7 +70,7 @@ public struct RectangularHexMap
 				throw new ArgumentOutOfRangeException();
 		}
 
-		return new FreeOffsetPosition(col, row);
+		return new OffsetPosition(col, row);
 	}
 
 
@@ -105,8 +80,8 @@ public struct RectangularHexMap
 
 	public AxialPosition AxialPositionFrom(OffsetPosition offsetPosition)
 	{
-		int col = (int) offsetPosition.Col;
-		int row = (int) offsetPosition.Row;
+		int col = offsetPosition.Col;
+		int row = offsetPosition.Row;
 
 		int q, r;
 
@@ -127,11 +102,15 @@ public struct RectangularHexMap
 	}
 
 
+	public bool Contains(OffsetPosition offset)
+	{
+		return offset.Col >= 0 && offset.Col < Width &&
+		       offset.Row >= 0 && offset.Row < Height;
+	}
+
 	public bool Contains(AxialPosition position)
 	{
-		var freeOffset = FreeOffsetPositionFrom(position);
-		return freeOffset.Col >= 0 && freeOffset.Col < Width &&
-		       freeOffset.Row >= 0 && freeOffset.Row < Height;
+		return Contains(OffsetPositionFrom(position));
 	}
 }
 

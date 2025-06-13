@@ -102,13 +102,13 @@ public struct VisualRectangularHexMap3D
 		{
 			int i = 0;
 
-			for (uint iOddColumn = 0; iOddColumn < oddColumnCount; iOddColumn++) {
-				uint col = iOddColumn * 2;
+			for (var iOddColumn = 0; iOddColumn < oddColumnCount; iOddColumn++) {
+				var col = iOddColumn * 2;
 
 				vertices[i++] = GetVertex(new OffsetPosition(col, 0), FlatTopHexVertex.TopLeft);
 				vertices[i++] = GetVertex(new OffsetPosition(col, 0), FlatTopHexVertex.TopRight);
 
-				for (uint row = 0; row < Map.Height; row++) {
+				for (var row = 0; row < Map.Height; row++) {
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.Right);
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.BottomRight);
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.BottomLeft);
@@ -118,16 +118,16 @@ public struct VisualRectangularHexMap3D
 				// Protruding vertices of next even column
 				if (iOddColumn < oddColumnCount - 1 || outsideEvenColumnCount == 1) {
 					vertices[i++] =
-						GetVertex(new OffsetPosition(col + 1, Map.Height - 1), FlatTopHexVertex.BottomLeft);
+						GetVertex(new OffsetPosition(col + 1, (int)Map.Height - 1), FlatTopHexVertex.BottomLeft);
 					vertices[i++] =
-						GetVertex(new OffsetPosition(col + 1, Map.Height - 1), FlatTopHexVertex.BottomRight);
+						GetVertex(new OffsetPosition(col + 1, (int)Map.Height - 1), FlatTopHexVertex.BottomRight);
 				}
 			}
 
 			if (outsideEvenColumnCount == 1) {
-				for (uint row = 0; row < Map.Height; row++) {
-					vertices[i++] = GetVertex(new OffsetPosition(Map.Width - 1, row), FlatTopHexVertex.TopRight);
-					vertices[i++] = GetVertex(new OffsetPosition(Map.Width - 1, row), FlatTopHexVertex.Right);
+				for (var row = 0; row < Map.Height; row++) {
+					vertices[i++] = GetVertex(new OffsetPosition((int)Map.Width - 1, row), FlatTopHexVertex.TopRight);
+					vertices[i++] = GetVertex(new OffsetPosition((int)Map.Width - 1, row), FlatTopHexVertex.Right);
 				}
 			}
 
