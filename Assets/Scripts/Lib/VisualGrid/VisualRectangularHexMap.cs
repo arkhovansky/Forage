@@ -13,38 +13,30 @@ namespace Lib.VisualGrid {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout.
 /// </summary>
-public class VisualRectangularHexMap
-	: RectangularHexMap
+public struct VisualRectangularHexMap
 {
+	public RectangularHexMap Map { get; }
+
 	public HexLayout Layout { get; }
 
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public VisualRectangularHexMap(HexLayout layout,
-	                               uint width, uint height,
-	                               HexMapLineOffset lineOffset)
-		: base(width, height, layout.Orientation, lineOffset)
-	{
-		Layout = layout;
-	}
-
-
-	public VisualRectangularHexMap(HexLayout layout, RectangularHexMap map)
-		: base(map.Width, map.Height, layout.Orientation, map.LineOffset)
+	public VisualRectangularHexMap(RectangularHexMap map, HexLayout layout)
 	{
 		if (layout.Orientation != map.Orientation)
 			throw new ArgumentException();
 
+		Map = map;
 		Layout = layout;
 	}
 
 
-	public AxialPosition? GetAxialPosition(Vector2 point)
+	public readonly AxialPosition? GetAxialPosition(Vector2 point)
 	{
 		AxialPosition freePos = Layout.GetAxialPosition(point);
-		return Contains(freePos) ? freePos : null;
+		return Map.Contains(freePos) ? freePos : null;
 	}
 }
 

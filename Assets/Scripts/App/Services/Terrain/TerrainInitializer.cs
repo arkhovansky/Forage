@@ -128,7 +128,7 @@ public class TerrainInitializer : ITerrainInitializer
 
 	private void CreateGridLines(RectangularHexMap map)
 	{
-		var visualMap = new VisualRectangularHexMap3D(_grid, map);
+		var visualMap = new VisualRectangularHexMap3D(map, _grid);
 
 		var mesh = visualMap.GetGridLinesMesh();
 		var material = UnityEngine.Resources.Load<Material>("Materials/GridLines");

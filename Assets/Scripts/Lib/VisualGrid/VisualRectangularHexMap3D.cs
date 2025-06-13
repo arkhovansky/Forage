@@ -14,33 +14,34 @@ namespace Lib.VisualGrid {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout in 3D coordinate system.
 /// </summary>
-public class VisualRectangularHexMap3D
-	: RectangularHexMap
+public struct VisualRectangularHexMap3D
 {
+	public RectangularHexMap Map { get; }
+
 	public HexLayout3D Layout { get; }
 
 
-	public float GeometricWidth {
+	public readonly float GeometricWidth {
 		get {
-			return Orientation switch {
-				HexOrientation.FlatTop => Layout.HorizontalSpacing * (Width - 1) + Layout.CellSize.x,
-				HexOrientation.PointyTop => Layout.CellSize.x * (Width + 0.5f),
+			return Map.Orientation switch {
+				HexOrientation.FlatTop => Layout.HorizontalSpacing * (Map.Width - 1) + Layout.CellSize.x,
+				HexOrientation.PointyTop => Layout.CellSize.x * (Map.Width + 0.5f),
 				_ => throw new ArgumentOutOfRangeException()
 			};
 		}
 	}
 
-	public float GeometricHeight {
+	public readonly float GeometricHeight {
 		get {
-			return Orientation switch {
-				HexOrientation.FlatTop => Layout.CellSize.y * (Height + 0.5f),
-				HexOrientation.PointyTop => Layout.VerticalSpacing * (Height - 1) + Layout.CellSize.y,
+			return Map.Orientation switch {
+				HexOrientation.FlatTop => Layout.CellSize.y * (Map.Height + 0.5f),
+				HexOrientation.PointyTop => Layout.VerticalSpacing * (Map.Height - 1) + Layout.CellSize.y,
 				_ => throw new ArgumentOutOfRangeException()
 			};
 		}
 	}
 
-	public Vector3 GeometricCenter {
+	public readonly Vector3 GeometricCenter {
 		get {
 			var point2D = new Vector2(Layout.Origin.x - Layout.CellSize.x / 2 + GeometricWidth / 2,
 			                          Layout.Origin.y - Layout.CellSize.y / 2 + GeometricHeight / 2);
@@ -52,53 +53,44 @@ public class VisualRectangularHexMap3D
 	//----------------------------------------------------------------------------------------------
 
 
-	public VisualRectangularHexMap3D(HexLayout3D layout,
-	                                 uint width, uint height,
-	                                 HexMapLineOffset lineOffset)
-		: base(width, height, layout.Orientation, lineOffset)
-	{
-		Layout = layout;
-	}
-
-
-	public VisualRectangularHexMap3D(HexLayout3D layout, RectangularHexMap map)
-		: base(map.Width, map.Height, layout.Orientation, map.LineOffset)
+	public VisualRectangularHexMap3D(RectangularHexMap map, HexLayout3D layout)
 	{
 		if (layout.Orientation != map.Orientation)
 			throw new ArgumentException();
 
+		Map = map;
 		Layout = layout;
 	}
 
 
-	public AxialPosition? GetAxialPosition(Ray ray)
+	public readonly AxialPosition? GetAxialPosition(Ray ray)
 	{
 		if (! Layout.GetAxialPosition(ray, out var freePos))
 			return null;
-		return Contains(freePos) ? freePos : null;
+		return Map.Contains(freePos) ? freePos : null;
 	}
 
 
-	public Vector3 GetVertex(OffsetPosition offset, FlatTopHexVertex vertex)
+	public readonly Vector3 GetVertex(OffsetPosition offset, FlatTopHexVertex vertex)
 	{
-		return Layout.GetVertex(AxialPositionFrom(offset), vertex);
+		return Layout.GetVertex(Map.AxialPositionFrom(offset), vertex);
 	}
 
 
 
-	public Mesh GetGridLinesMesh()
+	public readonly Mesh GetGridLinesMesh()
 	{
-		int oddColumnCount = (int) (Width / 2 + Width % 2);
-		int evenColumnCount = (int) (Width - oddColumnCount);
-		int outsideEvenColumnCount = (int) (1 - Width % 2);
+		int oddColumnCount = (int) (Map.Width / 2 + Map.Width % 2);
+		int evenColumnCount = (int) (Map.Width - oddColumnCount);
+		int outsideEvenColumnCount = (int) (1 - Map.Width % 2);
 		int insideEvenColumnCount = evenColumnCount - outsideEvenColumnCount;
 
 
 		// Vertices
 
-		int oddColumnVertexCount = (int) (2 + 4 * Height);
+		int oddColumnVertexCount = (int) (2 + 4 * Map.Height);
 		const int evenColumnVertexCount = 2;
-		int outsideEvenColumnRightVertexCount = (int) (2 * Height);
+		int outsideEvenColumnRightVertexCount = (int) (2 * Map.Height);
 
 		var vertexCount =
 			oddColumnVertexCount * oddColumnCount +
@@ -116,7 +108,7 @@ public class VisualRectangularHexMap3D
 				vertices[i++] = GetVertex(new OffsetPosition(col, 0), FlatTopHexVertex.TopLeft);
 				vertices[i++] = GetVertex(new OffsetPosition(col, 0), FlatTopHexVertex.TopRight);
 
-				for (uint row = 0; row < Height; row++) {
+				for (uint row = 0; row < Map.Height; row++) {
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.Right);
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.BottomRight);
 					vertices[i++] = GetVertex(new OffsetPosition(col, row), FlatTopHexVertex.BottomLeft);
@@ -125,15 +117,17 @@ public class VisualRectangularHexMap3D
 
 				// Protruding vertices of next even column
 				if (iOddColumn < oddColumnCount - 1 || outsideEvenColumnCount == 1) {
-					vertices[i++] = GetVertex(new OffsetPosition(col + 1, Height - 1), FlatTopHexVertex.BottomLeft);
-					vertices[i++] = GetVertex(new OffsetPosition(col + 1, Height - 1), FlatTopHexVertex.BottomRight);
+					vertices[i++] =
+						GetVertex(new OffsetPosition(col + 1, Map.Height - 1), FlatTopHexVertex.BottomLeft);
+					vertices[i++] =
+						GetVertex(new OffsetPosition(col + 1, Map.Height - 1), FlatTopHexVertex.BottomRight);
 				}
 			}
 
 			if (outsideEvenColumnCount == 1) {
-				for (uint row = 0; row < Height; row++) {
-					vertices[i++] = GetVertex(new OffsetPosition(Width - 1, row), FlatTopHexVertex.TopRight);
-					vertices[i++] = GetVertex(new OffsetPosition(Width - 1, row), FlatTopHexVertex.Right);
+				for (uint row = 0; row < Map.Height; row++) {
+					vertices[i++] = GetVertex(new OffsetPosition(Map.Width - 1, row), FlatTopHexVertex.TopRight);
+					vertices[i++] = GetVertex(new OffsetPosition(Map.Width - 1, row), FlatTopHexVertex.Right);
 				}
 			}
 
@@ -143,9 +137,9 @@ public class VisualRectangularHexMap3D
 
 		// Indices
 
-		var oddColumnEdgeCount = 1 + 5 * Height;
-		var outsideEvenColumnRightEdgeCount = 2 * Height - 1;
-		var evenColumnEdgeCount = 1 * Height + 3;
+		var oddColumnEdgeCount = 1 + 5 * Map.Height;
+		var outsideEvenColumnRightEdgeCount = 2 * Map.Height - 1;
+		var evenColumnEdgeCount = 1 * Map.Height + 3;
 
 		var edgeCount =
 			oddColumnEdgeCount * oddColumnCount +
@@ -180,7 +174,7 @@ public class VisualRectangularHexMap3D
 				indices[i++] = columnVerticesBaseIndex + 5;
 				indices[i++] = columnVerticesBaseIndex;
 
-				for (var row = 1; row < Height; row++) {
+				for (var row = 1; row < Map.Height; row++) {
 					int cellVerticesBaseIndex = columnVerticesBaseIndex + 2 + row * 4;
 
 					indices[i++] = cellVerticesBaseIndex - 3;
@@ -202,7 +196,7 @@ public class VisualRectangularHexMap3D
 
 			for (var iEvenColumn = 0; iEvenColumn < insideEvenColumnCount; iEvenColumn++) {
 				// Edges between odd columns
-				for (var row = 0; row < Height; row++) {
+				for (var row = 0; row < Map.Height; row++) {
 					int leftVertexIndex = oddColumnVertexIndexStride * iEvenColumn + (2 + row * 4);
 
 					indices[i++] = leftVertexIndex;
@@ -229,11 +223,11 @@ public class VisualRectangularHexMap3D
 			if (outsideEvenColumnCount == 1) {
 				// Right vertices
 				int rightVerticesBaseIndex = oddColumnVertexIndexStride * oddColumnCount;
-				for (var row = 0; row < Height; row++) {
+				for (var row = 0; row < Map.Height; row++) {
 					int cellVerticesBaseIndex = rightVerticesBaseIndex + row * 2;
 
 					// Top
-					indices[i++] = cellVerticesBaseIndex - (4 + 4 * ((int)Height - 1 - row) + 2 + 2 * row);
+					indices[i++] = cellVerticesBaseIndex - (4 + 4 * ((int)Map.Height - 1 - row) + 2 + 2 * row);
 					indices[i++] = cellVerticesBaseIndex;
 
 					// Right-top
@@ -241,7 +235,7 @@ public class VisualRectangularHexMap3D
 					indices[i++] = cellVerticesBaseIndex + 1;
 
 					// Right-bottom
-					if (row < Height - 1) {
+					if (row < Map.Height - 1) {
 						indices[i++] = cellVerticesBaseIndex + 1;
 						indices[i++] = cellVerticesBaseIndex + 2;
 					}

@@ -54,7 +54,7 @@ public class RunningGameController : Controller
 	{
 		_game = game;
 
-		_map = new VisualRectangularHexMap3D(hexLayout, _game.Scene.Map);
+		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
 		_viewModel = new GameVM(this,
 			commandRouter,
