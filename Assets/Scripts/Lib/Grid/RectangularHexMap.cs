@@ -43,7 +43,7 @@ public struct RectangularHexMap
 
 
 	public uint CellIndexFrom(OffsetPosition offsetPosition)
-		=> (uint) (offsetPosition.Row * Height + offsetPosition.Col);
+		=> (uint) (offsetPosition.Row * Width + offsetPosition.Col);
 
 	public uint CellIndexFrom(AxialPosition axial)
 		=> CellIndexFrom(OffsetPositionFrom(axial));
