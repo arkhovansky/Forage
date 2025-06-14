@@ -13,7 +13,6 @@ public interface IScene
 	RectangularHexMap Map { get; }
 
 	IReadOnlyList<uint> TileTerrainTypes { get; }
-	IReadOnlyList<AxialPosition> TileAxialPositions { get; }
 
 	IReadOnlyList<uint> ResourceTypes { get; }
 	IReadOnlyList<AxialPosition> ResourceAxialPositions { get; }

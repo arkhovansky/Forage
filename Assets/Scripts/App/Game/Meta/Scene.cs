@@ -16,7 +16,6 @@ public class Scene : IScene
 	public RectangularHexMap Map { get; }
 
 	public IReadOnlyList<uint> TileTerrainTypes { get; }
-	public IReadOnlyList<AxialPosition> TileAxialPositions => _tileAxialPositions;
 
 	public IReadOnlyList<uint> ResourceTypes {
 		get {
@@ -57,8 +56,6 @@ public class Scene : IScene
 	private readonly uint _width = 12;
 	private readonly uint _height = 8;
 
-	private readonly AxialPosition[] _tileAxialPositions;
-
 	private readonly List<TileResource> _resources = new();
 
 
@@ -82,17 +79,13 @@ public class Scene : IScene
 		};
 
 
-		_tileAxialPositions = new AxialPosition[tileCount];
-
 		for (uint y = 0; y < _height; ++y) {
 			for (uint x = 0; x < _width; ++x) {
 				var tileIndex = y * _width + x;
 
-				_tileAxialPositions[tileIndex] = Map.AxialPositionFromCellIndex(tileIndex);
-
 				var resource = ResourceForTerrain(TileTerrainTypes[(int) tileIndex]);
 				if (resource != null)
-					_resources.Add(new TileResource(resource, _tileAxialPositions[tileIndex]));
+					_resources.Add(new TileResource(resource, Map.AxialPositionFromCellIndex(tileIndex)));
 			}
 		}
 

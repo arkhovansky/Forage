@@ -43,7 +43,6 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 	public void Create(IReadOnlyList<uint> tileTerrainTypes,
-	                   IReadOnlyList<AxialPosition> tilePositions,
 	                   RectangularHexMap map)
 	{
 		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
@@ -66,7 +65,7 @@ public class TerrainInitializer : ITerrainInitializer
 			for (var i = 0; i < terrainTileCount; ++i) {
 				var entity = clonedEntities[i];
 				var terrainTypeId = tileTerrainTypes[i];
-				var axialPosition = tilePositions[i];
+				var axialPosition = map.AxialPositionFromCellIndex((uint)i);
 
 				entityManager.SetComponentData(entity, new TerrainTile(terrainTypeId));
 				entityManager.SetComponentData(entity, new MapPosition(axialPosition));
