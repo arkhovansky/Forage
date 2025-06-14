@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Unity.Assertions;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Graphics;
@@ -16,6 +17,7 @@ using Lib.Util;
 using Lib.VisualGrid;
 
 using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Terrain.Components;
 
 
@@ -73,6 +75,8 @@ public class TerrainInitializer : ITerrainInitializer
 					new LocalToWorld {Value = float4x4.Translate(_grid.GetPoint(axialPosition))});
 				entityManager.SetComponentData(entity, materialMeshInfo_By_TerrainType[terrainTypeId]);
 			}
+
+			CreateMapBuffer(clonedEntities, map);
 		}
 
 		entityManager.DestroyEntity(prototype);
@@ -122,6 +126,19 @@ public class TerrainInitializer : ITerrainInitializer
 			FilterSettings = filterSettings,
 			LightProbeUsage = LightProbeUsage.Off
 		};
+	}
+
+
+	private static void CreateMapBuffer(NativeArray<Entity> tileEntities, RectangularHexMap map)
+	{
+		Assert.IsTrue(tileEntities.Length == map.CellCount);
+
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var mapBuffer = em.AddBuffer<MapTileEntity>(EcsService.GetSingletonEntity());
+		mapBuffer.EnsureCapacity((int)map.CellCount);
+		foreach (var entity in tileEntities)
+			mapBuffer.Add(new MapTileEntity(entity));
 	}
 
 
