@@ -11,7 +11,7 @@ namespace App.Game.Meta {
 
 
 
-public class Scene : IScene
+public class Scene_Stub : IScene
 {
 	public RectangularHexMap Map { get; }
 
@@ -58,7 +58,7 @@ public class Scene : IScene
 
 
 
-	public Scene()
+	public Scene_Stub()
 	{
 		Map = new RectangularHexMap(_width, _height, HexOrientation.FlatTop, HexMapLineOffset.Odd);
 

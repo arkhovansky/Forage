@@ -60,7 +60,7 @@ public class ApplicationController : ApplicationController_Base
 
 	public override void Start()
 	{
-		_gameInstance = new Game.Meta.GameInstance();
+		_gameInstance = new GameInstance_Stub();
 
 		var child = new RunningGameController(_gameInstance,
 			_hexLayout,
