@@ -24,6 +24,10 @@ public struct RectangularHexMap
 	public HexMapLineOffset LineOffset { get; }
 
 
+	public readonly uint CellCount
+		=> Width * Height;
+
+
 	//----------------------------------------------------------------------------------------------
 
 
