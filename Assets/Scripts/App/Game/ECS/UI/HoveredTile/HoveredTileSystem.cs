@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿using Unity.Assertions;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -7,7 +6,7 @@ using Unity.Rendering;
 
 using Lib.Grid;
 
-using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.UI.HoveredTile.Components;
 
 
@@ -37,22 +36,11 @@ public partial struct HoveredTileSystem : ISystem
 		AxialPosition? hoveredPosition = hoveredTileChangedEvent.NewPosition;
 
 		if (hoveredPosition.HasValue) {  // There is the new hovered tile
-			Entity? hoveredTileEntity = null;
+			var hoveredTileEntity = GetTileEntity(hoveredPosition.Value);
 
-			foreach (var (pos, entity) in SystemAPI.Query<MapPosition>().WithEntityAccess()) {
-				if (pos == hoveredPosition.Value) {
-					hoveredTileEntity = entity;
-					break;
-				}
-			}
+			AddNewHoveredTilePresentation(state.EntityManager, hoveredTileEntity);
 
-			if (hoveredTileEntity == null)
-				throw new Exception($"Tile with position {hoveredPosition.Value} not found");
-
-			AddNewHoveredTilePresentation(state.EntityManager, hoveredTileEntity.Value);
-
-			state.EntityManager.AddComponentData(singletonEntity, new HoveredTileEntity(hoveredTileEntity.Value));
-
+			state.EntityManager.AddComponentData(singletonEntity, new HoveredTileEntity(hoveredTileEntity));
 		}
 		else {  // No tile is hovered
 			state.EntityManager.RemoveComponent<HoveredTileEntity>(singletonEntity);
@@ -64,6 +52,15 @@ public partial struct HoveredTileSystem : ISystem
 
 	[BurstCompile]
 	public void OnDestroy(ref SystemState state) { }
+
+
+	private Entity GetTileEntity(AxialPosition position)
+	{
+		var map = SystemAPI.GetSingleton<Map.Components.Singletons.Map>().Value;
+		Assert.IsTrue(map.Contains(position));
+		var mapBuffer = SystemAPI.GetSingletonBuffer<MapTileEntity>();
+		return mapBuffer[(int)map.CellIndexFrom(position)];
+	}
 
 
 	private void RemoveOldHoveredTilePresentation(EntityManager entityManager, Entity singletonEntity)
