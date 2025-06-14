@@ -1,5 +1,6 @@
 using Unity.Entities;
 
+using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Game.ECS.Map.Components.Singletons;
@@ -45,9 +46,9 @@ public class GameService : IGameService
 
 	public void PopulateWorld(IScene scene)
 	{
-		InitHexLayout();
+		InitMap(scene.Map);
 
-		_terrainInitializer.Create(scene.TileTerrainTypes, scene.TileAxialPositions, scene.Map);
+		_terrainInitializer.Create(scene.TileTerrainTypes, scene.Map);
 		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
 		_bandInitializer.Init(scene.BandMemberTypeCounts);
@@ -58,8 +59,9 @@ public class GameService : IGameService
 	}
 
 
-	private void InitHexLayout()
+	private void InitMap(RectangularHexMap map)
 	{
+		EcsService.AddSingletonComponent(new Map(map));
 		EcsService.AddSingletonComponent(new HexLayout3D_Component(_grid));
 	}
 }
