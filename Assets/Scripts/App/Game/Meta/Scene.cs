@@ -1,9 +1,9 @@
-﻿using  System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-using App.Services.BandMembers;
-
 using Lib.Grid;
+
+using App.Services.BandMembers;
 
 
 
@@ -44,8 +44,6 @@ public class Scene : IScene
 	private record Resource(
 		uint Type,
 		float Biomass);
-
-
 
 	private record TileResource(
 		Resource Resource,
