@@ -24,15 +24,13 @@ public partial struct Gathering : ISystem
 		foreach (var (forager,
 			         gatheringActivity,
 			         gatheringActivityEnabled, activityEnabled,
-			         foodConsumer,
-			         entity)
+			         foodConsumer)
 		         in SystemAPI.Query<
 			         Forager,
 			         GatheringActivity,
 			         EnabledRefRW<GatheringActivity>, EnabledRefRW<Activity>,
 			         RefRW<FoodConsumer>
-			         >()
-			         .WithEntityAccess())
+			         >())
 		{
 			var ripeBiomass = SystemAPI.GetComponentRW<RipeBiomass>(gatheringActivity.ResourceEntity);
 
