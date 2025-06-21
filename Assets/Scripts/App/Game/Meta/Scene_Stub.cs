@@ -35,6 +35,9 @@ public class Scene_Stub : IScene
 		}
 	}
 
+	public ISet<uint> ResourceTypeIds
+		=> _resources.Select(r => r.Resource.Type).ToHashSet();
+
 	public YearPeriod StartYearPeriod { get; }
 
 	public IDictionary<uint, uint> BandMemberTypeCounts { get; }

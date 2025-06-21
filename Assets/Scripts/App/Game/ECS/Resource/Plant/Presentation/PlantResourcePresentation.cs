@@ -12,12 +12,11 @@ using UnityEngine.Rendering;
 
 using Lib.Grid;
 using Lib.VisualGrid;
-using Lib.Util;
 
 using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
-using App.Services.Resources;
 
 using Random = UnityEngine.Random;
 
@@ -46,29 +45,7 @@ public partial class PlantResourcePresentation : SystemBase
 	private const float RelativeIconSize = 0.2f;
 
 
-	private HexLayout3D _grid;
-
 	private RenderMeshDescription _renderMeshDescription;
-
-	private RenderMeshArray _renderMeshArray;
-
-	private Dictionary<uint, MaterialMeshInfo>? _materialMeshInfo_By_ResourceType;
-
-	private bool _initialized;
-
-
-
-	public void InitForScene(
-		HexLayout3D grid,
-		IResourceTypePresentationRepository resourceTypePresentationRepository,
-		IReadOnlyList<uint> resourceTypes)
-	{
-		_grid = grid;
-
-		InitMeshMaterialData(resourceTypes, resourceTypePresentationRepository);
-
-		_initialized = true;
-	}
 
 
 
@@ -83,9 +60,6 @@ public partial class PlantResourcePresentation : SystemBase
 
 	protected override void OnUpdate()
 	{
-		if (!_initialized)  // Should not happen
-			return;
-
 		var creationData = new List<ResourceIconsCreationData>();
 		var entitiesToDestroy = new NativeList<Entity>(Allocator.Temp);
 
@@ -137,36 +111,18 @@ public partial class PlantResourcePresentation : SystemBase
 
 
 
-	private void InitMeshMaterialData(IReadOnlyList<uint> resourceTypes,
-	                                  IResourceTypePresentationRepository resourceTypePresentationRepository)
-	{
-		var resourceTypeIds = resourceTypes.ToHashSet();
-
-		_materialMeshInfo_By_ResourceType = new Dictionary<uint, MaterialMeshInfo>();
-		var meshes = new SetList<Mesh>();
-		var materials = new SetList<Material>();
-
-		foreach (var resourceTypeId in resourceTypeIds) {
-			var resourceType = resourceTypePresentationRepository.Get(resourceTypeId);
-
-			var meshIndex = meshes.Add(resourceType.Mesh);
-			var materialIndex = materials.Add(resourceType.Material);
-
-			_materialMeshInfo_By_ResourceType[resourceTypeId] =
-				MaterialMeshInfo.FromRenderMeshArrayIndices(materialIndex, meshIndex);
-		}
-
-		_renderMeshArray = new RenderMeshArray(materials.ToArray(), meshes.ToArray());
-	}
-
-
-
 	private void CreateIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
 	{
+		var renderMeshArray = SystemAPI.ManagedAPI.GetSingleton<ResourceIcons_RenderMeshArray>().Value;
+		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+
 		var prototype = EntityManager.CreateEntity(typeof(LocalTransform));
 		RenderMeshUtility.AddComponents(prototype,
-		                                EntityManager, _renderMeshDescription, _renderMeshArray,
+		                                EntityManager, _renderMeshDescription, renderMeshArray,
 		                                MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
+
+		// Placed after prototype creation, or the buffer is invalidated by structural change (why?)
+		var mmiBuffer = SystemAPI.GetSingletonBuffer<ResourceIcon_MaterialMeshInfo>(true);
 
 		uint totalCount = CountIcons(creationData);
 
@@ -176,7 +132,7 @@ public partial class PlantResourcePresentation : SystemBase
 		for (int iResource = 0, iIcon = 0; iResource < creationData.Count; iResource++) {
 			var resourceData = creationData[iResource];
 
-			var materialMeshInfo = _materialMeshInfo_By_ResourceType![resourceData.ResourceType];
+			var materialMeshInfo = mmiBuffer[(int)resourceData.ResourceType].Value;
 
 			var resourceIconsBuffer = EntityManager.GetBuffer<ResourceIcon>(resourceData.ResourceEntity);
 
@@ -185,7 +141,7 @@ public partial class PlantResourcePresentation : SystemBase
 				uint iconIndexInResource = (uint) resourceIconsBuffer.Length;
 
 				EntityManager.SetComponentData(entity,
-					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource));
+					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, hexLayout));
 
 				EntityManager.SetComponentData(entity, materialMeshInfo);
 
@@ -206,19 +162,21 @@ public partial class PlantResourcePresentation : SystemBase
 	}
 
 
-	private LocalTransform GetIconLocalTransform(AxialPosition tilePosition, uint iconIndexInResource)
+	private LocalTransform GetIconLocalTransform(AxialPosition tilePosition, uint iconIndexInResource,
+	                                             HexLayout3D hexLayout)
 	{
-		var inTilePosition = GetIconInTilePosition(iconIndexInResource);
-		return _grid.GetCellLocalTransform(tilePosition)
+		var inTilePosition = GetIconInTilePosition(iconIndexInResource, hexLayout);
+		return hexLayout.GetCellLocalTransform(tilePosition)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(_grid.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
+			.ApplyScale(hexLayout.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
 	}
 
 	// ReSharper disable once UnusedParameter.Local
-	private Vector2 GetIconInTilePosition(uint iconIndexInResource)
+	private Vector2 GetIconInTilePosition(uint iconIndexInResource,
+	                                      HexLayout3D hexLayout)
 	{
-		var iconRadius = _grid.InnerCellRadius * RelativeIconSize;
-		var areaRadius = _grid.InnerCellRadius - iconRadius;
+		var iconRadius = hexLayout.InnerCellRadius * RelativeIconSize;
+		var areaRadius = hexLayout.InnerCellRadius - iconRadius;
 		return Random.insideUnitCircle * areaRadius;
 	}
 }

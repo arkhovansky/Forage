@@ -38,6 +38,7 @@ public class Application : MonoBehaviour
 	private BandMemberTypeRepository? _bandMemberTypeRepository;
 	private TerrainInitializer? _terrainInitializer;
 	private ResourcesInitializer? _resourcesInitializer;
+	private ResourcePresentationInitializer? _resourcePresentationInitializer;
 	private GameTimeInitializer? _gameTimeInitializer;
 	private BandInitializer? _bandInitializer;
 	private GameService? _gameService;
@@ -60,11 +61,12 @@ public class Application : MonoBehaviour
 		_bandMemberTypeRepository = new BandMemberTypeRepository();
 		_terrainInitializer = new TerrainInitializer(_hexLayout, _terrainTypePresentationRepository);
 		_resourcesInitializer = new ResourcesInitializer(_resourceTypeRepository);
+		_resourcePresentationInitializer = new ResourcePresentationInitializer(_resourceTypePresentationRepository);
 		_gameTimeInitializer = new GameTimeInitializer();
 		_bandInitializer = new BandInitializer(_bandMemberTypeRepository);
 		_gameService = new GameService(
-			_terrainInitializer, _resourcesInitializer, _gameTimeInitializer, _bandInitializer,
-			_hexLayout, _resourceTypePresentationRepository);
+			_terrainInitializer, _resourcesInitializer, _resourcePresentationInitializer, _gameTimeInitializer,
+			_bandInitializer, _hexLayout);
 	}
 
 

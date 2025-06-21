@@ -18,6 +18,8 @@ public interface IScene
 	IReadOnlyList<AxialPosition> ResourceAxialPositions { get; }
 	IReadOnlyList<float> PotentialBiomass { get; }
 
+	ISet<uint> ResourceTypeIds { get; }
+
 	YearPeriod StartYearPeriod { get; }
 
 	IDictionary<uint, uint> BandMemberTypeCounts { get; }
