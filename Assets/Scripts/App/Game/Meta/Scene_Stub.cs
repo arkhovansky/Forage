@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using UnityEngine.Assertions;
+
 using Lib.Grid;
 
 using App.Services.BandMembers;
@@ -78,6 +80,8 @@ public class Scene_Stub : IScene
 			6, 6, 6, 6, 1, 1, 1, 4, 4, 1, 4, 4,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 		};
+
+		Assert.AreEqual(TileTerrainTypes.Count, tileCount);
 
 
 		for (uint y = 0; y < _height; ++y) {
