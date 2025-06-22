@@ -16,8 +16,7 @@ public struct IntraCellMovement : IComponentData, IEnableableComponent
 	/// <summary>
 	/// Coordinate along intra-cell path in range [0, 1]
 	/// </summary>
-	// ReSharper disable once InconsistentNaming
-	public float _x;  // Public only for inspector
+	[SerializeField] private float _x;
 
 	public AxialPosition PreviousPosition;
 

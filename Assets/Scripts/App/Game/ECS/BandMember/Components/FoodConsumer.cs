@@ -11,7 +11,7 @@ public struct FoodConsumer : IComponentData
 {
 	public readonly uint EnergyNeededPerDay;
 
-	public float _energyConsumedToday;  // Public only for inspector
+	[SerializeField] private float _energyConsumedToday;
 
 
 	public float EnergyConsumedToday {

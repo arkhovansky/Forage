@@ -11,7 +11,7 @@ namespace App.Game.ECS.Resource.Plant.Components {
 
 public struct RipeBiomass : IComponentData
 {
-	public float _value;  // Public only for inspector
+	[SerializeField] private float _value;
 
 
 	public float Value {
