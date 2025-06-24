@@ -38,11 +38,19 @@ public struct AxialPosition : IEquatable<AxialPosition>
 		=> !left.Equals(right);
 
 
-	public static AxialPosition operator +(AxialPosition a, AxialPosition b)
-		=> new AxialPosition(a.Q + b.Q, a.R + b.R);
+	public static AxialPosition operator +(AxialPosition p, AxialVector v)
+		=> new(p.Q + v.Q, p.R + v.R);
 
-	public static AxialPosition operator -(AxialPosition a, AxialPosition b)
-		=> new AxialPosition(a.Q - b.Q, a.R - b.R);
+	public static AxialPosition operator -(AxialPosition p, AxialVector v)
+		=> new(p.Q - v.Q, p.R - v.R);
+
+
+	public static AxialVector operator -(AxialPosition a, AxialPosition b)
+		=> new(a.Q - b.Q, a.R - b.R);
+
+
+	public static explicit operator AxialPosition(AxialVector v)
+		=> new(v.Q, v.R);
 
 
 	public override string ToString()

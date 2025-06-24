@@ -37,7 +37,7 @@ public struct HexGrid
 		var i = 0;
 		for (var q = -R; q <= R; ++q)
 		for (var r = System.Math.Max(-R, -q - R); r <= System.Math.Min(R, -q + R); ++r)
-			cellPositions[i++] = center + new AxialPosition(q, r);
+			cellPositions[i++] = center + new AxialVector(q, r);
 
 		return cellPositions;
 	}
