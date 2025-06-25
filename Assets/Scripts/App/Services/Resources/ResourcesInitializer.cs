@@ -43,7 +43,6 @@ public class ResourcesInitializer : IResourcesInitializer
 		var clonedEntities = new NativeArray<Entity>(count, Allocator.Temp);
 		entityManager.Instantiate(prototype, clonedEntities);
 
-
 		for (int i = 0; i < count; ++i) {
 			var entity = clonedEntities[i];
 
@@ -63,33 +62,8 @@ public class ResourcesInitializer : IResourcesInitializer
 
 		clonedEntities.Dispose();
 
-
-		// Spawn most of the entities in a Burst job by cloning a pre-created prototype entity,
-		// which can be either a Prefab or an entity created at run time like in this sample.
-		// This is the fastest and most efficient way to create entities at run time.
-		// var spawnJob = new SpawnJob {
-		// 	Prototype = prototype,
-		// 	Map = map,
-		// 	Ecb = ecb.AsParallelWriter(),
-		// 	MeshBounds = bounds,
-		// 	//ObjectScale = ObjectScale,
-		// };
-		//
-		// var spawnHandle = spawnJob.Schedule((int) map.TileCount, 128);
-		// bounds.Dispose(spawnHandle);
-		//
-		// spawnHandle.Complete();
-		//
-		// ecb.Playback(entityManager);
-		// ecb.Dispose();
-
 		entityManager.DestroyEntity(prototype);
 	}
-
-
-
-	//----------------------------------------------------------------------------------------------
-	// private
 }
 
 
