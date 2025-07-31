@@ -10,8 +10,8 @@ namespace App.Services.Terrain {
 
 public interface ITerrainInitializer
 {
-	void Create(IReadOnlyList<uint> tileTerrainTypes,
-	            RectangularHexMap map);
+	void Init(IReadOnlyList<uint> tileTerrainTypes,
+	          RectangularHexMap map);
 }
 
 

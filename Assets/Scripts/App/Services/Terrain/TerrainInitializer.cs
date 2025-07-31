@@ -44,8 +44,8 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 
-	public void Create(IReadOnlyList<uint> tileTerrainTypes,
-	                   RectangularHexMap map)
+	public void Init(IReadOnlyList<uint> tileTerrainTypes,
+	                 RectangularHexMap map)
 	{
 		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
 
