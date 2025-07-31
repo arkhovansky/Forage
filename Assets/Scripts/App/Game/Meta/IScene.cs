@@ -12,6 +12,8 @@ public interface IScene
 {
 	RectangularHexMap Map { get; }
 
+	float TilePhysicalInnerDiameter { get; }
+
 	IReadOnlyList<uint> TileTerrainTypes { get; }
 
 	IReadOnlyList<uint> ResourceTypes { get; }

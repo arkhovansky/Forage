@@ -11,7 +11,8 @@ namespace App.Services.Terrain {
 public interface ITerrainInitializer
 {
 	void Init(IReadOnlyList<uint> tileTerrainTypes,
-	          RectangularHexMap map);
+	          RectangularHexMap map,
+	          float tilePhysicalInnerDiameter);
 }
 
 

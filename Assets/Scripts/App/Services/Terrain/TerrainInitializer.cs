@@ -45,9 +45,11 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 	public void Init(IReadOnlyList<uint> tileTerrainTypes,
-	                 RectangularHexMap map)
+	                 RectangularHexMap map,
+	                 float tilePhysicalInnerDiameter)
 	{
 		CreateTiles(tileTerrainTypes, map);
+		CreatePhysicalMapParameters(tilePhysicalInnerDiameter);
 		CreateGridLines(map);
 	}
 
@@ -144,6 +146,15 @@ public class TerrainInitializer : ITerrainInitializer
 		mapBuffer.EnsureCapacity((int)map.CellCount);
 		foreach (var entity in tileEntities)
 			mapBuffer.Add(new MapTileEntity(entity));
+	}
+
+
+	private void CreatePhysicalMapParameters(float tilePhysicalInnerDiameter)
+	{
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		em.AddComponentData(EcsService.GetSingletonEntity(),
+		                    new PhysicalMapParameters(tilePhysicalInnerDiameter));
 	}
 
 

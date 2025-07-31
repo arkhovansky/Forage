@@ -17,6 +17,8 @@ public class Scene_Stub : IScene
 {
 	public RectangularHexMap Map { get; }
 
+	public float TilePhysicalInnerDiameter { get; }
+
 	public IReadOnlyList<uint> TileTerrainTypes { get; }
 
 	public IReadOnlyList<uint> ResourceTypes {
@@ -66,6 +68,8 @@ public class Scene_Stub : IScene
 	public Scene_Stub()
 	{
 		Map = new RectangularHexMap(_width, _height, HexOrientation.FlatTop, HexMapLineOffset.Odd);
+
+		TilePhysicalInnerDiameter = 1;
 
 		uint tileCount = _width * _height;
 
