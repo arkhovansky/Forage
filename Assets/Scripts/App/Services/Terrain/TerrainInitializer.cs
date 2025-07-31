@@ -47,6 +47,18 @@ public class TerrainInitializer : ITerrainInitializer
 	public void Init(IReadOnlyList<uint> tileTerrainTypes,
 	                 RectangularHexMap map)
 	{
+		CreateTiles(tileTerrainTypes, map);
+		CreateGridLines(map);
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private void CreateTiles(IReadOnlyList<uint> tileTerrainTypes,
+	                         RectangularHexMap map)
+	{
 		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
 
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -80,14 +92,7 @@ public class TerrainInitializer : ITerrainInitializer
 		}
 
 		entityManager.DestroyEntity(prototype);
-
-
-		CreateGridLines(map);
 	}
-
-
-	//----------------------------------------------------------------------------------------------
-	// private
 
 
 	private
