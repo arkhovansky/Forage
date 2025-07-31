@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Unity.Collections;
 using Unity.Entities;
@@ -32,37 +33,40 @@ public class ResourcesInitializer : IResourcesInitializer
 	                 IReadOnlyList<uint> resourceTypes,
 	                 IReadOnlyList<float> potentialBiomass)
 	{
-		var world = World.DefaultGameObjectInjectionWorld;
-		var entityManager = world.EntityManager;
+		if (!(resourceTypes.Count == mapPositions.Count &&
+		      potentialBiomass.Count == mapPositions.Count))
+			throw new ArgumentException();
 
-		var prototype = entityManager.CreateEntity(
+
+		var count = mapPositions.Count;
+
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var prototype = em.CreateEntity(
 			typeof(MapPosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
 
-		var count = resourceTypes.Count;
+		using (var clonedEntities = new NativeArray<Entity>(count, Allocator.Temp)) {
+			em.Instantiate(prototype, clonedEntities);
 
-		var clonedEntities = new NativeArray<Entity>(count, Allocator.Temp);
-		entityManager.Instantiate(prototype, clonedEntities);
+			for (int i = 0; i < count; ++i) {
+				var entity = clonedEntities[i];
 
-		for (int i = 0; i < count; ++i) {
-			var entity = clonedEntities[i];
+				var resourceTypeId = resourceTypes[i];
+				var resourceType = _resourceTypeRepository.Get(resourceTypeId);
 
-			var resourceTypeId = resourceTypes[i];
-			var resourceType = _resourceTypeRepository.Get(resourceTypeId);
+				em.SetComponentData(entity, new MapPosition(mapPositions[i]));
 
-			entityManager.SetComponentData(entity, new MapPosition(mapPositions[i]));
+				em.SetComponentData(entity, new PlantResource {
+					TypeId = resourceTypeId,
+					RipenessPeriod = resourceType.RipenessPeriod,
+					PotentialBiomass = potentialBiomass[i]
+				});
 
-			entityManager.SetComponentData(entity, new PlantResource {
-				TypeId = resourceTypeId,
-				RipenessPeriod = resourceType.RipenessPeriod,
-				PotentialBiomass = potentialBiomass[i]
-			});
-
-			entityManager.SetComponentData(entity, new RipeBiomass());
+				em.SetComponentData(entity, new RipeBiomass());
+			}
 		}
 
-		clonedEntities.Dispose();
-
-		entityManager.DestroyEntity(prototype);
+		em.DestroyEntity(prototype);
 	}
 }
 
