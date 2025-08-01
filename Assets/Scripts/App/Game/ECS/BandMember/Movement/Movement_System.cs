@@ -15,7 +15,7 @@ namespace App.Game.ECS.BandMember.Movement {
 
 
 [UpdateInGroup(typeof(DomainSimulation))]
-public partial struct Movement : ISystem
+public partial struct Movement_System : ISystem
 {
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)

@@ -14,7 +14,7 @@ namespace App.Game.ECS.BandMember.Gathering {
 
 
 [UpdateInGroup(typeof(DomainSimulation))]
-public partial struct Gathering : ISystem
+public partial struct Gathering_System : ISystem
 {
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
