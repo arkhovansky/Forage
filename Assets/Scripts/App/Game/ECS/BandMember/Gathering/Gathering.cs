@@ -1,15 +1,15 @@
 ﻿using System;
 
-using Unity.Burst;
-using Unity.Entities;
-
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.SystemGroups;
 
+using Unity.Burst;
+using Unity.Entities;
 
 
-namespace App.Game.ECS.BandMember {
+
+namespace App.Game.ECS.BandMember.Gathering {
 
 
 
@@ -26,9 +26,9 @@ public partial struct Gathering : ISystem
 			         gatheringActivityEnabled, activityEnabled,
 			         foodConsumer)
 		         in SystemAPI.Query<
-			         Forager,
-			         GatheringActivity,
-			         EnabledRefRW<GatheringActivity>, EnabledRefRW<Activity>,
+			         Components.Forager,
+			         Components.GatheringActivity,
+			         EnabledRefRW<Components.GatheringActivity>, EnabledRefRW<Activity>,
 			         RefRW<FoodConsumer>
 			         >())
 		{

@@ -2,7 +2,7 @@
 
 
 
-namespace App.Game.ECS.BandMember.Components {
+namespace App.Game.ECS.BandMember.Gathering.Components {
 
 
 

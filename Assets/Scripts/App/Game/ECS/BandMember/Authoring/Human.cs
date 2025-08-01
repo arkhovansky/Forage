@@ -43,9 +43,6 @@ public class Human : MonoBehaviour
 			AddComponent<Activity>(entity);
 			SetComponentEnabled<Activity>(entity, false);
 
-			AddComponent<GatheringActivity>(entity);
-			SetComponentEnabled<GatheringActivity>(entity, false);
-
 			AddComponent<Leisure_Goal>(entity);
 			SetComponentEnabled<Leisure_Goal>(entity, false);
 

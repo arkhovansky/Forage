@@ -3,6 +3,7 @@ using Unity.Entities;
 
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.SystemGroups;
 

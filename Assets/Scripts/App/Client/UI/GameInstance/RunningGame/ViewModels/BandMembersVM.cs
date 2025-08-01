@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.BandMember.Statistics.Components;
 using App.Game.ECS.GameTime.Components.Events;
