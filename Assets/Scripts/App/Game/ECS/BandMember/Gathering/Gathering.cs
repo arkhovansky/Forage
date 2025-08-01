@@ -21,12 +21,12 @@ public partial struct Gathering : ISystem
 	{
 		var hoursDelta = SystemAPI.GetSingleton<GameTime.Components.GameTime>().DeltaHours;
 
-		foreach (var (forager,
+		foreach (var (gatherer,
 			         gatheringActivity,
 			         gatheringActivityEnabled, activityEnabled,
 			         foodConsumer)
 		         in SystemAPI.Query<
-			         Components.Forager,
+			         Components.Gatherer,
 			         Components.GatheringActivity,
 			         EnabledRefRW<Components.GatheringActivity>, EnabledRefRW<Activity>,
 			         RefRW<FoodConsumer>
@@ -35,7 +35,7 @@ public partial struct Gathering : ISystem
 			var ripeBiomass = SystemAPI.GetComponentRW<RipeBiomass>(gatheringActivity.ResourceEntity);
 
 			const float EnergyDensity_kcalPerKg = 1000;
-			float massCanGather = forager.GatheringSpeed * hoursDelta;
+			float massCanGather = gatherer.GatheringSpeed * hoursDelta;
 			float neededMass = foodConsumer.ValueRO.EnergyStillNeeded / EnergyDensity_kcalPerKg;
 
 			float wantedMass = Math.Min(massCanGather, neededMass);
