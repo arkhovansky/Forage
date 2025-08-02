@@ -18,7 +18,7 @@ public struct HexGrid
 	}
 
 
-	public IReadOnlyList<AxialPosition> GetCellsWithinRadius(AxialPosition center, uint radius)
+	public readonly IReadOnlyList<AxialPosition> GetCellsWithinRadius(AxialPosition center, uint radius)
 	{
 		// r c          n  total
 		// 0 1          1

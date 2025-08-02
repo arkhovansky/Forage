@@ -42,18 +42,18 @@ public struct RectangularHexMap
 	}
 
 
-	public OffsetPosition OffsetPositionFromCellIndex(uint cellIndex)
+	public readonly OffsetPosition OffsetPositionFromCellIndex(uint cellIndex)
 		=> new((int)(cellIndex % Width), (int)(cellIndex / Width));
 
 
-	public uint CellIndexFrom(OffsetPosition offsetPosition)
+	public readonly uint CellIndexFrom(OffsetPosition offsetPosition)
 		=> (uint) (offsetPosition.Row * Width + offsetPosition.Col);
 
-	public uint CellIndexFrom(AxialPosition axial)
+	public readonly uint CellIndexFrom(AxialPosition axial)
 		=> CellIndexFrom(OffsetPositionFrom(axial));
 
 
-	public OffsetPosition OffsetPositionFrom(AxialPosition axial)
+	public readonly OffsetPosition OffsetPositionFrom(AxialPosition axial)
 	{
 		int col, row;
 
@@ -78,11 +78,11 @@ public struct RectangularHexMap
 	}
 
 
-	public AxialPosition AxialPositionFromCellIndex(uint cellIndex)
+	public readonly AxialPosition AxialPositionFromCellIndex(uint cellIndex)
 		=> AxialPositionFrom(OffsetPositionFromCellIndex(cellIndex));
 
 
-	public AxialPosition AxialPositionFrom(OffsetPosition offsetPosition)
+	public readonly AxialPosition AxialPositionFrom(OffsetPosition offsetPosition)
 	{
 		int col = offsetPosition.Col;
 		int row = offsetPosition.Row;
@@ -106,13 +106,13 @@ public struct RectangularHexMap
 	}
 
 
-	public bool Contains(OffsetPosition offset)
+	public readonly bool Contains(OffsetPosition offset)
 	{
 		return offset.Col >= 0 && offset.Col < Width &&
 		       offset.Row >= 0 && offset.Row < Height;
 	}
 
-	public bool Contains(AxialPosition position)
+	public readonly bool Contains(AxialPosition position)
 	{
 		return Contains(OffsetPositionFrom(position));
 	}
