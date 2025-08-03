@@ -9,6 +9,8 @@ using Lib.Util;
 
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 
+using Unity.Collections;
+
 
 
 namespace App.Services.Resources {
@@ -34,7 +36,7 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 		var maxResourceTypeId = resourceTypeIds.Max();
 
 		var mmiArray = em.AddBuffer<ResourceIcon_MaterialMeshInfo>(singletonEntity);
-		mmiArray.EnsureCapacity((int)maxResourceTypeId + 1);
+		mmiArray.Resize((int)maxResourceTypeId + 1, NativeArrayOptions.ClearMemory);
 
 		var meshes = new SetList<Mesh>();
 		var materials = new SetList<Material>();
@@ -46,8 +48,8 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 				var meshIndex = meshes.Add(resourceType.Mesh);
 				var materialIndex = materials.Add(resourceType.Material);
 
-				mmiArray.Add(new ResourceIcon_MaterialMeshInfo(
-					              MaterialMeshInfo.FromRenderMeshArrayIndices(materialIndex, meshIndex)));
+				mmiArray[(int)resourceTypeId] = new ResourceIcon_MaterialMeshInfo(
+					MaterialMeshInfo.FromRenderMeshArrayIndices(materialIndex, meshIndex));
 			}
 		}
 
