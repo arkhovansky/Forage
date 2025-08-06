@@ -18,6 +18,7 @@ using Lib.VisualGrid;
 
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
+using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 
 
@@ -66,6 +67,7 @@ public class TerrainInitializer : ITerrainInitializer
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
 		var prototype = entityManager.CreateEntity(typeof(TerrainTile), typeof(MapPosition));
+		entityManager.AddComponent<TilePlantResource>(prototype);
 		RenderMeshUtility.AddComponents(
 			prototype,
 			entityManager,

@@ -46,7 +46,8 @@ public class GameService : IGameService
 		InitMap(scene.Map);
 
 		_terrainInitializer.Init(scene.TileTerrainTypes, scene.Map, scene.TilePhysicalInnerDiameter);
-		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass);
+		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass,
+		                           scene.Map);
 		_resourcePresentationInitializer.Init(scene.ResourceTypeIds);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
 		_bandInitializer.Init(scene.BandMemberTypeCounts);

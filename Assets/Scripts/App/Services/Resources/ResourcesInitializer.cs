@@ -6,7 +6,9 @@ using Unity.Entities;
 
 using Lib.Grid;
 
+using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 
@@ -31,7 +33,8 @@ public class ResourcesInitializer : IResourcesInitializer
 
 	public void Init(IReadOnlyList<AxialPosition> mapPositions,
 	                 IReadOnlyList<uint> resourceTypes,
-	                 IReadOnlyList<float> potentialBiomass)
+	                 IReadOnlyList<float> potentialBiomass,
+	                 in RectangularHexMap map)
 	{
 		if (!(resourceTypes.Count == mapPositions.Count &&
 		      potentialBiomass.Count == mapPositions.Count))
@@ -41,6 +44,8 @@ public class ResourcesInitializer : IResourcesInitializer
 		var count = mapPositions.Count;
 
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var ecsMap = CreateEcsMap(map);
 
 		var prototype = em.CreateEntity(
 			typeof(MapPosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
@@ -63,10 +68,31 @@ public class ResourcesInitializer : IResourcesInitializer
 				});
 
 				em.SetComponentData(entity, new RipeBiomass());
+
+				Set_TilePlantResource(ecsMap.GetTileEntity(mapPositions[i]), entity);
 			}
 		}
 
 		em.DestroyEntity(prototype);
+	}
+
+
+
+	private EcsMap CreateEcsMap(in RectangularHexMap map)
+	{
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		var tileBuffer =
+			em.CreateEntityQuery(typeof(MapTileEntity)).GetSingletonBuffer<MapTileEntity>(isReadOnly: true);
+		return new EcsMap(map, tileBuffer);
+	}
+
+
+	private void Set_TilePlantResource(Entity tileEntity, Entity resourceEntity)
+	{
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+
+		em.SetComponentData(tileEntity, new TilePlantResource(resourceEntity));
 	}
 }
 

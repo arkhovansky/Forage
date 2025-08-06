@@ -118,6 +118,9 @@ public struct HexLayout
 
 
 
+	private static readonly float InnerToOuterDiameterRatio = Mathf.Sqrt(3) / 2f;
+
+
 	private readonly HexOrientationData _orientationData;
 
 	private readonly Vector2 _cellHalfSize;
@@ -293,6 +296,13 @@ public struct HexLayout
 		path[distance - 1] = end;
 
 		return path;
+	}
+
+
+	public static float CellArea_From_InnerDiameter(float innerDiameter)
+	{
+		var outerDiameter = innerDiameter / InnerToOuterDiameterRatio;
+		return innerDiameter * (3f/4 * outerDiameter);
 	}
 
 

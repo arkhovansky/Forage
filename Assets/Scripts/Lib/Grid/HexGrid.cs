@@ -11,10 +11,26 @@ public struct HexGrid
 	public HexOrientation Orientation { get; }
 
 
+	//----------------------------------------------------------------------------------------------
+
+
+	public static readonly AxialVector[] AxialDirectionVectors = {
+		new(+1, 0), new(+1, -1), new(0, -1), new(-1, 0), new(-1, +1), new(0, +1)
+	};
+
+
+	//----------------------------------------------------------------------------------------------
+
 
 	public HexGrid(HexOrientation orientation)
 	{
 		Orientation = orientation;
+	}
+
+
+	public static AxialPosition Neighbor(AxialPosition cell, int directionIndex)
+	{
+		return cell + AxialDirectionVectors[directionIndex];
 	}
 
 

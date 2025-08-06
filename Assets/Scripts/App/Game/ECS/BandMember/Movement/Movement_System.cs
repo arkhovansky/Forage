@@ -17,11 +17,15 @@ namespace App.Game.ECS.BandMember.Movement {
 [UpdateInGroup(typeof(DomainSimulation))]
 public partial struct Movement_System : ISystem
 {
+	public const float MovementCost = 1.5f;
+
+	private const float MinMovementCost = MovementCost;
+
+
+
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		const float movementCost = 2f;
-
 		float cellPhysicalInnerDiameter = SystemAPI.GetSingleton<PhysicalMapParameters>().TileInnerDiameter;
 
 		foreach (var (walker,
@@ -38,7 +42,7 @@ public partial struct Movement_System : ISystem
 			Assert.IsTrue(!(path.Length == 0 && intraCellMovement.ValueRO.IsAtCenter));
 
 			var hoursDelta = SystemAPI.GetSingleton<GameTime.Components.GameTime>().DeltaHours;
-			var speed = walker.ValueRO.BaseSpeed_KmPerH / movementCost;
+			var speed = walker.ValueRO.BaseSpeed_KmPerH / MovementCost;
 			bool arrived;
 
 			do {
@@ -93,6 +97,18 @@ public partial struct Movement_System : ISystem
 				movementActivityEnabled.ValueRW = false;
 			}
 		}
+	}
+
+
+
+	public static float GetMovementTime(float pathTotalMovementCost, float tilePhysicalInnerDiameter, float baseSpeed)
+	{
+		return (tilePhysicalInnerDiameter / baseSpeed) * pathTotalMovementCost;
+	}
+
+	public static float GetMinMovementTime(uint pathTileCount, float tilePhysicalInnerDiameter, float baseSpeed)
+	{
+		return GetMovementTime(pathTileCount * MinMovementCost, tilePhysicalInnerDiameter, baseSpeed);
 	}
 }
 

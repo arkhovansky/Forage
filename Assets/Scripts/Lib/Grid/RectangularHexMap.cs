@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
 
@@ -115,6 +116,27 @@ public struct RectangularHexMap
 	public readonly bool Contains(AxialPosition position)
 	{
 		return Contains(OffsetPositionFrom(position));
+	}
+
+
+	public readonly IReadOnlyList<AxialPosition> GetRingCells(AxialPosition center, uint radius)
+	{
+		if (radius == 0)
+			return new List<AxialPosition> {center};
+
+		var cellCount = radius * 6;
+		var cellPositions = new List<AxialPosition>((int)cellCount);
+
+		AxialPosition pos = center + HexGrid.AxialDirectionVectors[4] * (int)radius;
+		for (int iRingEdge = 0; iRingEdge < 6; ++iRingEdge) {
+			for (var iRingEdgeCell = 0; iRingEdgeCell < radius; ++iRingEdgeCell) {
+				if (Contains(pos))
+					cellPositions.Add(pos);
+				pos = HexGrid.Neighbor(pos, iRingEdge);
+			}
+		}
+
+		return cellPositions;
 	}
 }
 

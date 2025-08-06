@@ -12,7 +12,8 @@ public interface IResourcesInitializer
 {
 	void Init(IReadOnlyList<AxialPosition> mapPositions,
 	          IReadOnlyList<uint> resourceTypes,
-	          IReadOnlyList<float> potentialBiomass);
+	          IReadOnlyList<float> potentialBiomass,
+	          in RectangularHexMap map);
 }
 
 
