@@ -11,7 +11,7 @@ namespace App.Game.ECS.GameTime.Components {
 
 public struct GameTime : IComponentData
 {
-	public const uint DaysInYearPeriod = 5;
+	public const uint DaysInYearPeriod = 30;
 
 
 

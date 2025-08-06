@@ -9,7 +9,7 @@ public class GameInstance_Stub : IGameInstance
 
 	public GameInstance_Stub()
 	{
-		Scene = new Scene_Stub();
+		Scene = new Scene_Stub_2();
 	}
 }
 

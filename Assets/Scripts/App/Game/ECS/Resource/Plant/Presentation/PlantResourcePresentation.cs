@@ -68,7 +68,7 @@ public partial class PlantResourcePresentation : SystemBase
 			         RefRO<PlantResource>, MapPosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
 			         .WithEntityAccess())
 		{
-			const uint biomassPerIcon = 10;
+			const uint biomassPerIcon = 20;
 			int neededIconCount = Mathf.CeilToInt(ripeBiomass.Value / biomassPerIcon);
 
 			if (icons.Length == neededIconCount)

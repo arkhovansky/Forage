@@ -13,7 +13,7 @@ namespace App.Game.Meta {
 
 
 
-public class Scene_Stub : IScene
+public class Scene_Stub_2 : IScene
 {
 	public RectangularHexMap Map { get; }
 
@@ -65,24 +65,24 @@ public class Scene_Stub : IScene
 
 
 
-	public Scene_Stub()
+	public Scene_Stub_2()
 	{
 		Map = new RectangularHexMap(_width, _height, HexOrientation.FlatTop, HexMapLineOffset.Odd);
 
-		TilePhysicalInnerDiameter = 1;
+		TilePhysicalInnerDiameter = 2;
 
 		uint tileCount = _width * _height;
 
 
 		TileTerrainTypes = new uint[] {
-			5, 5, 5, 5, 5, 5, 3, 3, 4, 4, 4, 8,
-			5, 5, 5, 5, 5, 0, 3, 4, 4, 4, 7, 8,
-			5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 7, 8,
-			5, 5, 5, 5, 3, 3, 3, 4, 4, 4, 4, 7,
-			6, 5, 5, 3, 3, 3, 3, 4, 4, 4, 7, 7,
-			6, 6, 6, 3, 3, 3, 4, 4, 4, 7, 7, 8,
-			6, 6, 6, 6, 1, 1, 1, 4, 4, 1, 4, 4,
-			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+			6, 6, 6, 6, 6, 6, 6, 3, 4, 4, 4, 8,
+			6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 7, 8,
+			6, 6, 6, 6, 6, 6, 6, 3, 4, 4, 7, 8,
+			6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 7,
+			6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 7, 7,
+			6, 6, 6, 6, 6, 6, 6, 4, 4, 7, 7, 8,
+			6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 4, 4,
+			6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1
 		};
 
 		Assert.AreEqual(TileTerrainTypes.Count, tileCount);
@@ -103,8 +103,8 @@ public class Scene_Stub : IScene
 
 
 		BandMemberTypeCounts = new Dictionary<uint, uint>();
-		BandMemberTypeCounts.Add((uint)Gender.Male, 5);
-		BandMemberTypeCounts.Add((uint)Gender.Female, 5);
+		BandMemberTypeCounts.Add((uint)Gender.Male, 15);
+		BandMemberTypeCounts.Add((uint)Gender.Female, 15);
 	}
 
 
@@ -113,10 +113,10 @@ public class Scene_Stub : IScene
 		const float scale = 1;
 
 		return terrainType switch {
-			3 => new Resource(2, 300 * scale),
-			4 => new Resource(3, 600 * scale),
-			5 => new Resource(0, 400 * scale),
-			6 => new Resource(1, 500 * scale),
+			3 => new Resource(2, 200 * scale),
+			4 => new Resource(3, 500 * scale),
+			// 5 => new Resource(0, 300 * scale),
+			6 => new Resource(1, 200 * scale),
 			_ => null
 		};
 	}
