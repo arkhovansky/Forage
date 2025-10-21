@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
-using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Client.Framework.UICore.HighLevel;
@@ -9,6 +7,7 @@ using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.UI.HoveredTile.Components;
 using App.Game.Meta;
 using App.Services;
 using App.Services.BandMembers;
@@ -21,7 +20,7 @@ namespace App.Client.UI.GameInstance.RunningGame {
 
 
 
-public class RunningGameController : Controller
+public partial class RunningGameController : Controller
 {
 	private readonly IGameInstance _game;
 
@@ -30,10 +29,6 @@ public class RunningGameController : Controller
 	private readonly GameVM _viewModel;
 	private readonly GameView _uiView;
 
-	private readonly InputAction _pointAction;
-
-	private AxialPosition? _hoveredTilePosition;
-
 	private IUIMode _uiMode;
 
 	private readonly DefaultUIMode _defaultUIMode;
@@ -41,6 +36,18 @@ public class RunningGameController : Controller
 
 	private bool _campPlaced;
 
+	//----------------------------------------------------------------------------------------------
+
+
+	private interface IUIMode
+	{
+		void OnEnter() {}
+		void OnExit() {}
+	}
+
+	public class DefaultUIMode : IUIMode {}
+
+	//----------------------------------------------------------------------------------------------
 
 
 	public RunningGameController(IGameInstance game,
@@ -63,19 +70,15 @@ public class RunningGameController : Controller
 			gui, vvmBinder);
 		gui.AddView(_uiView);
 
-		_pointAction = InputSystem.actions.FindAction("Point");
-
+		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
 		base.AddCommandHandler<EndTurnCommand>(OnEndTurn);
 		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
 
 		_defaultUIMode = new DefaultUIMode();
-		_placeCampUIMode = new PlaceCampUIMode(commandRouter, this);
+		_placeCampUIMode = new PlaceCampUIMode(this);
 
 		_uiMode = _defaultUIMode;
-
-		_viewModel.EnterPlaceCampModeCommand.IsVisible = true;
-		_viewModel.EndTurnCommand.IsVisible = false;
 
 
 		gameService.PopulateWorld(_game.Scene);
@@ -84,16 +87,16 @@ public class RunningGameController : Controller
 
 	public override void Start()
 	{
-	}
+		var sceneViewController = new SceneViewController(Camera.main!, _map,
+		                                                  CommandRouter);
+		AddChildController(sceneViewController);
+		sceneViewController.Start();
 
 
-	protected override void DoUpdate()
-	{
-		var newHoveredTilePosition = GetHoveredTilePosition();
+		_uiMode.OnEnter();
 
-		_uiMode.Update(_hoveredTilePosition, newHoveredTilePosition);
-
-		_hoveredTilePosition = newHoveredTilePosition;
+		_viewModel.EnterPlaceCampModeCommand.IsVisible = true;
+		_viewModel.EndTurnCommand.IsVisible = false;
 	}
 
 
@@ -115,10 +118,8 @@ public class RunningGameController : Controller
 	{
 		if (_campPlaced)
 			return;
-		if (_uiMode == _placeCampUIMode)
-			return;
 
-		_uiMode = _placeCampUIMode;
+		SetUIMode(_placeCampUIMode);
 	}
 
 
@@ -128,25 +129,29 @@ public class RunningGameController : Controller
 
 		_campPlaced = true;
 
-		_uiMode = _defaultUIMode;
+		SetUIMode(_defaultUIMode);
 
 		_viewModel.EnterPlaceCampModeCommand.IsVisible = false;
 		_viewModel.EndTurnCommand.IsVisible = true;
 	}
 
+
+	private void OnHoveredTileChanged(HoveredTileChanged evt)
+	{
+		EcsService.SendEcsCommand(new HoveredTileChanged_Event(evt.Position));
+	}
+
 	#endregion
 
 
-	private AxialPosition? GetHoveredTilePosition()
+	private void SetUIMode(IUIMode mode)
 	{
-		if (Camera.main == null)
-			return null;
+		if (_uiMode == mode)
+			return;
 
-		var point = _pointAction.ReadValue<Vector2>();
-
-		var mouseCameraRay = Camera.main.ScreenPointToRay(new Vector3(point.x, point.y, 0));
-
-		return _map.GetAxialPosition(mouseCameraRay);
+		_uiMode.OnExit();
+		_uiMode = mode;
+		_uiMode.OnEnter();
 	}
 }
 

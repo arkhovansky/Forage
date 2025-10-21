@@ -1,49 +1,36 @@
-﻿using UnityEngine.InputSystem;
-
-using Lib.Grid;
-
-using App.Client.Framework.UICore.HighLevel;
-using App.Game.ECS.UI.HoveredTile.Components;
-using App.Services;
+﻿namespace App.Client.UI.GameInstance.RunningGame {
 
 
 
-namespace App.Client.UI.GameInstance.RunningGame {
-
-
-
-public class PlaceCampUIMode : IUIMode
+public partial class RunningGameController
 {
-	private readonly ICommandRouter _commandRouter;
-	private readonly IController _controller;
-
-	private readonly InputAction _clickAction;
-
-
-
-	public PlaceCampUIMode(ICommandRouter commandRouter, IController controller)
+	private class PlaceCampUIMode : IUIMode
 	{
-		_commandRouter = commandRouter;
-		_controller = controller;
-
-		_clickAction = InputSystem.actions.FindAction("Click");
-	}
+		private readonly RunningGameController _controller;
 
 
-	public void Update(AxialPosition? oldHoveredTilePosition, AxialPosition? newHoveredTilePosition)
-	{
-		if (newHoveredTilePosition != oldHoveredTilePosition)
-			NotifySystems_HoveredTileChanged(newHoveredTilePosition);
 
-		if (_clickAction.WasPerformedThisFrame() && newHoveredTilePosition.HasValue) {
-			_commandRouter.EmitCommand(new PlaceCamp(newHoveredTilePosition.Value), _controller);
+		public PlaceCampUIMode(RunningGameController controller)
+		{
+			_controller = controller;
 		}
-	}
 
 
-	private void NotifySystems_HoveredTileChanged(AxialPosition? tilePosition)
-	{
-		EcsService.SendEcsCommand(new HoveredTileChanged_Event(tilePosition));
+		public void OnEnter()
+		{
+			_controller.AddCommandHandler<TileClicked>(OnTileClicked);
+		}
+
+		public void OnExit()
+		{
+			_controller.RemoveCommandHandler<TileClicked>();
+		}
+
+
+		private void OnTileClicked(TileClicked evt)
+		{
+			_controller.EmitCommand(new PlaceCamp(evt.Position));
+		}
 	}
 }
 
