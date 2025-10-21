@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
 using Lib.Grid;
@@ -22,6 +23,7 @@ namespace App.Client.UI.GameInstance.RunningGame {
 /// </remarks>
 public class SceneViewController : Controller
 {
+	private const int MapOverviewVerticalMargin = 50;
 	private const float ZoomSpeed = 1.0f;
 
 
@@ -73,6 +75,14 @@ public class SceneViewController : Controller
 	}
 
 
+	public void PositionCameraToOverview()
+	{
+		var mapScreenRect = new RectInt(0, MapOverviewVerticalMargin,
+		                                _camera.pixelWidth, _camera.pixelHeight - 2 * MapOverviewVerticalMargin);
+		FitMapRectToScreenRect(_map.BoundingRect2D, mapScreenRect);
+	}
+
+
 	protected override void DoUpdate()
 	{
 		var screenPoint = _pointAction.ReadValue<Vector2>();
@@ -103,6 +113,53 @@ public class SceneViewController : Controller
 
 	//----------------------------------------------------------------------------------------------
 	// private
+
+
+	/// <summary>
+	/// Set camera position so that rectangle in map plane fits into screen-space rectangle.
+	/// </summary>
+	/// <param name="mapRect">Rectangle in map plane.</param>
+	/// <param name="screenRect">Rectangle in screen space.</param>
+	/// <remarks>
+	/// Assumes that camera is tilted down around X to angle (0, 90].
+	/// [TODO] Fits only vertically currently.
+	/// [TODO] Not pixel-perfect.
+	/// </remarks>
+	private void FitMapRectToScreenRect(Rect mapRect, RectInt screenRect)
+	{
+		Assert.IsTrue(_camera.transform.eulerAngles.x is > 0 and <= 90 &&
+		              _camera.transform.eulerAngles is {y: 0, z: 0});
+
+		// Consider projection to YZ plane.
+		// Border rays are rays from camera through top and bottom points (as on screen) of map rect.
+		// Consider camera frustum section named "d1s", distance to which = 1.
+		// Indices 1 and 2 mean lower or upper (as on screen) relative to frustum normal.
+
+		float halfD1SHeight = Mathf.Tan(_camera.fieldOfView / 2f * Mathf.Deg2Rad);
+		float halfPixelHeight = _camera.pixelHeight / 2f;
+
+		// Segments on d1s between border rays and frustum normal
+		float l1_d1s = halfD1SHeight / halfPixelHeight * (screenRect.yMax - halfPixelHeight);
+		float l2_d1s = halfD1SHeight / halfPixelHeight * (halfPixelHeight - screenRect.yMin);
+
+		// Angle between frustum normal and map normal
+		float normalsAngle = (90 - _camera.transform.eulerAngles.x) * Mathf.Deg2Rad;
+
+		// Angles between border rays and map normal
+		float angle1 = Mathf.Atan(l1_d1s) - normalsAngle;
+		float angle2 = Mathf.Atan(l2_d1s) + normalsAngle;
+
+		float tan_angle1 = Mathf.Tan(angle1);
+
+		float cameraY = mapRect.height / (tan_angle1 + Mathf.Tan(angle2));
+
+		// Segment on the map between lower border ray and map normal
+		float l1_map = cameraY * tan_angle1;
+
+		float cameraZ = (mapRect.y - mapRect.height) + l1_map;
+
+		_camera.transform.position = new Vector3(mapRect.center.x, cameraY, cameraZ);
+	}
 
 
 	private bool GetMapPlanePoint(Vector2 screenPoint, out Vector3 mapPoint)

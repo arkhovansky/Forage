@@ -92,6 +92,7 @@ public partial class RunningGameController : Controller
 		AddChildController(sceneViewController);
 		sceneViewController.Start();
 
+		sceneViewController.PositionCameraToOverview();
 
 		_uiMode.OnEnter();
 
