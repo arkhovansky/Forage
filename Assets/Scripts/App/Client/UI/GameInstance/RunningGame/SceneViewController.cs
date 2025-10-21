@@ -22,14 +22,38 @@ namespace App.Client.UI.GameInstance.RunningGame {
 /// </remarks>
 public class SceneViewController : Controller
 {
+	private const float ZoomSpeed = 1.0f;
+
+
 	private readonly Camera _camera;
 
 	private readonly VisualRectangularHexMap3D _map;
 
 	private readonly InputAction _pointAction;
 	private readonly InputAction _clickAction;
+	private readonly InputAction _rightClickAction;
+	private readonly InputAction _zoomAction;
 
 	private AxialPosition? _hoveredTile;
+
+
+	private record MapScrollMode(
+		Vector3 Anchor,
+		Plane AnchorPlane,
+		Camera Camera
+	) {
+		public void Update(Vector2 screenPoint)
+		{
+			var cameraRay = Camera.ScreenPointToRay(new Vector3(screenPoint.x, screenPoint.y, 0));
+			if (!AnchorPlane.Raycast(cameraRay, out var distance))
+				return;
+			var worldPoint = cameraRay.GetPoint(distance);
+
+			Camera.transform.Translate(Anchor - worldPoint, Space.World);
+		}
+	}
+
+	private MapScrollMode? _mapScrollMode;
 
 
 	//----------------------------------------------------------------------------------------------
@@ -44,12 +68,29 @@ public class SceneViewController : Controller
 
 		_pointAction = InputSystem.actions.FindAction("Point");
 		_clickAction = InputSystem.actions.FindAction("Click");
+		_rightClickAction = InputSystem.actions.FindAction("RightClick");
+		_zoomAction = InputSystem.actions.FindAction("ScrollWheel");
 	}
 
 
 	protected override void DoUpdate()
 	{
 		var screenPoint = _pointAction.ReadValue<Vector2>();
+
+		if (_rightClickAction.WasReleasedThisFrame())
+			_mapScrollMode = null;
+
+		if (_mapScrollMode != null)
+			_mapScrollMode.Update(screenPoint);
+		else {
+			if (_rightClickAction.IsPressed()) {
+				if (GetMapPlanePoint(screenPoint, out Vector3 mapPoint))
+					_mapScrollMode = new MapScrollMode(mapPoint, _map.Layout.Plane, _camera);
+			}
+		}
+
+		var zoomControlDelta = _zoomAction.ReadValue<Vector2>().y;
+		Zoom(zoomControlDelta);
 
 		UpdateHoveredTile(screenPoint);
 
@@ -62,6 +103,18 @@ public class SceneViewController : Controller
 
 	//----------------------------------------------------------------------------------------------
 	// private
+
+
+	private bool GetMapPlanePoint(Vector2 screenPoint, out Vector3 mapPoint)
+	{
+		return _map.Layout.GetPoint(GetRay(screenPoint), out mapPoint);
+	}
+
+
+	private void Zoom(float zoomControlValue)
+	{
+		_camera.transform.Translate(0, 0, zoomControlValue * ZoomSpeed);
+	}
 
 
 	private void UpdateHoveredTile(Vector2 screenPoint)
