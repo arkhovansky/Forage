@@ -70,6 +70,11 @@ public struct HexLayout3D
 		=> _layout2D.VerticalSpacing;
 
 	/// <summary>
+	/// Plane the grid lies in.
+	/// </summary>
+	public Plane Plane { get; }
+
+	/// <summary>
 	/// Matrix for projecting from 2D to 3D and back.
 	/// </summary>
 	public Matrix3x2 ProjectionMatrix { get; }
@@ -80,8 +85,6 @@ public struct HexLayout3D
 
 	private readonly HexLayout _layout2D;
 
-	private readonly Plane _plane;
-
 
 	//----------------------------------------------------------------------------------------------
 
@@ -91,7 +94,7 @@ public struct HexLayout3D
 		_layout2D = layout2D;
 		ProjectionMatrix = projectionMatrix;
 		Origin = projectionMatrix.ProjectPoint(layout2D.Origin);
-		_plane = new Plane(projectionMatrix.IBasisVector, Vector3.zero, projectionMatrix.JBasisVector);
+		Plane = new Plane(projectionMatrix.IBasisVector, Vector3.zero, projectionMatrix.JBasisVector);
 	}
 
 
@@ -216,14 +219,24 @@ public struct HexLayout3D
 	}
 
 
-	public readonly bool GetAxialPosition(Ray ray, out AxialPosition position)
+	public readonly bool GetPoint(Ray ray, out Vector3 point)
 	{
-		if (!_plane.Raycast(ray, out float enter)) {
-			position = default;
+		if (!Plane.Raycast(ray, out var enter)) {
+			point = default;
 			return false;
 		}
 
-		Vector3 point3 = ray.GetPoint(enter);
+		point = ray.GetPoint(enter);
+		return true;
+	}
+
+
+	public readonly bool GetAxialPosition(Ray ray, out AxialPosition position)
+	{
+		if (!GetPoint(ray, out Vector3 point3)) {
+			position = default;
+			return false;
+		}
 
 		// Point is already on the grid plane, so this is just a coordinate conversion
 		Vector2 point2 = ProjectionMatrix.BackProjectPoint(point3);
