@@ -41,13 +41,36 @@ public struct VisualRectangularHexMap3D
 		}
 	}
 
-	public readonly Vector3 GeometricCenter {
+	public readonly Rect BoundingRect2D {
 		get {
-			var point2D = new Vector2(Layout.Origin.x - Layout.CellSize.x / 2 + GeometricWidth / 2,
-			                          Layout.Origin.y - Layout.CellSize.y / 2 + GeometricHeight / 2);
-			return Layout.ProjectionMatrix.ProjectPoint(point2D);
+			float x, y;
+
+			switch (Map.Orientation) {
+				case HexOrientation.FlatTop:
+					x = Layout.Origin.x - Layout.CellSize.x / 2;
+					y = Map.LineOffset switch {
+						HexMapLineOffset.Odd => Layout.Origin.y + Layout.CellSize.y / 2,
+						HexMapLineOffset.Even => Layout.Origin.y + Layout.CellSize.y,
+						_ => throw new ArgumentOutOfRangeException()
+					};
+					break;
+				case HexOrientation.PointyTop:
+					x = Map.LineOffset switch {
+						HexMapLineOffset.Odd => Layout.Origin.x - Layout.CellSize.x / 2,
+						HexMapLineOffset.Even => Layout.Origin.x - Layout.CellSize.x,
+						_ => throw new ArgumentOutOfRangeException()
+					};
+					y = Layout.Origin.y + Layout.CellSize.y / 2;
+					break;
+				default: throw new ArgumentOutOfRangeException();
+			};
+
+			return new Rect(x, y, GeometricWidth, GeometricHeight);
 		}
 	}
+
+	public readonly Vector3 GeometricCenter
+		=> Layout.ProjectionMatrix.ProjectPoint(BoundingRect2D.center);
 
 
 	//----------------------------------------------------------------------------------------------
