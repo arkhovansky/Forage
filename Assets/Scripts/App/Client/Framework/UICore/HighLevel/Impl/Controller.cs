@@ -65,6 +65,11 @@ public abstract class Controller : IController
 		commandHandlers[typeof(TCommand)] = method;
 	}
 
+	protected virtual void RemoveCommandHandler<TCommand>()
+	{
+		commandHandlers.Remove(typeof(TCommand));
+	}
+
 
 	protected virtual void EmitCommand(ICommand command)
 	{
