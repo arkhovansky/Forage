@@ -71,6 +71,8 @@ public class ResourcesInitializer : IResourcesInitializer
 
 				em.SetComponentData(entity, new RipeBiomass());
 
+				em.SetName(entity, $"Resource: {resourceType.Name} {mapPosition}");
+
 				Set_TilePlantResource(ecsMap.GetTileEntity(mapPosition), entity);
 			}
 		}

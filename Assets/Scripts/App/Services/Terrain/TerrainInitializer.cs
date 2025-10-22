@@ -90,6 +90,8 @@ public class TerrainInitializer : ITerrainInitializer
 				entityManager.SetComponentData(entity,
 					new LocalToWorld {Value = float4x4.Translate(_grid.GetPoint(axialPosition))});
 				entityManager.SetComponentData(entity, materialMeshInfo_By_TerrainType[terrainTypeId]);
+
+				entityManager.SetName(entity, $"Terrain {axialPosition}");
 			}
 
 			CreateMapBuffer(clonedEntities, map);
@@ -180,6 +182,8 @@ public class TerrainInitializer : ITerrainInitializer
 			MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
 
 		entityManager.SetComponentData(entity, new LocalToWorld {Value = float4x4.Translate(new float3(0, 0.005f, 0))});
+
+		entityManager.SetName(entity, "Grid lines");
 	}
 }
 

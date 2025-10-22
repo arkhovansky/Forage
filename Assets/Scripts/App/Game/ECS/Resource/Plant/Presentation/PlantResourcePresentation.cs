@@ -143,6 +143,10 @@ public partial class PlantResourcePresentation : SystemBase
 				EntityManager.SetComponentData(entity,
 					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, hexLayout));
 
+				EntityManager.SetName(entity,
+					"Resource icon: " +
+					$"type {resourceData.ResourceType} {resourceData.MapPosition} - {iconIndexInResource}");
+
 				EntityManager.SetComponentData(entity, materialMeshInfo);
 
 				resourceIconsBuffer.Add(new ResourceIcon(entity));
