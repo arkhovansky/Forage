@@ -66,39 +66,26 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 		{
 			TargetResourceInfo? target = null;
 
-			// Search in concentric rings
-			for (uint radius = 0; ; radius++) {
-				// Break if we already have a target more optimal than theoretically possible for the current ring
+			foreach (var (ripeBiomass, resourcePosition, resourceEntity)
+			         in SystemAPI.Query<RipeBiomass, MapPosition>().WithEntityAccess())
+			{
+				if (ripeBiomass.IsZero)
+					continue;
+
+				// Skip if we already have a target more optimal than theoretically possible for the current resource
 				if (target != null) {
-					float minRingForageTime = GetMinForagingTime(radius, mapParams, walker, gatherer, foodConsumer);
-					if (target.ForageTime < minRingForageTime)
-						break;
+					uint distance = HexLayout.Distance(foragerPosition, resourcePosition);
+					float minResourceForageTime =
+						GetMinForagingTime(distance, mapParams, walker, gatherer, foodConsumer);
+					if (target.ForageTime < minResourceForageTime)
+						continue;
 				}
 
-				var ringCells = map.GetRingCells(foragerPosition, radius);
-				if (ringCells.Count == 0)
-					break;
+				var pathInfo = CalculatePath(foragerPosition, resourcePosition);
+				float forageTime = GetForagingTime(pathInfo, mapParams, walker, ripeBiomass, gatherer, foodConsumer);
 
-				foreach (var cell in ringCells) {
-					var tileEntity = ecsMap.GetTileEntity(cell);
-					var resourceEntity = SystemAPI.GetComponent<TilePlantResource>(tileEntity).ResourceEntity;
-
-					if (resourceEntity == Entity.Null)
-						continue;
-
-					var ripeBiomass = SystemAPI.GetComponent<RipeBiomass>(resourceEntity);
-
-					if (ripeBiomass.IsZero)
-						continue;
-
-					var pathInfo = CalculatePath(foragerPosition,
-					                             SystemAPI.GetComponent<MapPosition>(resourceEntity));
-					float forageTime = GetForagingTime(
-						pathInfo, mapParams, walker, ripeBiomass, gatherer, foodConsumer);
-
-					if (target == null || forageTime < target.ForageTime) {
-						target = new TargetResourceInfo(cell, pathInfo, resourceEntity, forageTime);
-					}
+				if (target == null || forageTime < target.ForageTime) {
+					target = new TargetResourceInfo(resourcePosition, pathInfo, resourceEntity, forageTime);
 				}
 			}
 
