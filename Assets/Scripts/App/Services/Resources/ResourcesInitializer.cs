@@ -56,10 +56,12 @@ public class ResourcesInitializer : IResourcesInitializer
 			for (int i = 0; i < count; ++i) {
 				var entity = clonedEntities[i];
 
+				var mapPosition = mapPositions[i];
+
 				var resourceTypeId = resourceTypes[i];
 				var resourceType = _resourceTypeRepository.Get(resourceTypeId);
 
-				em.SetComponentData(entity, new MapPosition(mapPositions[i]));
+				em.SetComponentData(entity, new MapPosition(mapPosition));
 
 				em.SetComponentData(entity, new PlantResource {
 					TypeId = resourceTypeId,
@@ -69,7 +71,7 @@ public class ResourcesInitializer : IResourcesInitializer
 
 				em.SetComponentData(entity, new RipeBiomass());
 
-				Set_TilePlantResource(ecsMap.GetTileEntity(mapPositions[i]), entity);
+				Set_TilePlantResource(ecsMap.GetTileEntity(mapPosition), entity);
 			}
 		}
 
