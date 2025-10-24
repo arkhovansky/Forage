@@ -33,6 +33,7 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 		var plainsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Plains");
 		var forestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Forest");
 		var tropicalForestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/TropicalForest");
+		var swampyTropicalForestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/SwampyTropicalForest");
 		var hillsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Hills");
 		var mountainsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Mountains");
 
@@ -44,8 +45,9 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 		_terrainTypes[4] = new TerrainTypePresentation(flatMesh, plainsMaterial);
 		_terrainTypes[5] = new TerrainTypePresentation(flatMesh, forestMaterial);
 		_terrainTypes[6] = new TerrainTypePresentation(flatMesh, tropicalForestMaterial);
-		_terrainTypes[7] = new TerrainTypePresentation(CreateHillsMesh(), hillsMaterial);
-		_terrainTypes[8] = new TerrainTypePresentation(CreateMountainsMesh(), mountainsMaterial);
+		_terrainTypes[7] = new TerrainTypePresentation(flatMesh, swampyTropicalForestMaterial);
+		_terrainTypes[8] = new TerrainTypePresentation(CreateHillsMesh(), hillsMaterial);
+		_terrainTypes[9] = new TerrainTypePresentation(CreateMountainsMesh(), mountainsMaterial);
 	}
 
 

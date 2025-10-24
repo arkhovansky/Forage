@@ -23,8 +23,9 @@ public class TerrainTypeRepository : ITerrainTypeRepository
 		_terrainTypes[4] = new TerrainType("Plains");
 		_terrainTypes[5] = new TerrainType("Forest");
 		_terrainTypes[6] = new TerrainType("Tropical forest");
-		_terrainTypes[7] = new TerrainType("Hills");
-		_terrainTypes[8] = new TerrainType("Mountains");
+		_terrainTypes[7] = new TerrainType("Swampy tropical forest");
+		_terrainTypes[8] = new TerrainType("Hills");
+		_terrainTypes[9] = new TerrainType("Mountains");
 	}
 
 

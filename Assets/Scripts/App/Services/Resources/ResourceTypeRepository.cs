@@ -19,12 +19,10 @@ public class ResourceTypeRepository : IResourceTypeRepository
 
 	public ResourceTypeRepository()
 	{
-		_resourceTypes[0] = new ResourceType("Acorns", new YearPeriod(Month.September));
-		_resourceTypes[1] = new ResourceType("Bananas", new YearPeriod(Month.June));
-		_resourceTypes[2] = new ResourceType("Wheat", new YearPeriod(Month.August));
-		_resourceTypes[3] = new ResourceType("Yam", new YearPeriod(Month.July));
-		// _resourceTypes[4] = new ResourceType("Apples", new YearPeriod(Month.June));
-		// _resourceTypes[5] = new ResourceType("Oranges", new YearPeriod(Month.December));
+		_resourceTypes[0] = new ResourceType("Yam", new YearPeriod(Month.January));
+		// _resourceTypes[0] = new ResourceType("Acorns", new YearPeriod(Month.September));
+		// _resourceTypes[1] = new ResourceType("Bananas", new YearPeriod(Month.June));
+		// _resourceTypes[2] = new ResourceType("Wheat", new YearPeriod(Month.August));
 	}
 
 
