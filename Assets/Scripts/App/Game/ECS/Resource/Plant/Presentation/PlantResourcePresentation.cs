@@ -92,7 +92,7 @@ public partial class PlantResourcePresentation : SystemBase
 		}
 
 		CreateIcons(creationData);
-		EntityManager.DestroyEntity(entitiesToDestroy.AsArray());
+		DestroyIcons(entitiesToDestroy);
 	}
 
 
@@ -158,6 +158,11 @@ public partial class PlantResourcePresentation : SystemBase
 		EntityManager.DestroyEntity(prototype);
 	}
 
+
+	private void DestroyIcons(NativeList<Entity> iconEntities)
+	{
+		EntityManager.DestroyEntity(iconEntities.AsArray());
+	}
 
 
 	private uint CountIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
