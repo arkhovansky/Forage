@@ -29,6 +29,8 @@ public partial class RunningGameController : Controller
 	private readonly GameVM _viewModel;
 	private readonly GameView _uiView;
 
+	private readonly IGameService _gameService;
+
 	private IUIMode _uiMode;
 
 	private readonly DefaultUIMode _defaultUIMode;
@@ -61,6 +63,8 @@ public partial class RunningGameController : Controller
 	{
 		_game = game;
 
+		_gameService = gameService;
+
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
 		_viewModel = new GameVM(this,
@@ -79,14 +83,13 @@ public partial class RunningGameController : Controller
 		_placeCampUIMode = new PlaceCampUIMode(this);
 
 		_uiMode = _defaultUIMode;
-
-
-		gameService.PopulateWorld(_game.Scene);
 	}
 
 
 	public override void Start()
 	{
+		_gameService.PopulateWorld(_game.Scene);
+
 		var sceneViewController = new SceneViewController(Camera.main!, _map,
 		                                                  CommandRouter);
 		AddChildController(sceneViewController);
