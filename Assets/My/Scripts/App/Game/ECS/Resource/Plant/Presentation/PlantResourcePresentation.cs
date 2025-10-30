@@ -17,6 +17,7 @@ using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Game.ECS.SystemGroups;
 
 using Random = UnityEngine.Random;
 
@@ -26,7 +27,7 @@ namespace App.Game.ECS.Resource.Plant.Presentation {
 
 
 
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateInGroup(typeof(LocalTransformPresentation))]
 public partial class PlantResourcePresentation : SystemBase
 {
 	private struct ResourceIconsCreationData

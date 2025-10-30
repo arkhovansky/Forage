@@ -6,6 +6,7 @@ using UnityEngine;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
+using App.Game.ECS.SystemGroups;
 
 
 
@@ -13,7 +14,7 @@ namespace App.Game.ECS.BandMember.Presentation {
 
 
 
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateInGroup(typeof(LocalTransformPresentation))]
 public partial struct BandMemberPresentation : ISystem
 {
 	[BurstCompile]

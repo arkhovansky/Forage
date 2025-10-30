@@ -7,6 +7,7 @@ using Unity.Rendering;
 using Lib.Grid;
 
 using App.Game.ECS.Map.Components.Singletons;
+using App.Game.ECS.SystemGroups;
 using App.Game.ECS.UI.HoveredTile.Components;
 
 
@@ -15,7 +16,7 @@ namespace App.Game.ECS.UI.HoveredTile {
 
 
 
-[UpdateInGroup(typeof(StructuralChangePresentationSystemGroup))]
+[UpdateInGroup(typeof(StructuralChangePresentation))]
 public partial struct HoveredTileSystem : ISystem
 {
 	[BurstCompile]
