@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 
 using Lib.Grid;
 using Lib.VisualGrid;
+using Lib.Math;
 
 using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
@@ -18,8 +19,6 @@ using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
-
-using Lib.Math;
 
 
 
