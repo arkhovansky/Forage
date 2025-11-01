@@ -22,6 +22,10 @@ using App.Services.Terrain;
 
 
 
+namespace App {
+
+
+
 public class Application : MonoBehaviour
 {
 	private IGui? _gui;
@@ -119,4 +123,8 @@ public class Application : MonoBehaviour
 
 		_applicationController!.UpdateViewModels();
 	}
+}
+
+
+
 }
