@@ -1,4 +1,6 @@
-﻿using Lib.VisualGrid;
+﻿using Cysharp.Threading.Tasks;
+
+using Lib.VisualGrid;
 
 using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.LowLevel;
@@ -58,7 +60,7 @@ public class ApplicationController : ApplicationController_Base
 	}
 
 
-	public override void Start()
+	public override async UniTask Start()
 	{
 		_gameInstance = new GameInstance_Stub();
 
@@ -68,7 +70,7 @@ public class ApplicationController : ApplicationController_Base
 			_gameService,
 			_gui, _vvmBinder, _commandRouter);
 		AddChildController(child);
-		child.Start();
+		await child.Start();
 	}
 }
 

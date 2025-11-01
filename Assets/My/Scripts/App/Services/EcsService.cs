@@ -9,13 +9,28 @@ namespace App.Services {
 
 
 /// <summary>
-/// Collection of functions for working with singleton data in ECS world.
+/// Collection of ECS helpers.
 /// </summary>
 /// <remarks>
 /// ECS uses single entity for all singleton components. It is tagged with SingletonEntity_Tag component.
 /// </remarks>
 public static class EcsService
 {
+	public static void SetSystemGroupEnabled<T>(bool enabled) where T : ComponentSystemGroup
+	{
+		var world = World.DefaultGameObjectInjectionWorld;
+		world.GetExistingSystemManaged<T>().Enabled = enabled;
+	}
+
+
+	public static void SetEcsSystemsEnabled(bool enabled)
+	{
+		SetSystemGroupEnabled<InitializationSystemGroup>(enabled);
+		SetSystemGroupEnabled<SimulationSystemGroup>(enabled);
+		SetSystemGroupEnabled<PresentationSystemGroup>(enabled);
+	}
+
+
 	public static Entity GetSingletonEntity()
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

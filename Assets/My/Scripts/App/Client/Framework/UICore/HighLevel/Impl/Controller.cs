@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Cysharp.Threading.Tasks;
+
 
 
 namespace App.Client.Framework.UICore.HighLevel.Impl {
@@ -33,7 +35,7 @@ public abstract class Controller : IController
 
 
 
-	public virtual void Start() {}
+	public virtual UniTask Start() { return UniTask.CompletedTask; }
 
 
 	public virtual void Update()

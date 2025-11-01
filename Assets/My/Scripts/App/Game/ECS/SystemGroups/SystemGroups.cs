@@ -2,6 +2,8 @@
 using Unity.Rendering;
 using Unity.Transforms;
 
+using App.Services;
+
 
 
 namespace App.Game.ECS.SystemGroups {
@@ -41,6 +43,32 @@ public partial class LocalTransformPresentation : ComponentSystemGroup {}
 /// </summary>
 [UpdateInGroup(typeof(StructuralChangePresentationSystemGroup))]
 public partial class StructuralChangePresentation : ComponentSystemGroup {}
+
+
+
+public static class GameSystems
+{
+	private static bool _enabled = true;
+
+
+	public static bool Enabled {
+		get => _enabled;
+		set {
+			if (value == _enabled)
+				return;
+			SetEnabled(value);
+			_enabled = value;
+		}
+	}
+
+
+	private static void SetEnabled(bool enabled)
+	{
+		EcsService.SetSystemGroupEnabled<Simulation>(enabled);
+		EcsService.SetSystemGroupEnabled<LocalTransformPresentation>(enabled);
+		EcsService.SetSystemGroupEnabled<StructuralChangePresentation>(enabled);
+	}
+}
 
 
 

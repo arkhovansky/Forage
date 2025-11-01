@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using Unity.Entities;
+
+using Cysharp.Threading.Tasks;
 
 using Lib.VisualGrid;
 
@@ -7,6 +11,8 @@ using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
 using App.Game.ECS.GameTime.Components.Commands;
+using App.Game.ECS.Prefabs.Components;
+using App.Game.ECS.SystemGroups;
 using App.Game.ECS.UI.HoveredTile.Components;
 using App.Game.Meta;
 using App.Services;
@@ -22,6 +28,9 @@ namespace App.Client.UI.GameInstance.RunningGame {
 
 public partial class RunningGameController : Controller
 {
+	private const string GameSceneName = "Game";
+
+
 	private readonly IGameInstance _game;
 
 	private readonly VisualRectangularHexMap3D _map;
@@ -86,14 +95,21 @@ public partial class RunningGameController : Controller
 	}
 
 
-	public override void Start()
+	public override async UniTask Start()
 	{
+		EcsService.SetEcsSystemsEnabled(true);
+		GameSystems.Enabled = false;
+
+		await LoadGameScene_Async();
+
 		_gameService.PopulateWorld(_game.Scene);
+
+		GameSystems.Enabled = true;
 
 		var sceneViewController = new SceneViewController(Camera.main!, _map,
 		                                                  CommandRouter);
 		AddChildController(sceneViewController);
-		sceneViewController.Start();
+		await sceneViewController.Start();
 
 		sceneViewController.PositionCameraToOverview();
 
@@ -146,6 +162,26 @@ public partial class RunningGameController : Controller
 	}
 
 	#endregion
+
+
+	private async UniTask LoadGameScene_Async()
+	{
+		// Might be already loaded in editor
+		if (SceneManager.GetSceneByName(GameSceneName).IsValid())
+			return;
+
+		await SceneManager.LoadSceneAsync(GameSceneName, LoadSceneMode.Additive);
+		await WaitForSubsceneLoading();
+	}
+
+
+	private async UniTask WaitForSubsceneLoading()
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<PrefabReferences>());
+
+		await UniTask.WaitWhile(() => query.IsEmpty);
+	}
 
 
 	private void SetUIMode(IUIMode mode)

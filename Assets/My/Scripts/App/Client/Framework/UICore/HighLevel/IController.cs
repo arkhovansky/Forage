@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Cysharp.Threading.Tasks;
+
+
+
 namespace App.Client.Framework.UICore.HighLevel {
 
 
@@ -12,7 +16,7 @@ public interface IController
 	IReadOnlyDictionary<Type, Delegate> CommandHandlers { get; }
 
 
-	void Start();
+	UniTask Start();
 
 	void Update();
 

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using Cysharp.Threading.Tasks;
+
 using Lib.Grid;
 using Lib.VisualGrid;
 
@@ -43,6 +45,8 @@ public class Application : MonoBehaviour
 	private BandInitializer? _bandInitializer;
 	private GameService? _gameService;
 
+	private bool _isStarted;
+
 
 
 	private void Awake()
@@ -71,15 +75,20 @@ public class Application : MonoBehaviour
 
 
 
-	private void Start()
+	// ReSharper disable once Unity.IncorrectMethodSignature
+	private async UniTaskVoid Start()
 	{
+		EcsService.SetEcsSystemsEnabled(false);
+
 		_applicationController = new ApplicationController(
 			_hexLayout,
 			_terrainTypeRepository!, _resourceTypeRepository!, _bandMemberTypeRepository!,
 			_gameService!,
 			_gui!, _vvmBinder!, _commandRouter!);
 		// _commandRouter.SetRootController(applicationController);
-		_applicationController.Start();
+		await _applicationController.Start();
+
+		_isStarted = true;
 	}
 
 
@@ -96,6 +105,9 @@ public class Application : MonoBehaviour
 
 	private void Update()
 	{
+		if (!_isStarted)
+			return;
+
 		_commandRouter!.Update();
 		_applicationController!.Update();
 	}
@@ -103,6 +115,9 @@ public class Application : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (!_isStarted)
+			return;
+
 		_applicationController!.UpdateViewModels();
 	}
 }
