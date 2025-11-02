@@ -1,5 +1,6 @@
 ﻿using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
+using App.Client.UI.GameInstance.RunningGame.ViewModels;
 
 
 

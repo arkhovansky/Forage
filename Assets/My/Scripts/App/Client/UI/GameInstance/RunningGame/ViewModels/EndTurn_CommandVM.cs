@@ -6,7 +6,7 @@ using App.Client.Framework.UICore.Mvvm;
 
 
 
-namespace App.Client.UI.GameInstance.RunningGame {
+namespace App.Client.UI.GameInstance.RunningGame.ViewModels {
 
 
 

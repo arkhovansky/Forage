@@ -16,7 +16,7 @@ using App.Services.BandMembers;
 
 
 
-namespace App.Client.UI.GameInstance.RunningGame {
+namespace App.Client.UI.GameInstance.RunningGame.ViewModels {
 
 
 

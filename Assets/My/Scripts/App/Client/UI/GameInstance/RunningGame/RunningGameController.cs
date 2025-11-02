@@ -10,6 +10,7 @@ using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
+using App.Client.UI.GameInstance.RunningGame.ViewModels;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.ECS.SystemGroups;
