@@ -28,7 +28,7 @@
     height: 300px;
 }
 
-.endTurnPane {
+.modeButtonPane {
     width: 200px;
     height: 100px;
     right: 0;
