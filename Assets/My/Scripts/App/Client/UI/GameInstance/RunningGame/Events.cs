@@ -20,4 +20,8 @@ public record TileClicked(
 
 
 
+public class YearPeriodChanged : ICommand {}
+
+
+
 }

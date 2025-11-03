@@ -40,23 +40,23 @@ public partial class RunningGameController : Controller
 
 	private readonly IGameService _gameService;
 
-	private IUIMode _uiMode;
+	private readonly Arrival_Mode _arrival_Mode;
+	private readonly CampPlacing_Mode _campPlacing_Mode;
+	private readonly PeriodRunning_Mode _periodRunning_Mode;
+	private readonly InterPeriod_Mode _interPeriod_Mode;
 
-	private readonly DefaultUIMode _defaultUIMode;
-	private readonly PlaceCampUIMode _placeCampUIMode;
-
-	private bool _campPlaced;
+	private IMode _mode;
 
 	//----------------------------------------------------------------------------------------------
 
 
-	private interface IUIMode
+	private interface IMode
 	{
-		void OnEnter() {}
-		void OnExit() {}
-	}
+		void Enter() {}
+		void Exit() {}
 
-	public class DefaultUIMode : IUIMode {}
+		void Update() {}
+	}
 
 	//----------------------------------------------------------------------------------------------
 
@@ -83,15 +83,19 @@ public partial class RunningGameController : Controller
 			gui, vvmBinder);
 		gui.AddView(_uiView);
 
-		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
-		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
 		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
+		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
+		base.AddCommandHandler<YearPeriodChanged>(OnYearPeriodChanged);
+		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
 
-		_defaultUIMode = new DefaultUIMode();
-		_placeCampUIMode = new PlaceCampUIMode(this);
+		// Should come at the end since modes might use fields (or properties) of this
+		_arrival_Mode = new Arrival_Mode(this);
+		_campPlacing_Mode = new CampPlacing_Mode(this);
+		_periodRunning_Mode = new PeriodRunning_Mode(this);
+		_interPeriod_Mode = new InterPeriod_Mode(this);
 
-		_uiMode = _defaultUIMode;
+		_mode = _arrival_Mode;
 	}
 
 
@@ -113,10 +117,13 @@ public partial class RunningGameController : Controller
 
 		sceneViewController.PositionCameraToOverview();
 
-		_uiMode.OnEnter();
+		_mode.Enter();
+	}
 
-		_viewModel.EnterPlaceCampModeCommand.IsVisible = true;
-		_viewModel.RunYearPeriodCommand.IsVisible = false;
+
+	protected override void DoUpdate()
+	{
+		_mode.Update();
 	}
 
 
@@ -128,18 +135,9 @@ public partial class RunningGameController : Controller
 
 	#region Command handlers
 
-	private void OnRunYearPeriod(RunYearPeriod command)
-	{
-		EcsService.SendEcsCommand(new Game.ECS.GameTime.Components.Commands.RunYearPeriod());
-	}
-
-
 	private void OnEnterPlaceCampMode(EnterPlaceCampMode command)
 	{
-		if (_campPlaced)
-			return;
-
-		SetUIMode(_placeCampUIMode);
+		SetMode(_campPlacing_Mode);
 	}
 
 
@@ -147,12 +145,21 @@ public partial class RunningGameController : Controller
 	{
 		EcsService.SendEcsCommand(new App.Game.ECS.Camp.Components.Commands.PlaceCamp(command.Position));
 
-		_campPlaced = true;
+		SetMode(_periodRunning_Mode);
+	}
 
-		SetUIMode(_defaultUIMode);
 
-		_viewModel.EnterPlaceCampModeCommand.IsVisible = false;
-		_viewModel.RunYearPeriodCommand.IsVisible = true;
+	private void OnRunYearPeriod(RunYearPeriod command)
+	{
+		EcsService.SendEcsCommand(new Game.ECS.GameTime.Components.Commands.RunYearPeriod());
+
+		SetMode(_periodRunning_Mode);
+	}
+
+
+	private void OnYearPeriodChanged(YearPeriodChanged evt)
+	{
+		SetMode(_interPeriod_Mode);
 	}
 
 
@@ -184,14 +191,14 @@ public partial class RunningGameController : Controller
 	}
 
 
-	private void SetUIMode(IUIMode mode)
+	private void SetMode(IMode mode)
 	{
-		if (_uiMode == mode)
+		if (_mode == mode)
 			return;
 
-		_uiMode.OnExit();
-		_uiMode = mode;
-		_uiMode.OnEnter();
+		_mode.Exit();
+		_mode = mode;
+		_mode.Enter();
 	}
 }
 

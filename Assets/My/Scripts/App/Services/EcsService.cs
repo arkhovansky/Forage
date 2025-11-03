@@ -54,6 +54,16 @@ public static class EcsService
 	{
 		AddSingletonComponent(command);
 	}
+
+
+	public static bool IsEventRaised<T>()
+		where T : unmanaged, IComponentData
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var singletonEntity = GetSingletonEntity();
+
+		return entityManager.HasComponent<T>(singletonEntity);
+	}
 }
 
 

@@ -4,24 +4,24 @@
 
 public partial class RunningGameController
 {
-	private class PlaceCampUIMode : IUIMode
+	private class CampPlacing_Mode : IMode
 	{
 		private readonly RunningGameController _controller;
 
 
 
-		public PlaceCampUIMode(RunningGameController controller)
+		public CampPlacing_Mode(RunningGameController controller)
 		{
 			_controller = controller;
 		}
 
 
-		public void OnEnter()
+		public void Enter()
 		{
 			_controller.AddCommandHandler<TileClicked>(OnTileClicked);
 		}
 
-		public void OnExit()
+		public void Exit()
 		{
 			_controller.RemoveCommandHandler<TileClicked>();
 		}
