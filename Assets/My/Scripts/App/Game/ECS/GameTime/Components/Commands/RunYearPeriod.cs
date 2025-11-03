@@ -6,7 +6,7 @@ namespace App.Game.ECS.GameTime.Components.Commands {
 
 
 
-public struct PlayYearPeriod : IComponentData
+public struct RunYearPeriod : IComponentData
 {
 
 }

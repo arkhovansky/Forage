@@ -10,13 +10,13 @@ namespace App.Client.UI.GameInstance.RunningGame.ViewModels {
 
 
 
-public class EndTurn_CommandVM : Command
+public class RunYearPeriod_CommandVM : Command
 {
 	[CreateProperty]
 	public bool IsVisible { get; set; }
 
 
-	public EndTurn_CommandVM(Action action)
+	public RunYearPeriod_CommandVM(Action action)
 		: base(action)
 	{
 	}

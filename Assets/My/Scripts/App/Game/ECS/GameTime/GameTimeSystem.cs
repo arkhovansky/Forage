@@ -52,10 +52,10 @@ public partial struct GameTimeSystem : ISystem
 			state.EntityManager.RemoveComponent<StopGameTime>(singletonEntity);
 		}
 		else {
-			if (SystemAPI.HasSingleton<PlayYearPeriod>()) {
+			if (SystemAPI.HasSingleton<RunYearPeriod>()) {
 				state.EntityManager.AddComponent<GameTimeRun>(singletonEntity);
 
-				state.EntityManager.RemoveComponent<PlayYearPeriod>(singletonEntity);
+				state.EntityManager.RemoveComponent<RunYearPeriod>(singletonEntity);
 			}
 
 			if (SystemAPI.HasSingleton<GameTimeRun>()) {

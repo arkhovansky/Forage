@@ -25,7 +25,7 @@ public class GameVM : IViewModel
 	public TileInfoVM TileInfoVM { get; }
 
 	public EnterPlaceCampMode_CommandVM EnterPlaceCampModeCommand { get; }
-	public EndTurn_CommandVM EndTurnCommand { get; }
+	public RunYearPeriod_CommandVM RunYearPeriodCommand { get; }
 
 
 
@@ -43,8 +43,8 @@ public class GameVM : IViewModel
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
 			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));
-		EndTurnCommand = new EndTurn_CommandVM(
-			() => commandRouter.EmitCommand(new EndTurnCommand(), controller));
+		RunYearPeriodCommand = new RunYearPeriod_CommandVM(
+			() => commandRouter.EmitCommand(new RunYearPeriod(), controller));
 	}
 
 

@@ -44,6 +44,6 @@
     </ui:VisualElement>
     <ui:VisualElement name="modeButtonPane" class="pane modeButtonPane">
         <ui:Button text="Place camp" name="enterPlaceCampModeButton" class="text-only-button" />
-        <ui:Button text="End turn" display-tooltip-when-elided="true" name="endTurnButton" class="text-only-button" />
+        <ui:Button text="End turn" display-tooltip-when-elided="true" name="runYearPeriodButton" class="text-only-button" />
     </ui:VisualElement>
 </ui:UXML>

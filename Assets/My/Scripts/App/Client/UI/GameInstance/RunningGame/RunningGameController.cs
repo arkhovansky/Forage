@@ -11,7 +11,6 @@ using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
 using App.Client.UI.GameInstance.RunningGame.ViewModels;
-using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.ECS.SystemGroups;
 using App.Game.ECS.UI.HoveredTile.Components;
@@ -85,7 +84,7 @@ public partial class RunningGameController : Controller
 		gui.AddView(_uiView);
 
 		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
-		base.AddCommandHandler<EndTurnCommand>(OnEndTurn);
+		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
 		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
 
@@ -117,7 +116,7 @@ public partial class RunningGameController : Controller
 		_uiMode.OnEnter();
 
 		_viewModel.EnterPlaceCampModeCommand.IsVisible = true;
-		_viewModel.EndTurnCommand.IsVisible = false;
+		_viewModel.RunYearPeriodCommand.IsVisible = false;
 	}
 
 
@@ -129,9 +128,9 @@ public partial class RunningGameController : Controller
 
 	#region Command handlers
 
-	private void OnEndTurn(EndTurnCommand command)
+	private void OnRunYearPeriod(RunYearPeriod command)
 	{
-		EcsService.SendEcsCommand(new PlayYearPeriod());
+		EcsService.SendEcsCommand(new Game.ECS.GameTime.Components.Commands.RunYearPeriod());
 	}
 
 
@@ -153,7 +152,7 @@ public partial class RunningGameController : Controller
 		SetUIMode(_defaultUIMode);
 
 		_viewModel.EnterPlaceCampModeCommand.IsVisible = false;
-		_viewModel.EndTurnCommand.IsVisible = true;
+		_viewModel.RunYearPeriodCommand.IsVisible = true;
 	}
 
 

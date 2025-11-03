@@ -25,7 +25,7 @@ public class PlaceCamp : ICommand
 
 
 
-public class EndTurnCommand : ICommand
+public class RunYearPeriod : ICommand
 {
 }
 
