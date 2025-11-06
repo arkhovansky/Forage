@@ -10,11 +10,11 @@ using App.Client.Framework.UICore.HighLevel;
 using App.Client.Framework.UICore.HighLevel.Impl;
 using App.Client.Framework.UICore.LowLevel;
 using App.Client.Framework.UICore.Mvvm;
+using App.Client.UI.GameInstance.RunningGame.Models;
 using App.Client.UI.GameInstance.RunningGame.ViewModels;
 using App.Game.ECS.Prefabs.Components;
-using App.Game.ECS.SystemGroups;
-using App.Game.ECS.UI.HoveredTile.Components;
 using App.Game.Meta;
+using App.Infrastructure.ECS.Models_Impl;
 using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;
@@ -33,12 +33,16 @@ public partial class RunningGameController : Controller
 
 	private readonly IGameInstance _game;
 
+	private readonly IRunningGameInstance _runningGame;
+
+	private readonly IScenePresentationModel _scenePresentationModel;
+
+	private readonly IGameService _gameService;
+
 	private readonly VisualRectangularHexMap3D _map;
 
 	private readonly GameVM _viewModel;
 	private readonly GameView _uiView;
-
-	private readonly IGameService _gameService;
 
 	private readonly Arrival_Mode _arrival_Mode;
 	private readonly CampPlacing_Mode _campPlacing_Mode;
@@ -74,6 +78,10 @@ public partial class RunningGameController : Controller
 
 		_gameService = gameService;
 
+		_runningGame = new RunningGameInstance();
+
+		_scenePresentationModel = new ScenePresentationModel();
+
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
 		_viewModel = new GameVM(this,
@@ -102,13 +110,11 @@ public partial class RunningGameController : Controller
 	public override async UniTask Start()
 	{
 		EcsService.SetEcsSystemsEnabled(true);
-		GameSystems.Enabled = false;
-
 		await LoadGameScene_Async();
 
 		_gameService.PopulateWorld(_game.Scene);
 
-		GameSystems.Enabled = true;
+		_runningGame.Start();
 
 		var sceneViewController = new SceneViewController(Camera.main!, _map,
 		                                                  CommandRouter);
@@ -143,16 +149,14 @@ public partial class RunningGameController : Controller
 
 	private void OnPlaceCamp(PlaceCamp command)
 	{
-		EcsService.SendEcsCommand(new App.Game.ECS.Camp.Components.Commands.PlaceCamp(command.Position));
-
+		_runningGame.PlaceCamp(command.Position);
 		SetMode(_periodRunning_Mode);
 	}
 
 
 	private void OnRunYearPeriod(RunYearPeriod command)
 	{
-		EcsService.SendEcsCommand(new Game.ECS.GameTime.Components.Commands.RunYearPeriod());
-
+		_runningGame.RunYearPeriod();
 		SetMode(_periodRunning_Mode);
 	}
 
@@ -165,7 +169,7 @@ public partial class RunningGameController : Controller
 
 	private void OnHoveredTileChanged(HoveredTileChanged evt)
 	{
-		EcsService.SendEcsCommand(new HoveredTileChanged_Event(evt.Position));
+		_scenePresentationModel.HoveredTile = evt.Position;
 	}
 
 	#endregion

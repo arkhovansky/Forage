@@ -1,8 +1,4 @@
-﻿using App.Services;
-
-
-
-namespace App.Client.UI.GameInstance.RunningGame {
+﻿namespace App.Client.UI.GameInstance.RunningGame {
 
 
 
@@ -22,7 +18,7 @@ public partial class RunningGameController
 
 		public void Update()
 		{
-			if (EcsService.IsEventRaised<Game.ECS.GameTime.Components.Events.YearPeriodChanged>())
+			if (_controller._runningGame.IsYearPeriodChanged())
 				_controller.EmitCommand(new YearPeriodChanged());
 		}
 	}
