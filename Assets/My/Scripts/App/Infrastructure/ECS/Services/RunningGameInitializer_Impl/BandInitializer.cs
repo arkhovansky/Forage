@@ -6,10 +6,11 @@ using Unity.Entities;
 
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.Prefabs.Components;
+using App.Services.BandMembers;
 
 
 
-namespace App.Services.BandMembers {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 

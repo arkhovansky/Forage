@@ -2,7 +2,7 @@
 
 
 
-namespace App.Services.BandMembers {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 

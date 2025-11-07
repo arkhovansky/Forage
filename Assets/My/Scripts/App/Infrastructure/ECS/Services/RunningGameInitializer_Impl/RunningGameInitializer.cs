@@ -1,19 +1,18 @@
 using Lib.Grid;
 using Lib.VisualGrid;
 
+using App.Application.Services;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.Meta;
-using App.Services.BandMembers;
-using App.Services.Resources;
-using App.Services.Terrain;
+using App.Services;
 
 
 
-namespace App.Services {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 
-public class GameService : IGameService
+public class RunningGameInitializer : IRunningGameInitializer
 {
 	private readonly ITerrainInitializer _terrainInitializer;
 	private readonly IResourcesInitializer _resourcesInitializer;
@@ -24,7 +23,7 @@ public class GameService : IGameService
 
 
 
-	public GameService(
+	public RunningGameInitializer(
 		ITerrainInitializer terrainInitializer,
 		IResourcesInitializer resourcesInitializer,
 		IResourcePresentationInitializer resourcePresentationInitializer,

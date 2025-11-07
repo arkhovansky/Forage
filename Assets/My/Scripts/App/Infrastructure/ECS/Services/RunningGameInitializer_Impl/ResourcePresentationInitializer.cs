@@ -8,12 +8,14 @@ using UnityEngine;
 using Lib.Util;
 
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Services;
+using App.Services.Resources;
 
 using Unity.Collections;
 
 
 
-namespace App.Services.Resources {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 

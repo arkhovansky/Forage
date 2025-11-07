@@ -15,6 +15,7 @@ using App.Application.Framework.UnityUICore.Gui;
 using App.Application.Framework.UnityUICore.Mvvm;
 
 using App.Application.Flow;
+using App.Infrastructure.ECS.Services.RunningGameInitializer_Impl;
 using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;
@@ -46,7 +47,7 @@ public class Bootstrap : MonoBehaviour
 	private ResourcePresentationInitializer? _resourcePresentationInitializer;
 	private GameTimeInitializer? _gameTimeInitializer;
 	private BandInitializer? _bandInitializer;
-	private GameService? _gameService;
+	private RunningGameInitializer? _runningGameInitializer;
 
 	private bool _isStarted;
 
@@ -71,7 +72,7 @@ public class Bootstrap : MonoBehaviour
 		_resourcePresentationInitializer = new ResourcePresentationInitializer(_resourceTypePresentationRepository);
 		_gameTimeInitializer = new GameTimeInitializer();
 		_bandInitializer = new BandInitializer(_bandMemberTypeRepository);
-		_gameService = new GameService(
+		_runningGameInitializer = new RunningGameInitializer(
 			_terrainInitializer, _resourcesInitializer, _resourcePresentationInitializer, _gameTimeInitializer,
 			_bandInitializer, _hexLayout);
 	}
@@ -86,7 +87,7 @@ public class Bootstrap : MonoBehaviour
 		_applicationController = new ApplicationController(
 			_hexLayout,
 			_terrainTypeRepository!, _resourceTypeRepository!, _bandMemberTypeRepository!,
-			_gameService!,
+			_runningGameInitializer!,
 			_gui!, _vvmBinder!, _commandRouter!);
 		// _commandRouter.SetRootController(applicationController);
 		await _applicationController.Start();

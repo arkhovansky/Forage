@@ -11,10 +11,11 @@ using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Services.Resources;
 
 
 
-namespace App.Services.Resources {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 

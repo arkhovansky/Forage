@@ -12,6 +12,7 @@ using App.Application.Framework.UICore.Gui;
 using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
+using App.Application.Services;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.Meta;
 using App.Infrastructure.ECS.Models_Impl;
@@ -37,7 +38,7 @@ public partial class RunningGameController : Controller
 
 	private readonly IScenePresentationModel _scenePresentationModel;
 
-	private readonly IGameService _gameService;
+	private readonly IRunningGameInitializer _runningGameInitializer;
 
 	private readonly VisualRectangularHexMap3D _map;
 
@@ -70,13 +71,13 @@ public partial class RunningGameController : Controller
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
 	                             IBandMemberTypeRepository bandMemberTypeRepository,
-	                             IGameService gameService,
+	                             IRunningGameInitializer runningGameInitializer,
 	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
 	{
 		_game = game;
 
-		_gameService = gameService;
+		_runningGameInitializer = runningGameInitializer;
 
 		_runningGame = new RunningGameInstance();
 
@@ -112,7 +113,7 @@ public partial class RunningGameController : Controller
 		EcsService.SetEcsSystemsEnabled(true);
 		await LoadGameScene_Async();
 
-		_gameService.PopulateWorld(_game.Scene);
+		_runningGameInitializer.PopulateWorld(_game.Scene);
 
 		_runningGame.Start();
 

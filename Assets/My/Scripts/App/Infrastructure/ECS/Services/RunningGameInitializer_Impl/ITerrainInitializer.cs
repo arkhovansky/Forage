@@ -4,7 +4,7 @@ using Lib.Grid;
 
 
 
-namespace App.Services.Terrain {
+namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
 
 
 

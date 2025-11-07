@@ -8,8 +8,8 @@ using App.Application.Framework.UICore.Mvvm;
 using App.Application.Framework.UnityUICore.Flow;
 
 using App.Application.Flow.GameInstance.RunningGame;
+using App.Application.Services;
 using App.Game.Meta;
-using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;
 using App.Services.Terrain;
@@ -28,7 +28,7 @@ public class ApplicationController : ApplicationController_Base
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 	private readonly IBandMemberTypeRepository _bandMemberTypeRepository;
 
-	private readonly IGameService _gameService;
+	private readonly IRunningGameInitializer _runningGameInitializer;
 
 	private readonly IGui _gui;
 	private readonly IVvmBinder _vvmBinder;
@@ -42,7 +42,7 @@ public class ApplicationController : ApplicationController_Base
 	                             ITerrainTypeRepository terrainTypeRepository,
 	                             IResourceTypeRepository resourceTypeRepository,
 	                             IBandMemberTypeRepository bandMemberTypeRepository,
-	                             IGameService gameService,
+	                             IRunningGameInitializer runningGameInitializer,
 	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
 	{
@@ -52,7 +52,7 @@ public class ApplicationController : ApplicationController_Base
 		_resourceTypeRepository = resourceTypeRepository;
 		_bandMemberTypeRepository = bandMemberTypeRepository;
 
-		_gameService = gameService;
+		_runningGameInitializer = runningGameInitializer;
 
 		_gui = gui;
 		_vvmBinder = vvmBinder;
@@ -67,7 +67,7 @@ public class ApplicationController : ApplicationController_Base
 		var child = new RunningGameController(_gameInstance,
 			_hexLayout,
 			_terrainTypeRepository, _resourceTypeRepository, _bandMemberTypeRepository,
-			_gameService,
+			_runningGameInitializer,
 			_gui, _vvmBinder, _commandRouter);
 		AddChildController(child);
 		await child.Start();
