@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 using Lib.VisualGrid;
 
+using App.Application.PresentationDatabase;
 
 
-namespace App.Services.Terrain {
+
+namespace App.Infrastructure.PresentationDatabase_Impl {
 
 
 

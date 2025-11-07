@@ -2,8 +2,8 @@
 using Unity.Properties;
 
 using App.Application.Framework.UICore.Mvvm;
+using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Components;
-using App.Services.Resources;
 
 
 

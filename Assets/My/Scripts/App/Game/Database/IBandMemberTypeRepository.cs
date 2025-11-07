@@ -1,4 +1,4 @@
-﻿namespace App.Services.BandMembers {
+﻿namespace App.Game.Database {
 
 
 

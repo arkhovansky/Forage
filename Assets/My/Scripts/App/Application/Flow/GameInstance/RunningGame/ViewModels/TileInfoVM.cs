@@ -5,12 +5,11 @@ using Unity.Properties;
 using Lib.Grid;
 
 using App.Application.Framework.UICore.Mvvm;
+using App.Game.Database;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 using App.Game.ECS.UI.HoveredTile.Components;
-using App.Services.Resources;
-using App.Services.Terrain;
 
 
 

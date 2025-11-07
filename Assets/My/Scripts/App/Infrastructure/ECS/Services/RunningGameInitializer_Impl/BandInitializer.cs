@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 
+using App.Game.Database;
 using App.Game.ECS.BandMember.Components;
 using App.Game.ECS.Prefabs.Components;
-using App.Services.BandMembers;
 
 
 

@@ -1,8 +1,4 @@
-﻿using App.Game;
-
-
-
-namespace App.Services.Resources {
+﻿namespace App.Game.Database {
 
 
 
