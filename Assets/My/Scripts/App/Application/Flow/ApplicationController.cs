@@ -1,0 +1,79 @@
+﻿using Cysharp.Threading.Tasks;
+
+using Lib.VisualGrid;
+
+using App.Application.Framework.UICore.Flow;
+using App.Application.Framework.UICore.Gui;
+using App.Application.Framework.UICore.Mvvm;
+using App.Application.Framework.UnityUICore.Flow;
+
+using App.Application.Flow.GameInstance.RunningGame;
+using App.Game.Meta;
+using App.Services;
+using App.Services.BandMembers;
+using App.Services.Resources;
+using App.Services.Terrain;
+
+
+
+namespace App.Application.Flow {
+
+
+
+public class ApplicationController : ApplicationController_Base
+{
+	private readonly HexLayout3D _hexLayout;
+
+	private readonly ITerrainTypeRepository _terrainTypeRepository;
+	private readonly IResourceTypeRepository _resourceTypeRepository;
+	private readonly IBandMemberTypeRepository _bandMemberTypeRepository;
+
+	private readonly IGameService _gameService;
+
+	private readonly IGui _gui;
+	private readonly IVvmBinder _vvmBinder;
+	private readonly ICommandRouter _commandRouter;
+
+	private IGameInstance? _gameInstance;
+
+
+
+	public ApplicationController(HexLayout3D hexLayout,
+	                             ITerrainTypeRepository terrainTypeRepository,
+	                             IResourceTypeRepository resourceTypeRepository,
+	                             IBandMemberTypeRepository bandMemberTypeRepository,
+	                             IGameService gameService,
+	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
+		: base(commandRouter)
+	{
+		_hexLayout = hexLayout;
+
+		_terrainTypeRepository = terrainTypeRepository;
+		_resourceTypeRepository = resourceTypeRepository;
+		_bandMemberTypeRepository = bandMemberTypeRepository;
+
+		_gameService = gameService;
+
+		_gui = gui;
+		_vvmBinder = vvmBinder;
+		_commandRouter = commandRouter;
+	}
+
+
+	public override async UniTask Start()
+	{
+		_gameInstance = new GameInstance_Stub();
+
+		var child = new RunningGameController(_gameInstance,
+			_hexLayout,
+			_terrainTypeRepository, _resourceTypeRepository, _bandMemberTypeRepository,
+			_gameService,
+			_gui, _vvmBinder, _commandRouter);
+		AddChildController(child);
+		await child.Start();
+	}
+}
+
+
+
+}

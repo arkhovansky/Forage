@@ -1,6 +1,6 @@
 ﻿using Lib.Grid;
 
-using App.Client.UI.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.ECS.UI.HoveredTile.Components;
 using App.Services;
 

@@ -7,14 +7,14 @@ using Lib.Grid;
 using Lib.VisualGrid;
 using Lib.Math;
 
-using App.Client.Framework.UICore.HighLevel;
-using App.Client.Framework.UICore.HighLevel.Impl;
-using App.Client.Framework.UICore.LowLevel;
-using App.Client.Framework.UICore.Mvvm;
-using App.Client.Framework.UnityUICore.LowLevel;
-using App.Client.Framework.UnityUICore.Mvvm;
+using App.Application.Framework.UICore.Flow;
+using App.Application.Framework.UICore.Flow.Impl;
+using App.Application.Framework.UICore.Gui;
+using App.Application.Framework.UICore.Mvvm;
+using App.Application.Framework.UnityUICore.Gui;
+using App.Application.Framework.UnityUICore.Mvvm;
 
-using App.Client.UI;
+using App.Application.Flow;
 using App.Services;
 using App.Services.BandMembers;
 using App.Services.Resources;

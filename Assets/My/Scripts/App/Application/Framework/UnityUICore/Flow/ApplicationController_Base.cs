@@ -1,0 +1,43 @@
+﻿using App.Application.Framework.UICore.Flow;
+using App.Application.Framework.UICore.Flow.Impl;
+
+
+
+namespace App.Application.Framework.UnityUICore.Flow {
+
+
+
+public abstract class ApplicationController_Base : Controller
+{
+	protected ApplicationController_Base(
+		ICommandRouter commandRouter
+	)
+		: base(commandRouter)
+	{
+		base.AddCommandHandler<ExitApplicationCommand>(OnQuitCommand);
+
+		// Intercept standard OS quit commands
+		UnityEngine.Application.wantsToQuit += OnWantsToQuit;
+	}
+
+
+
+	protected virtual void OnQuitCommand(ExitApplicationCommand command)
+	{
+		UnityEngine.Application.wantsToQuit -= OnWantsToQuit;
+		UnityEngine.Application.Quit();
+	}
+
+
+
+	protected virtual bool OnWantsToQuit()
+	{
+		EmitCommand(new ExitApplicationCommand());
+
+		return false;
+	}
+}
+
+
+
+}
