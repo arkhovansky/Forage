@@ -26,7 +26,7 @@ namespace App {
 
 
 
-public class Application : MonoBehaviour
+public class Bootstrap : MonoBehaviour
 {
 	private IGui? _gui;
 	private IVvmBinder? _vvmBinder;
