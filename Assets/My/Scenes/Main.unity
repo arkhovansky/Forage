@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 28309248}
   - component: {fileID: 28309247}
   m_Layer: 0
-  m_Name: Application
+  m_Name: Bootstrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
