@@ -111,7 +111,7 @@ public partial class RunningGameController : Controller
 		EcsService.SetEcsSystemsEnabled(true);
 		await LoadGameScene_Async();
 
-		_runningGameInitializer.PopulateWorld(_game.Scene);
+		_runningGameInitializer.Initialize(_game.Scene);
 
 		_runningGame.Start();
 

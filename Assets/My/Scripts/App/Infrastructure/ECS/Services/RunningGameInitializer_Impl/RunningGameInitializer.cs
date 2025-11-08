@@ -39,7 +39,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 	}
 
 
-	public void PopulateWorld(IScene scene)
+	public void Initialize(IScene scene)
 	{
 		InitMap(scene.Map);
 
