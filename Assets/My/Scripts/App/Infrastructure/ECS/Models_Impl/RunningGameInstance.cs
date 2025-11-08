@@ -5,7 +5,7 @@ using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.SystemGroups;
-using App.Services;
+using App.Infrastructure.ECS.Services;
 
 
 

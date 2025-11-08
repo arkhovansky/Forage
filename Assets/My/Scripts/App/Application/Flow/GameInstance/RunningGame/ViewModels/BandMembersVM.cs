@@ -12,7 +12,7 @@ using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.BandMember.Statistics.Components;
 using App.Game.ECS.GameTime.Components.Events;
-using App.Services;
+using App.Infrastructure.ECS.Services;
 
 
 

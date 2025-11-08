@@ -4,7 +4,7 @@ using App.Game.ECS.Util.Components;
 
 
 
-namespace App.Services {
+namespace App.Infrastructure.ECS.Services {
 
 
 

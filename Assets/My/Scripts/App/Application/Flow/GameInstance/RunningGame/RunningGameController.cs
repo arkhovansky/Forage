@@ -17,7 +17,7 @@ using App.Game.Database;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.Meta;
 using App.Infrastructure.ECS.Models_Impl;
-using App.Services;
+using App.Infrastructure.ECS.Services;
 
 
 

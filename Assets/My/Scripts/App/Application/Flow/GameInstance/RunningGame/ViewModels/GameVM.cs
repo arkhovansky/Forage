@@ -5,7 +5,7 @@ using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Mvvm;
 using App.Game.Database;
 using App.Game.ECS.GameTime.Components;
-using App.Services;
+using App.Infrastructure.ECS.Services;
 
 
 
