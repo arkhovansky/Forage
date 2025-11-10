@@ -1,15 +1,11 @@
-﻿using Unity.Collections;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Properties;
 
-using Lib.Grid;
-
 using App.Application.Framework.UICore.Mvvm;
+using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.Database;
-using App.Game.ECS.Map.Components;
-using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
-using App.Game.ECS.UI.HoveredTile.Components;
+using App.Infrastructure.ECS.Services;
 
 
 
@@ -27,71 +23,48 @@ public class TileInfoVM : IViewModel
 
 
 
+	private readonly IScenePresentationModel _presentationModel;
+
 	private readonly ITerrainTypeRepository _terrainTypeRepository;
 
 
 
-	public TileInfoVM(ITerrainTypeRepository terrainTypeRepository,
+	public TileInfoVM(IScenePresentationModel presentationModel,
+	                  ITerrainTypeRepository terrainTypeRepository,
 	                  IResourceTypeRepository resourceTypeRepository)
 	{
+		_presentationModel = presentationModel;
 		_terrainTypeRepository = terrainTypeRepository;
 
 		TerrainType = string.Empty;
 
-		ResourceInfoVM = new ResourceInfoVM(resourceTypeRepository);
+		ResourceInfoVM = new ResourceInfoVM(presentationModel, resourceTypeRepository);
 	}
 
 
 	public void Update()
 	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<HoveredTileEntity>());
-
-		if (query.TryGetSingleton<HoveredTileEntity>(out var hoveredTileEntityComponent)) {
-			var hoveredTileEntity = hoveredTileEntityComponent.Entity;
-
-			var terrainTileComponent = entityManager.GetComponentData<TerrainTile>(hoveredTileEntity);
-			var terrainTypeId = terrainTileComponent.TerrainType;
-
-			var terrainType = _terrainTypeRepository.Get(terrainTypeId);
-			TerrainType = terrainType.Name;
-
-
-			var position = entityManager.GetComponentData<MapPosition>(hoveredTileEntity).Value;
-
-			if (TryGetResource(position, out Entity resourceEntity))
-				ResourceInfoVM.Show(resourceEntity);
-			else
-				ResourceInfoVM.Hide();
-		}
-		else {
-			TerrainType = string.Empty;
-			ResourceInfoVM.Hide();
-		}
+		UpdateSelf();
+		ResourceInfoVM.Update();
 	}
 
 
-	private bool TryGetResource(AxialPosition position, out Entity resourceEntity)
+	private void UpdateSelf()
 	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var query = entityManager.CreateEntityQuery(
-			ComponentType.ReadOnly<MapPosition>(),
-			ComponentType.ReadOnly<PlantResource>());
-
-		var positions = query.ToComponentDataArray<MapPosition>(Allocator.Temp);
-		var entities = query.ToEntityArray(Allocator.Temp);
-
-		for (var i = 0; i < positions.Length; i++) {
-			if (positions[i] == position) {
-				resourceEntity = entities[i];
-				return true;
-			}
+		if (!_presentationModel.HoveredTile.HasValue) {
+			TerrainType = string.Empty;
+			return;
 		}
 
-		resourceEntity = Entity.Null;
-		return false;
+		var ecsMap = EcsService.GetEcsMap();
+		var hoveredTileEntity = ecsMap.GetTileEntity(_presentationModel.HoveredTile.Value);
+
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var terrainTileComponent = entityManager.GetComponentData<TerrainTile>(hoveredTileEntity);
+		var terrainTypeId = terrainTileComponent.TerrainType;
+
+		var terrainType = _terrainTypeRepository.Get(terrainTypeId);
+		TerrainType = terrainType.Name;
 	}
 }
 

@@ -83,7 +83,7 @@ public partial class RunningGameController : Controller
 
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
-		_viewModel = new GameVM(this,
+		_viewModel = new GameVM(_scenePresentationModel, this,
 			commandRouter,
 			terrainTypeRepository, resourceTypeRepository, bandMemberTypeRepository);
 		_uiView = new GameView(_viewModel,

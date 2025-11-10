@@ -3,6 +3,7 @@ using Unity.Properties;
 
 using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Mvvm;
+using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.Database;
 using App.Game.ECS.GameTime.Components;
 using App.Infrastructure.ECS.Services;
@@ -27,7 +28,8 @@ public class GameVM : IViewModel
 
 
 
-	public GameVM(IController controller,
+	public GameVM(IScenePresentationModel presentationModel,
+	              IController controller,
 	              ICommandRouter commandRouter,
 	              ITerrainTypeRepository terrainTypeRepository,
 	              IResourceTypeRepository resourceTypeRepository,
@@ -37,7 +39,7 @@ public class GameVM : IViewModel
 
 		BandMembersVM = new BandMembersVM(bandMemberTypeRepository);
 
-		TileInfoVM = new TileInfoVM(terrainTypeRepository, resourceTypeRepository);
+		TileInfoVM = new TileInfoVM(presentationModel, terrainTypeRepository, resourceTypeRepository);
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
 			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));

@@ -2,8 +2,10 @@
 using Unity.Properties;
 
 using App.Application.Framework.UICore.Mvvm;
+using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Components;
+using App.Infrastructure.ECS.Services;
 
 
 
@@ -30,12 +32,16 @@ public class ResourceInfoVM : IViewModel
 
 
 
+	private readonly IScenePresentationModel _presentationModel;
+
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 
 
 
-	public ResourceInfoVM(IResourceTypeRepository resourceTypeRepository)
+	public ResourceInfoVM(IScenePresentationModel presentationModel,
+	                      IResourceTypeRepository resourceTypeRepository)
 	{
+		_presentationModel = presentationModel;
 		_resourceTypeRepository = resourceTypeRepository;
 
 		Name = string.Empty;
@@ -43,27 +49,38 @@ public class ResourceInfoVM : IViewModel
 	}
 
 
-	public void Show(Entity resourceEntity)
+	public void Update()
 	{
+		if (!_presentationModel.HoveredTile.HasValue) {
+			IsVisible = false;
+			return;
+		}
+
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var resource = entityManager.GetComponentData<PlantResource>(resourceEntity);
+		var ecsMap = EcsService.GetEcsMap();
+		var hoveredTileEntity = ecsMap.GetTileEntity(_presentationModel.HoveredTile.Value);
 
+		if (!entityManager.HasComponent<TilePlantResource>(hoveredTileEntity)) {
+			IsVisible = false;
+			return;
+		}
+
+		var resourceEntity = entityManager.GetComponentData<TilePlantResource>(hoveredTileEntity).ResourceEntity;
+		if (resourceEntity == Entity.Null) {
+			IsVisible = false;
+			return;
+		}
+
+		var resource = entityManager.GetComponentData<PlantResource>(resourceEntity);
 		var resourceType = _resourceTypeRepository.Get(resource.TypeId);
 
 		Name = resourceType.Name;
 		PotentialBiomass = (uint) resource.PotentialBiomass;
 		RipenessPeriod = resource.RipenessPeriod.Month.ToString();
-
 		RipeBiomass = (uint) entityManager.GetComponentData<RipeBiomass>(resourceEntity).Value;
 
 		IsVisible = true;
-	}
-
-
-	public void Hide()
-	{
-		IsVisible = false;
 	}
 }
 
