@@ -1,5 +1,7 @@
 ﻿using Unity.Entities;
 
+using App.Game.ECS.Map;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Util.Components;
 
 
@@ -63,6 +65,17 @@ public static class EcsService
 		var singletonEntity = GetSingletonEntity();
 
 		return entityManager.HasComponent<T>(singletonEntity);
+	}
+
+
+	public static EcsMap GetEcsMap()
+	{
+		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
+		var singletonEntity = GetSingletonEntity();
+
+		var map = em.GetComponentData<Map>(singletonEntity);
+		var tileBuffer = em.GetBuffer<MapTileEntity>(singletonEntity, isReadOnly: true);
+		return new EcsMap(map, tileBuffer);
 	}
 }
 
