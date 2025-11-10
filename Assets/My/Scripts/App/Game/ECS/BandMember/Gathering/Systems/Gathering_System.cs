@@ -2,9 +2,10 @@
 using Unity.Entities;
 
 using App.Game.ECS.BandMember.AI.Rules;
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.Gathering.Rules;
+using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.SystemGroups;

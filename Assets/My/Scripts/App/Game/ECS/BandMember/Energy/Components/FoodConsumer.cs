@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 
-namespace App.Game.ECS.BandMember.Components {
+namespace App.Game.ECS.BandMember.Energy.Components {
 
 
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.Resource.Plant.Components;
 

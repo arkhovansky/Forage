@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-namespace App.Game.ECS.BandMember.Authoring {
+namespace App.Game.ECS.BandMember.Energy.Authoring {
 
 
 

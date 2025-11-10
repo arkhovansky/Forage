@@ -67,7 +67,7 @@ public partial struct CampPlacement : ISystem
 	{
 		foreach (var (position, localTransform) in
 		         SystemAPI.Query<RefRW<MapPosition>, RefRW<LocalTransform>>()
-			         .WithAll<BandMember.Components.BandMember>())
+			         .WithAll<BandMember.General.Components.BandMember>())
 		{
 			position.ValueRW.Value = campPosition;
 

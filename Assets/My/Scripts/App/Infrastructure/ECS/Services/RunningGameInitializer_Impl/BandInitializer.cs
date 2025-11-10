@@ -5,7 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 
 using App.Game.Database;
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.Prefabs.Components;
 
 

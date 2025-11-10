@@ -3,7 +3,7 @@ using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
 
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.BandMember.Movement.Rules;
 using App.Game.ECS.Map.Components;

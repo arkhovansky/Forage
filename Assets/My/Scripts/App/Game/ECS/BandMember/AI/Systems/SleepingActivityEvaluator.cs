@@ -2,7 +2,7 @@
 using Unity.Entities;
 
 using App.Game.ECS.BandMember.AI.Rules;
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.SystemGroups;
 

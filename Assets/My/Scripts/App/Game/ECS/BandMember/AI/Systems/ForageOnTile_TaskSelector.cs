@@ -9,8 +9,9 @@ using Lib.Grid;
 
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.AI.Rules;
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
+using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.BandMember.Movement.Components;
 using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;

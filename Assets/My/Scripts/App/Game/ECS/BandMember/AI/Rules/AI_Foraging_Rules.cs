@@ -1,6 +1,6 @@
 using Lib.Grid;
 
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.Gathering.Rules;
 using App.Game.ECS.BandMember.Movement.Components;

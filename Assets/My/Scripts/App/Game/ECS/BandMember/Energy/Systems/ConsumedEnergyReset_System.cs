@@ -1,12 +1,12 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 
-using App.Game.ECS.BandMember.Components;
+using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.SystemGroups;
 
 
 
-namespace App.Game.ECS.BandMember.Systems {
+namespace App.Game.ECS.BandMember.Energy.Systems {
 
 
 
