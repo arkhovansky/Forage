@@ -1,5 +1,7 @@
 ﻿using Unity.Entities;
 
+using App.Game.ECS.GameTime.Components;
+
 
 
 namespace App.Game.ECS.Resource.Plant.Components {

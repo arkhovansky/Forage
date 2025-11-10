@@ -2,7 +2,7 @@
 
 
 
-namespace App.Game {
+namespace App.Game.ECS.GameTime.Components {
 
 
 
