@@ -5,11 +5,11 @@ using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.SystemGroups;
-using App.Infrastructure.ECS.Services;
+using App.Infrastructure.EcsGateway.Services;
 
 
 
-namespace App.Infrastructure.ECS.Models_Impl {
+namespace App.Infrastructure.EcsGateway.Models_Impl {
 
 
 

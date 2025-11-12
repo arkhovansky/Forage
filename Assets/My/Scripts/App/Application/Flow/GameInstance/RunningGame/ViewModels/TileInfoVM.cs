@@ -5,7 +5,7 @@ using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.Database;
 using App.Game.ECS.Terrain.Components;
-using App.Infrastructure.ECS.Services;
+using App.Infrastructure.EcsGateway.Services;
 
 
 

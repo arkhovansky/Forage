@@ -2,11 +2,11 @@
 
 using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.ECS.UI.HoveredTile.Components;
-using App.Infrastructure.ECS.Services;
+using App.Infrastructure.EcsGateway.Services;
 
 
 
-namespace App.Infrastructure.ECS.Models_Impl {
+namespace App.Infrastructure.EcsGateway.Models_Impl {
 
 
 

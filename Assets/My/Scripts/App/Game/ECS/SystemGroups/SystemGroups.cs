@@ -2,7 +2,7 @@
 using Unity.Rendering;
 using Unity.Transforms;
 
-using App.Infrastructure.ECS.Services;
+using App.Infrastructure.EcsGateway.Services;
 
 
 

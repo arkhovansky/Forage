@@ -2,7 +2,7 @@
 
 
 
-namespace App.Infrastructure.ECS.Services.RunningGameInitializer_Impl {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
 
 
 

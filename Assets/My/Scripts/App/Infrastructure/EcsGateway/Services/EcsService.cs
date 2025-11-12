@@ -6,7 +6,7 @@ using App.Game.ECS.Util.Components;
 
 
 
-namespace App.Infrastructure.ECS.Services {
+namespace App.Infrastructure.EcsGateway.Services {
 
 
 
