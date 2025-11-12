@@ -2,6 +2,7 @@
 
 using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components.Singletons;
+using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util.Components;
 
 
@@ -18,6 +19,10 @@ namespace App.Infrastructure.EcsGateway.Services {
 /// </remarks>
 public static class EcsService
 {
+	private static bool _gameSystems_Enabled = true;
+
+
+
 	public static void SetSystemGroupEnabled<T>(bool enabled) where T : ComponentSystemGroup
 	{
 		var world = World.DefaultGameObjectInjectionWorld;
@@ -30,6 +35,17 @@ public static class EcsService
 		SetSystemGroupEnabled<InitializationSystemGroup>(enabled);
 		SetSystemGroupEnabled<SimulationSystemGroup>(enabled);
 		SetSystemGroupEnabled<PresentationSystemGroup>(enabled);
+	}
+
+
+	public static bool GameSystems_Enabled {
+		get => _gameSystems_Enabled;
+		set {
+			if (value == _gameSystems_Enabled)
+				return;
+			Set_RootGameSystemGroups_Enabled(value);
+			_gameSystems_Enabled = value;
+		}
 	}
 
 
@@ -76,6 +92,22 @@ public static class EcsService
 		var map = em.GetComponentData<Map>(singletonEntity);
 		var tileBuffer = em.GetBuffer<MapTileEntity>(singletonEntity, isReadOnly: true);
 		return new EcsMap(map, tileBuffer);
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	/// <summary>
+	/// Set Enabled state of root custom system groups
+	/// </summary>
+	/// <param name="enabled"></param>
+	private static void Set_RootGameSystemGroups_Enabled(bool enabled)
+	{
+		SetSystemGroupEnabled<Simulation>(enabled);
+		SetSystemGroupEnabled<LocalTransformPresentation>(enabled);
+		SetSystemGroupEnabled<StructuralChangePresentation>(enabled);
 	}
 }
 

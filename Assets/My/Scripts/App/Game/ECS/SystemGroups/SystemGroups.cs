@@ -2,11 +2,15 @@
 using Unity.Rendering;
 using Unity.Transforms;
 
-using App.Infrastructure.EcsGateway.Services;
-
 
 
 namespace App.Game.ECS.SystemGroups {
+
+
+/***************************************************************************************************
+* NB!
+* All root custom groups must be also present in EcsService in EcsGateway layer
+***************************************************************************************************/
 
 
 
@@ -43,32 +47,6 @@ public partial class LocalTransformPresentation : ComponentSystemGroup {}
 /// </summary>
 [UpdateInGroup(typeof(StructuralChangePresentationSystemGroup))]
 public partial class StructuralChangePresentation : ComponentSystemGroup {}
-
-
-
-public static class GameSystems
-{
-	private static bool _enabled = true;
-
-
-	public static bool Enabled {
-		get => _enabled;
-		set {
-			if (value == _enabled)
-				return;
-			SetEnabled(value);
-			_enabled = value;
-		}
-	}
-
-
-	private static void SetEnabled(bool enabled)
-	{
-		EcsService.SetSystemGroupEnabled<Simulation>(enabled);
-		EcsService.SetSystemGroupEnabled<LocalTransformPresentation>(enabled);
-		EcsService.SetSystemGroupEnabled<StructuralChangePresentation>(enabled);
-	}
-}
 
 
 

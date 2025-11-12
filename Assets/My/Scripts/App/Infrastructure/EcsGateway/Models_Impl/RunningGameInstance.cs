@@ -4,7 +4,6 @@ using App.Application.Flow.GameInstance.RunningGame.Models;
 using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
-using App.Game.ECS.SystemGroups;
 using App.Infrastructure.EcsGateway.Services;
 
 
@@ -17,13 +16,13 @@ public class RunningGameInstance : IRunningGameInstance
 {
 	public RunningGameInstance()
 	{
-		GameSystems.Enabled = false;
+		EcsService.GameSystems_Enabled = false;
 	}
 
 
 	public void Start()
 	{
-		GameSystems.Enabled = true;
+		EcsService.GameSystems_Enabled = true;
 	}
 
 
