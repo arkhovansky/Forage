@@ -4,7 +4,7 @@ using App.Game.Database;
 
 
 
-namespace App.Infrastructure.Database_Impl {
+namespace App.Infrastructure.External.Database_Impl {
 
 
 

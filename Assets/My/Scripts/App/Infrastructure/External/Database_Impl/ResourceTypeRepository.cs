@@ -5,7 +5,7 @@ using App.Game.ECS.GameTime.Components;
 
 
 
-namespace App.Infrastructure.Database_Impl {
+namespace App.Infrastructure.External.Database_Impl {
 
 
 

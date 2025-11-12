@@ -15,10 +15,10 @@ using App.Application.Framework.UnityUICore.Gui;
 using App.Application.Framework.UnityUICore.Mvvm;
 
 using App.Application.Flow;
-using App.Infrastructure.Database_Impl;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl;
-using App.Infrastructure.PresentationDatabase_Impl;
+using App.Infrastructure.External.Database_Impl;
+using App.Infrastructure.External.PresentationDatabase_Impl;
 
 
 
