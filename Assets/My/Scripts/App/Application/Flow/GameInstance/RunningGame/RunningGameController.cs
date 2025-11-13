@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using Unity.Entities;
 
 using Cysharp.Threading.Tasks;
 
@@ -15,7 +13,6 @@ using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 using App.Application.Services;
 using App.Game.Database;
-using App.Game.ECS.Prefabs.Components;
 using App.Game.Meta;
 using App.Infrastructure.EcsGateway.Models_Impl.Domain;
 using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
@@ -29,15 +26,13 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 
 public partial class RunningGameController : Controller
 {
-	private const string GameSceneName = "Game";
-
-
 	private readonly IGameInstance _game;
 
 	private readonly IRunningGameInstance _runningGame;
 
 	private readonly IScenePresentationModel _scenePresentationModel;
 
+	private readonly IInGameMode _inGameMode;
 	private readonly IRunningGameInitializer _runningGameInitializer;
 
 	private readonly VisualRectangularHexMap3D _map;
@@ -84,6 +79,8 @@ public partial class RunningGameController : Controller
 
 		_scenePresentationModel = new ScenePresentationModel();
 
+		_inGameMode = new InGameMode();
+
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
 		_viewModel = new GameVM(_runningGame, _scenePresentationModel, this,
@@ -111,8 +108,7 @@ public partial class RunningGameController : Controller
 
 	public override async UniTask Start()
 	{
-		EcsService.SetEcsSystemsEnabled(true);
-		await LoadGameScene_Async();
+		await _inGameMode.Enter();
 
 		_runningGameInitializer.Initialize(_game.Scene);
 
@@ -175,26 +171,6 @@ public partial class RunningGameController : Controller
 	}
 
 	#endregion
-
-
-	private async UniTask LoadGameScene_Async()
-	{
-		// Might be already loaded in editor
-		if (SceneManager.GetSceneByName(GameSceneName).IsValid())
-			return;
-
-		await SceneManager.LoadSceneAsync(GameSceneName, LoadSceneMode.Additive);
-		await WaitForSubsceneLoading();
-	}
-
-
-	private async UniTask WaitForSubsceneLoading()
-	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<PrefabReferences>());
-
-		await UniTask.WaitWhile(() => query.IsEmpty);
-	}
 
 
 	private void SetMode(IMode mode)
