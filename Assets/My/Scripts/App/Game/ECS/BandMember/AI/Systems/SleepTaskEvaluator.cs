@@ -63,7 +63,7 @@ public partial struct SleepTaskEvaluator : ISystem
 	private void StopTask(Entity entity, ref SystemState state)
 	{
 		SystemAPI.SetComponentEnabled<Task>(entity, false);
-		SystemAPI.SetComponentEnabled<Leisure_Task>(entity, false);
+		SystemAPI.SetComponentEnabled<Sleep_Task>(entity, false);
 	}
 }
 
