@@ -24,6 +24,8 @@ public class GameVM : IViewModel
 	public EnterPlaceCampMode_CommandVM EnterPlaceCampModeCommand { get; }
 	public RunYearPeriod_CommandVM RunYearPeriodCommand { get; }
 
+	public SelectCampLocationHintVM SelectCampLocationHintVM { get; }
+
 
 
 	private readonly IRunningGameInstance_RO _game;
@@ -50,6 +52,8 @@ public class GameVM : IViewModel
 			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));
 		RunYearPeriodCommand = new RunYearPeriod_CommandVM(
 			() => commandRouter.EmitCommand(new RunYearPeriod(), controller));
+
+		SelectCampLocationHintVM = new SelectCampLocationHintVM();
 	}
 
 
