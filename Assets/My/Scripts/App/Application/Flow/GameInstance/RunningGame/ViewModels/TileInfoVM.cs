@@ -1,11 +1,9 @@
-﻿using Unity.Entities;
-using Unity.Properties;
+﻿using Unity.Properties;
 
 using App.Application.Framework.UICore.Mvvm;
-using App.Application.Flow.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.Database;
-using App.Game.ECS.Terrain.Components;
-using App.Infrastructure.EcsGateway.Services;
 
 
 
@@ -23,22 +21,26 @@ public class TileInfoVM : IViewModel
 
 
 
-	private readonly IScenePresentationModel _presentationModel;
+	private readonly IMap _map;
+
+	private readonly IScenePresentationModel_RO _presentationModel;
 
 	private readonly ITerrainTypeRepository _terrainTypeRepository;
 
 
 
-	public TileInfoVM(IScenePresentationModel presentationModel,
+	public TileInfoVM(IMap map,
+	                  IScenePresentationModel_RO presentationModel,
 	                  ITerrainTypeRepository terrainTypeRepository,
 	                  IResourceTypeRepository resourceTypeRepository)
 	{
+		_map = map;
 		_presentationModel = presentationModel;
 		_terrainTypeRepository = terrainTypeRepository;
 
 		TerrainType = string.Empty;
 
-		ResourceInfoVM = new ResourceInfoVM(presentationModel, resourceTypeRepository);
+		ResourceInfoVM = new ResourceInfoVM(map, presentationModel, resourceTypeRepository);
 	}
 
 
@@ -56,13 +58,7 @@ public class TileInfoVM : IViewModel
 			return;
 		}
 
-		var ecsMap = EcsService.GetEcsMap();
-		var hoveredTileEntity = ecsMap.GetTileEntity(_presentationModel.HoveredTile.Value);
-
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var terrainTileComponent = entityManager.GetComponentData<TerrainTile>(hoveredTileEntity);
-		var terrainTypeId = terrainTileComponent.TerrainType;
-
+		var terrainTypeId = _map.Get_TerrainTypeId(_presentationModel.HoveredTile.Value);
 		var terrainType = _terrainTypeRepository.Get(terrainTypeId);
 		TerrainType = terrainType.Name;
 	}

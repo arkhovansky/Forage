@@ -1,12 +1,12 @@
 ﻿using Lib.Grid;
 
-using App.Application.Flow.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.ECS.UI.HoveredTile.Components;
 using App.Infrastructure.EcsGateway.Services;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models_Impl {
+namespace App.Infrastructure.EcsGateway.Models_Impl.Presentation {
 
 
 

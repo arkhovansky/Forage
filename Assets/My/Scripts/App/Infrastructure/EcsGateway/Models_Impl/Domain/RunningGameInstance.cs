@@ -1,6 +1,7 @@
 ﻿using Lib.Grid;
 
-using App.Application.Flow.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
@@ -8,14 +9,19 @@ using App.Infrastructure.EcsGateway.Services;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models_Impl {
+namespace App.Infrastructure.EcsGateway.Models_Impl.Domain {
 
 
 
 public class RunningGameInstance : IRunningGameInstance
 {
-	public RunningGameInstance()
+	public IWorld_RO World { get; }
+
+
+
+	public RunningGameInstance(IWorld_RO world)
 	{
+		World = world;
 		EcsService.GameSystems_Enabled = false;
 	}
 

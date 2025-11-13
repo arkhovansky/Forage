@@ -10,13 +10,15 @@ using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Flow.Impl;
 using App.Application.Framework.UICore.Gui;
 using App.Application.Framework.UICore.Mvvm;
-using App.Application.Flow.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 using App.Application.Services;
 using App.Game.Database;
 using App.Game.ECS.Prefabs.Components;
 using App.Game.Meta;
-using App.Infrastructure.EcsGateway.Models_Impl;
+using App.Infrastructure.EcsGateway.Models_Impl.Domain;
+using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 
 
@@ -77,13 +79,14 @@ public partial class RunningGameController : Controller
 
 		_runningGameInitializer = runningGameInitializer;
 
-		_runningGame = new RunningGameInstance();
+		_runningGame = new RunningGameInstance(
+			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
 
 		_scenePresentationModel = new ScenePresentationModel();
 
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
-		_viewModel = new GameVM(_scenePresentationModel, this,
+		_viewModel = new GameVM(_runningGame, _scenePresentationModel, this,
 			commandRouter,
 			terrainTypeRepository, resourceTypeRepository, bandMemberTypeRepository);
 		_uiView = new GameView(_viewModel,

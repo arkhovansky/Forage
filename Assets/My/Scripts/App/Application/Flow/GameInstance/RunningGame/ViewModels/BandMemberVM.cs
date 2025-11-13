@@ -1,5 +1,8 @@
 ﻿using Unity.Properties;
 
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Database;
+
 
 
 namespace App.Application.Flow.GameInstance.RunningGame.ViewModels {
@@ -9,7 +12,7 @@ namespace App.Application.Flow.GameInstance.RunningGame.ViewModels {
 public class BandMemberVM
 {
 	[CreateProperty]
-	public string Gender { get; set; } = string.Empty;
+	public string Gender { get; set; }
 
 	[CreateProperty]
 	public string Goal { get; set; } = string.Empty;
@@ -33,8 +36,42 @@ public class BandMemberVM
 	public string AverageSleepingHours { get; set; } = string.Empty;
 
 
-	[DontCreateProperty]
-	public int Id;
+
+	private readonly IBandMember_RO _bandMember;
+
+	private readonly ITime _time;
+
+
+
+	public BandMemberVM(IBandMember_RO bandMember,
+	                    ITime time,
+	                    IBandMemberTypeRepository bandMemberTypeRepository)
+	{
+		_bandMember = bandMember;
+		_time = time;
+
+		Gender = bandMemberTypeRepository.Get(bandMember.TypeId).Gender.ToString();
+	}
+
+
+	public void Update()
+	{
+		Goal = _bandMember.Get_Goal().ToString();
+
+		Activity = _bandMember.Get_Activity().ToString();
+
+		if (_time.Get_DayChanged()) {
+			var statistics = _bandMember.Get_YearPeriodStatistics();
+
+			const string format = "F1";
+
+			AverageForagingHours = statistics.AverageForagingHours.ToString(format);
+			AverageGatheringHours = statistics.AverageGatheringHours.ToString(format);
+			AverageMovingHours = statistics.AverageMovingHours.ToString(format);
+			AverageLeisureHours = statistics.AverageLeisureHours.ToString(format);
+			AverageSleepingHours = statistics.AverageSleepingHours.ToString(format);
+		}
+	}
 }
 
 

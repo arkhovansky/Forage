@@ -1,11 +1,9 @@
-﻿using Unity.Entities;
-using Unity.Properties;
+﻿using Unity.Properties;
 
 using App.Application.Framework.UICore.Mvvm;
-using App.Application.Flow.GameInstance.RunningGame.Models;
+using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.Database;
-using App.Game.ECS.Resource.Plant.Components;
-using App.Infrastructure.EcsGateway.Services;
 
 
 
@@ -32,15 +30,19 @@ public class ResourceInfoVM : IViewModel
 
 
 
-	private readonly IScenePresentationModel _presentationModel;
+	private readonly IMap _map;
+
+	private readonly IScenePresentationModel_RO _presentationModel;
 
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 
 
 
-	public ResourceInfoVM(IScenePresentationModel presentationModel,
+	public ResourceInfoVM(IMap map,
+	                      IScenePresentationModel_RO presentationModel,
 	                      IResourceTypeRepository resourceTypeRepository)
 	{
+		_map = map;
 		_presentationModel = presentationModel;
 		_resourceTypeRepository = resourceTypeRepository;
 
@@ -56,29 +58,19 @@ public class ResourceInfoVM : IViewModel
 			return;
 		}
 
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var ecsMap = EcsService.GetEcsMap();
-		var hoveredTileEntity = ecsMap.GetTileEntity(_presentationModel.HoveredTile.Value);
-
-		if (!entityManager.HasComponent<TilePlantResource>(hoveredTileEntity)) {
+		var plantResource = _map.Get_PlantResource(_presentationModel.HoveredTile.Value);
+		if (plantResource == null) {
 			IsVisible = false;
 			return;
 		}
 
-		var resourceEntity = entityManager.GetComponentData<TilePlantResource>(hoveredTileEntity).ResourceEntity;
-		if (resourceEntity == Entity.Null) {
-			IsVisible = false;
-			return;
-		}
-
-		var resource = entityManager.GetComponentData<PlantResource>(resourceEntity);
+		var resource = plantResource.Get_StaticData();
 		var resourceType = _resourceTypeRepository.Get(resource.TypeId);
 
 		Name = resourceType.Name;
 		PotentialBiomass = (uint) resource.PotentialBiomass;
 		RipenessPeriod = resource.RipenessPeriod.Month.ToString();
-		RipeBiomass = (uint) entityManager.GetComponentData<RipeBiomass>(resourceEntity).Value;
+		RipeBiomass = (uint) plantResource.Get_RipeBiomass();
 
 		IsVisible = true;
 	}
