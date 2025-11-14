@@ -8,7 +8,6 @@ using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Game.ECS.Camp.Components.Commands;
-using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Prefabs.Components;
@@ -40,7 +39,6 @@ public partial struct CampPlacement : ISystem
 
 		PlaceCamp(placeCampCommand.Position, ref state);
 		MoveBandMembersToCamp(placeCampCommand.Position, ref state);
-		state.EntityManager.AddComponent<GameTimeRun>(singletonEntity);
 
 		state.EntityManager.RemoveComponent<PlaceCamp>(singletonEntity);
 	}

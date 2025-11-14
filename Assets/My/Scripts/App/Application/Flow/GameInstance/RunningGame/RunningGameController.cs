@@ -148,7 +148,7 @@ public partial class RunningGameController : Controller
 	private void OnPlaceCamp(PlaceCamp command)
 	{
 		_runningGame.PlaceCamp(command.Position);
-		SetMode(_periodRunning_Mode);
+		SetMode(_interPeriod_Mode);
 	}
 
 
