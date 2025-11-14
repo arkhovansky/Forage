@@ -23,13 +23,6 @@ public static class EcsService
 
 
 
-	public static void SetSystemGroupEnabled<T>(bool enabled) where T : ComponentSystemGroup
-	{
-		var world = World.DefaultGameObjectInjectionWorld;
-		world.GetExistingSystemManaged<T>().Enabled = enabled;
-	}
-
-
 	public static void SetEcsSystemsEnabled(bool enabled)
 	{
 		SetSystemGroupEnabled<InitializationSystemGroup>(enabled);
@@ -97,6 +90,13 @@ public static class EcsService
 
 	//----------------------------------------------------------------------------------------------
 	// private
+
+
+	private static void SetSystemGroupEnabled<T>(bool enabled) where T : ComponentSystemGroup
+	{
+		var world = World.DefaultGameObjectInjectionWorld;
+		world.GetExistingSystemManaged<T>().Enabled = enabled;
+	}
 
 
 	/// <summary>
