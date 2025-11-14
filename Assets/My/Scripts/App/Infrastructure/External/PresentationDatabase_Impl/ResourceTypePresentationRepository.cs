@@ -23,10 +23,10 @@ public class ResourceTypePresentationRepository : IResourceTypePresentationRepos
 	{
 		var quadMesh = CreateQuadMesh();
 
-		var yamMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Yam");
-		// var acornMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Acorn");
-		// var bananaMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Banana");
-		// var wheatMaterial = UnityEngine.Resources.Load<Material>("Materials/Resources/Wheat");
+		var yamMaterial = Resources.Load<Material>("Materials/Resources/Yam");
+		// var acornMaterial = Resources.Load<Material>("Materials/Resources/Acorn");
+		// var bananaMaterial = Resources.Load<Material>("Materials/Resources/Banana");
+		// var wheatMaterial = Resources.Load<Material>("Materials/Resources/Wheat");
 
 		_resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = yamMaterial };
 		// _resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = acornMaterial };

@@ -51,9 +51,6 @@ public partial struct HoveredTileSystem : ISystem
 	}
 
 
-	[BurstCompile]
-	public void OnDestroy(ref SystemState state) { }
-
 
 	private Entity GetTileEntity(AxialPosition position)
 	{

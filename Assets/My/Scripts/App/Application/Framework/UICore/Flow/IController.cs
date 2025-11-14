@@ -23,16 +23,6 @@ public interface IController
 	void UpdateViewModels();
 
 	void Destroy();
-
-
-	// Delegate? TryGetCommandTypeHandler(Type commandType);
-
-
-	// void AttachChildToGui(IController child);
-	//
-	// void DetachFromGui();
-	//
-	// void SetVisualNode(IVisualNode visualNode);
 }
 
 

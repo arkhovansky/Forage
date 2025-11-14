@@ -8,17 +8,6 @@ namespace App.Application.Framework.UICore.Flow.Impl {
 
 public class CommandRouter : ICommandRouter
 {
-	// private IController? _rootController;
-	//
-	//
-	// private record CommandHandler(
-	// 	IController Controller,
-	// 	Delegate Action
-	// );
-	//
-	// private readonly Dictionary<Type, CommandHandler> _commandHandlers;
-
-
 	private record EmittedCommand(
 		ICommand Command,
 		IController Emitter
@@ -26,43 +15,9 @@ public class CommandRouter : ICommandRouter
 
 	private readonly Queue<EmittedCommand> _commands = new ();
 
-	// private EmittedCommand? _processedCommand;
-
 
 	private bool _commandEmittingBlocked;
 
-
-
-	public CommandRouter()
-	{
-	}
-
-
-
-	// public void SetRootController(IController controller)
-	// {
-	// 	_rootController = controller;
-	//
-	// 	RegisterCommands(_rootController);
-	//
-	// 	if (_rootVisualNode != null)
-	// 		_rootController.SetVisualNode(_rootVisualNode);
-	// }
-
-
-
-	// private void RegisterCommands(IController controller)
-	// {
-	// 	foreach (var kv in controller.CommandsHandlers) {
-	// 		if (_commandHandlers.ContainsKey(kv.Key))
-	// 			throw new InvalidOperationException(); //TODO
-	//
-	// 		_commandHandlers[kv.Key] = new CommandHandler(controller, kv.Value);
-	// 	}
-	//
-	// 	foreach (var child in controller.Children)
-	// 		RegisterCommands(child);
-	// }
 
 
 	public void AddController(IController controller)

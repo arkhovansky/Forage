@@ -15,6 +15,7 @@ using App.Game.ECS.SystemGroups;
 namespace App.Game.ECS.BandMember.Movement.Systems {
 
 
+
 [UpdateInGroup(typeof(DomainSimulation))]
 public partial struct Movement_System : ISystem
 {

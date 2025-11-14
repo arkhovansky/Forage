@@ -29,14 +29,11 @@ public partial struct PlantCycle : ISystem
 		var yearPeriod = SystemAPI.GetSingleton<GameTime.Components.GameTime>().YearPeriod;
 
 		foreach (var (resource, ripeBiomass)
-		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RipeBiomass>>()) {
+		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RipeBiomass>>())
+		{
 			PlantCycle_Rules.UpdateRipeBiomass(ref ripeBiomass.ValueRW, resource.ValueRO, yearPeriod);
 		}
 	}
-
-
-	[BurstCompile]
-	public void OnDestroy(ref SystemState state) { }
 }
 
 

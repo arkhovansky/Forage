@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
-using System.Collections.Generic;
+using UnityEngine;
 
 using Lib.VisualGrid;
 
@@ -28,16 +28,16 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 
 		var flatMesh = CreateFlatTileMesh();
 
-		var freshWaterMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/FreshWater");
-		var seaMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Sea");
-		var oceanMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Ocean");
-		var grasslandsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Grasslands");
-		var plainsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Plains");
-		var forestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Forest");
-		var tropicalForestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/TropicalForest");
-		var swampyTropicalForestMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/SwampyTropicalForest");
-		var hillsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Hills");
-		var mountainsMaterial = UnityEngine.Resources.Load<Material>("Materials/Terrain/Mountains");
+		var freshWaterMaterial = Resources.Load<Material>("Materials/Terrain/FreshWater");
+		var seaMaterial = Resources.Load<Material>("Materials/Terrain/Sea");
+		var oceanMaterial = Resources.Load<Material>("Materials/Terrain/Ocean");
+		var grasslandsMaterial = Resources.Load<Material>("Materials/Terrain/Grasslands");
+		var plainsMaterial = Resources.Load<Material>("Materials/Terrain/Plains");
+		var forestMaterial = Resources.Load<Material>("Materials/Terrain/Forest");
+		var tropicalForestMaterial = Resources.Load<Material>("Materials/Terrain/TropicalForest");
+		var swampyTropicalForestMaterial = Resources.Load<Material>("Materials/Terrain/SwampyTropicalForest");
+		var hillsMaterial = Resources.Load<Material>("Materials/Terrain/Hills");
+		var mountainsMaterial = Resources.Load<Material>("Materials/Terrain/Mountains");
 
 
 		_terrainTypes[0] = new TerrainTypePresentation(flatMesh, freshWaterMaterial);

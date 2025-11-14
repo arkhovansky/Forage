@@ -88,7 +88,6 @@ public class Bootstrap : MonoBehaviour
 			_terrainTypeRepository!, _resourceTypeRepository!, _bandMemberTypeRepository!,
 			_runningGameInitializer!,
 			_gui!, _vvmBinder!, _commandRouter!);
-		// _commandRouter.SetRootController(applicationController);
 		await _applicationController.Start();
 
 		_isStarted = true;

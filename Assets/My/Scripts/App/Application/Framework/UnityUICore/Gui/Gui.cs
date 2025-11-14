@@ -11,14 +11,6 @@ namespace App.Application.Framework.UnityUICore.Gui {
 
 public class Gui : App.Application.Framework.UICore.Gui.Impl.Gui
 {
-	// public override IVisualNode GetVisualNode(IVisualNodePath visualNodePath)
-	// {
-	// 	//TODO
-	//
-	// 	return RootVisualNode;
-	// }
-
-
 	public override void SetVisualResource(IVisualNode visualNode, string resourceName)
 	{
 		var asset = Resources.Load<VisualTreeAsset>(resourceName);

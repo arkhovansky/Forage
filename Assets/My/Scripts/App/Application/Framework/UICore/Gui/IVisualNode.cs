@@ -1,7 +1,9 @@
-﻿namespace App.Application.Framework.UICore.Gui
-{
-	public interface IVisualNode
-	{
+﻿namespace App.Application.Framework.UICore.Gui {
 
-	}
+
+
+public interface IVisualNode {}
+
+
+
 }

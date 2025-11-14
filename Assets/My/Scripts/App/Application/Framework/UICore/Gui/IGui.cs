@@ -14,9 +14,6 @@ public interface IGui
 	void RemoveView(IView view);
 
 
-	// IVisualNode GetVisualNode(IVisualNodePath visualNodePath);
-
-
 	void SetVisualResource(IVisualNode visualNode, string resourceName);
 }
 

@@ -21,17 +21,6 @@ namespace App.Game.ECS.BandMember.AI.Systems {
 [UpdateAfter(typeof(GoalSelector))]
 public partial class SleepTaskPlanner : SystemBase
 {
-	// private RectangularHexMap? _map;
-
-
-
-	// public void InitForScene(RectangularHexMap map)
-	// {
-	// 	_map = map;
-	// }
-
-
-
 	protected override void OnCreate()
 	{
 		base.OnCreate();
@@ -43,9 +32,6 @@ public partial class SleepTaskPlanner : SystemBase
 
 	protected override void OnUpdate()
 	{
-		// if (_map == null)
-		// 	return;
-
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
 		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Value;
 

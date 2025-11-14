@@ -2,10 +2,7 @@
 
 
 
-public class ExitApplicationCommand : ICommand
-{
-
-}
+public class ExitApplicationCommand : ICommand {}
 
 
 

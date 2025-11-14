@@ -15,8 +15,6 @@ public abstract class Controller : IController
 
 	public IReadOnlyDictionary<Type, Delegate> CommandHandlers => commandHandlers;
 
-	// public IVisualNode? VisualNode { get; set; }
-
 
 	protected List<IController> Children = new();
 
@@ -86,15 +84,6 @@ public abstract class Controller : IController
 
 		CommandRouter.AddController(child);
 	}
-
-
-	// protected virtual void ReplaceChildController(IController oldChild, IController newChild)
-	// {
-	// 	CommandRouter.RemoveController(oldChild);
-	// 	oldChild.Destroy();
-	//
-	// 	AddChildController(newChild);
-	// }
 }
 
 

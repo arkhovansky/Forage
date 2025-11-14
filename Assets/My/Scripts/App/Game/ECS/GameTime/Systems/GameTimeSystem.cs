@@ -80,10 +80,6 @@ public partial struct GameTimeSystem : ISystem
 			state.EntityManager.RemoveComponent<YearPeriodChanged>(singletonEntity);
 		}
 	}
-
-
-	[BurstCompile]
-	public void OnDestroy(ref SystemState state) { }
 }
 
 
