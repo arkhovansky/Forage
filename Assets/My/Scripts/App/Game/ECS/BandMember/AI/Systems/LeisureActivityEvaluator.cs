@@ -13,7 +13,7 @@ namespace App.Game.ECS.BandMember.AI.Systems {
 
 
 [UpdateInGroup(typeof(HumanAI))]
-[UpdateBefore(typeof(SleepTaskEvaluator))]
+[UpdateBefore(typeof(LeisureTaskEvaluator))]
 public partial struct LeisureActivityEvaluator : ISystem
 {
 	[BurstCompile]
