@@ -2,7 +2,9 @@
 
 using Cysharp.Threading.Tasks;
 
+using Lib.Grid;
 using Lib.VisualGrid;
+using Lib.Math;
 
 using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Flow.Impl;
@@ -11,12 +13,16 @@ using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
+using App.Application.PresentationDatabase;
 using App.Application.Services;
 using App.Game.Database;
 using App.Game.Meta;
 using App.Infrastructure.EcsGateway.Models_Impl.Domain;
 using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
 using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl;
+using App.Infrastructure.External.Database_Impl;
+using App.Infrastructure.External.PresentationDatabase_Impl;
 
 
 
@@ -26,16 +32,20 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 
 public partial class RunningGameController : Controller
 {
+	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
+
+
 	private readonly IGameInstance _game;
 
 	private readonly IRunningGameInstance _runningGame;
 
+	private readonly VisualRectangularHexMap3D _map;
+
 	private readonly IScenePresentationModel _scenePresentationModel;
 
 	private readonly IInGameMode _inGameMode;
-	private readonly IRunningGameInitializer _runningGameInitializer;
 
-	private readonly VisualRectangularHexMap3D _map;
+	private readonly IRunningGameInitializer _runningGameInitializer;
 
 	private readonly RunningGameUI_VM _uiVM;
 	private readonly RunningGameUI_View _uiView;
@@ -62,26 +72,32 @@ public partial class RunningGameController : Controller
 
 
 	public RunningGameController(IGameInstance game,
-	                             HexLayout3D hexLayout,
-	                             ITerrainTypeRepository terrainTypeRepository,
-	                             IResourceTypeRepository resourceTypeRepository,
-	                             IBandMemberTypeRepository bandMemberTypeRepository,
-	                             IRunningGameInitializer runningGameInitializer,
 	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
 	{
 		_game = game;
 
-		_runningGameInitializer = runningGameInitializer;
-
 		_runningGame = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
+
+		var hexLayout = new HexLayout3D(
+			new HexLayout(HexOrientation),
+			new Matrix3x2(Vector3.right, Vector3.forward));
+		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
 		_scenePresentationModel = new ScenePresentationModel();
 
 		_inGameMode = new InGameMode();
 
-		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
+		var terrainTypeRepository = new TerrainTypeRepository();
+		var terrainTypePresentationRepository = new TerrainTypePresentationRepository(hexLayout);
+		var resourceTypeRepository = new ResourceTypeRepository();
+		var resourceTypePresentationRepository = new ResourceTypePresentationRepository();
+		var bandMemberTypeRepository = new BandMemberTypeRepository();
+
+		_runningGameInitializer = Create_RunningGameInitializer(
+			hexLayout, terrainTypePresentationRepository, resourceTypeRepository,
+			resourceTypePresentationRepository, bandMemberTypeRepository);
 
 		_uiVM = new RunningGameUI_VM(_runningGame, _scenePresentationModel, this,
 			commandRouter,
@@ -134,6 +150,28 @@ public partial class RunningGameController : Controller
 	public override void UpdateViewModel()
 	{
 		_uiVM.Update();
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private IRunningGameInitializer Create_RunningGameInitializer(
+		HexLayout3D hexLayout,
+		ITerrainTypePresentationRepository terrainTypePresentationRepository,
+		IResourceTypeRepository resourceTypeRepository,
+		IResourceTypePresentationRepository resourceTypePresentationRepository,
+		IBandMemberTypeRepository bandMemberTypeRepository)
+	{
+		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
+		var resourcesInitializer = new ResourcesInitializer(resourceTypeRepository);
+		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
+		var gameTimeInitializer = new GameTimeInitializer();
+		var bandInitializer = new BandInitializer(bandMemberTypeRepository);
+		return new RunningGameInitializer(
+			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
+			bandInitializer, hexLayout);
 	}
 
 
