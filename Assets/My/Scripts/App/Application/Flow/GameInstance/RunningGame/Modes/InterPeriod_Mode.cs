@@ -16,7 +16,7 @@ public partial class RunningGameController
 
 		public InterPeriod_Mode(RunningGameController controller)
 		{
-			_runYearPeriod_CommandVM = controller._viewModel.RunYearPeriodCommand;
+			_runYearPeriod_CommandVM = controller._uiVM.RunYearPeriodCommand;
 		}
 
 

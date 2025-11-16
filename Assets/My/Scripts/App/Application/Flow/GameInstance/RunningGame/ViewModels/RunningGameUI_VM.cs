@@ -12,7 +12,7 @@ namespace App.Application.Flow.GameInstance.RunningGame.ViewModels {
 
 
 
-public class GameVM : IViewModel
+public class RunningGameUI_VM : IViewModel
 {
 	[CreateProperty]
 	public string GameTime { get; private set; }
@@ -32,13 +32,13 @@ public class GameVM : IViewModel
 
 
 
-	public GameVM(IRunningGameInstance_RO runningGameInstance,
-	              IScenePresentationModel_RO presentationModel,
-	              IController controller,
-	              ICommandRouter commandRouter,
-	              ITerrainTypeRepository terrainTypeRepository,
-	              IResourceTypeRepository resourceTypeRepository,
-	              IBandMemberTypeRepository bandMemberTypeRepository)
+	public RunningGameUI_VM(IRunningGameInstance_RO runningGameInstance,
+	                        IScenePresentationModel_RO presentationModel,
+	                        IController controller,
+	                        ICommandRouter commandRouter,
+	                        ITerrainTypeRepository terrainTypeRepository,
+	                        IResourceTypeRepository resourceTypeRepository,
+	                        IBandMemberTypeRepository bandMemberTypeRepository)
 	{
 		_game = runningGameInstance;
 

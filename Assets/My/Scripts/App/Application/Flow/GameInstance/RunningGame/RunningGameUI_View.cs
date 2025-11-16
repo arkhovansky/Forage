@@ -8,17 +8,17 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 
 
 
-public class GameView : IView
+public class RunningGameUI_View : IView
 {
-	private readonly GameVM _viewModel;
+	private readonly RunningGameUI_VM _viewModel;
 
 	private readonly IGui _gui;
 	private readonly IVvmBinder _vvmBinder;
 
 
 
-	public GameView(GameVM viewModel,
-                    IGui gui, IVvmBinder vvmBinder)
+	public RunningGameUI_View(RunningGameUI_VM viewModel,
+	                          IGui gui, IVvmBinder vvmBinder)
 	{
 		_viewModel = viewModel;
 

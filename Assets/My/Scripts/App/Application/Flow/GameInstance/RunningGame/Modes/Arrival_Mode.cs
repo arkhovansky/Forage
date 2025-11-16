@@ -16,7 +16,7 @@ public partial class RunningGameController
 
 		public Arrival_Mode(RunningGameController controller)
 		{
-			_enterPlaceCampMode_CommandVM = controller._viewModel.EnterPlaceCampModeCommand;
+			_enterPlaceCampMode_CommandVM = controller._uiVM.EnterPlaceCampModeCommand;
 		}
 
 

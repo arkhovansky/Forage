@@ -37,8 +37,8 @@ public partial class RunningGameController : Controller
 
 	private readonly VisualRectangularHexMap3D _map;
 
-	private readonly GameVM _viewModel;
-	private readonly GameView _uiView;
+	private readonly RunningGameUI_VM _uiVM;
+	private readonly RunningGameUI_View _uiView;
 
 	private readonly Arrival_Mode _arrival_Mode;
 	private readonly CampPlacing_Mode _campPlacing_Mode;
@@ -83,10 +83,10 @@ public partial class RunningGameController : Controller
 
 		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
 
-		_viewModel = new GameVM(_runningGame, _scenePresentationModel, this,
+		_uiVM = new RunningGameUI_VM(_runningGame, _scenePresentationModel, this,
 			commandRouter,
 			terrainTypeRepository, resourceTypeRepository, bandMemberTypeRepository);
-		_uiView = new GameView(_viewModel,
+		_uiView = new RunningGameUI_View(_uiVM,
 			gui, vvmBinder);
 		gui.AddView(_uiView);
 
@@ -133,7 +133,7 @@ public partial class RunningGameController : Controller
 
 	public override void UpdateViewModel()
 	{
-		_viewModel.Update();
+		_uiVM.Update();
 	}
 
 
