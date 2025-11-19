@@ -1,5 +1,7 @@
 ﻿using Unity.Entities;
 
+using App.Game.Database;
+
 
 
 namespace App.Game.ECS.Terrain.Components {
@@ -8,11 +10,11 @@ namespace App.Game.ECS.Terrain.Components {
 
 public struct TerrainTile : IComponentData
 {
-	public uint TerrainType;
+	public TerrainTypeId TerrainType;
 
 
 
-	public TerrainTile(uint terrainTypeId)
+	public TerrainTile(TerrainTypeId terrainTypeId)
 	{
 		TerrainType = terrainTypeId;
 	}

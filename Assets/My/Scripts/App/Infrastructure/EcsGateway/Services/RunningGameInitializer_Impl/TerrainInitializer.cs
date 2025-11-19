@@ -17,10 +17,12 @@ using Lib.Util;
 using Lib.VisualGrid;
 
 using App.Application.PresentationDatabase;
+using App.Game.Database;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
+using App.Infrastructure.External.Database;
 
 
 
@@ -46,7 +48,7 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 
-	public void Init(IReadOnlyList<uint> tileTerrainTypes,
+	public void Init(IReadOnlyList<TerrainTypeId> tileTerrainTypes,
 	                 RectangularHexMap map,
 	                 float tilePhysicalInnerDiameter)
 	{
@@ -60,7 +62,7 @@ public class TerrainInitializer : ITerrainInitializer
 	// private
 
 
-	private void CreateTiles(IReadOnlyList<uint> tileTerrainTypes,
+	private void CreateTiles(IReadOnlyList<TerrainTypeId> tileTerrainTypes,
 	                         RectangularHexMap map)
 	{
 		var (renderMeshArray, materialMeshInfo_By_TerrainType) = PrepareMeshMaterialData(tileTerrainTypes);
@@ -103,12 +105,12 @@ public class TerrainInitializer : ITerrainInitializer
 
 
 	private
-		(RenderMeshArray, Dictionary<uint, MaterialMeshInfo>)
-		PrepareMeshMaterialData(IReadOnlyList<uint> tileTerrainTypes)
+		(RenderMeshArray, Dictionary<TerrainTypeId, MaterialMeshInfo>)
+		PrepareMeshMaterialData(IReadOnlyList<TerrainTypeId> tileTerrainTypes)
 	{
 		var terrainTypeIds = tileTerrainTypes.ToHashSet();
 
-		var materialMeshInfo_By_TerrainType = new Dictionary<uint, MaterialMeshInfo>();
+		var materialMeshInfo_By_TerrainType = new Dictionary<TerrainTypeId, MaterialMeshInfo>();
 		var meshes = new SetList<Mesh>();
 		var materials = new SetList<Material>();
 
@@ -168,7 +170,7 @@ public class TerrainInitializer : ITerrainInitializer
 		var visualMap = new VisualRectangularHexMap3D(map, _grid);
 
 		var mesh = visualMap.GetGridLinesMesh();
-		var material = UnityEngine.Resources.Load<Material>("Materials/GridLines");
+		var material = GameDatabase.Instance.Presentation.TerrainGridMaterial;
 		var renderMeshArray = new RenderMeshArray(new [] { material }, new [] { mesh });
 
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

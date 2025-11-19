@@ -2,6 +2,8 @@
 
 using Lib.Grid;
 
+using App.Game.Database;
+
 
 
 namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
@@ -11,7 +13,7 @@ namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
 public interface IResourcesInitializer
 {
 	void Init(IReadOnlyList<AxialPosition> mapPositions,
-	          IReadOnlyList<uint> resourceTypes,
+	          IReadOnlyList<ResourceTypeId> resourceTypes,
 	          IReadOnlyList<float> potentialBiomass,
 	          in RectangularHexMap map);
 }

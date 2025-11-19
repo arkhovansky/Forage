@@ -24,6 +24,7 @@ public enum Month
 
 
 
+[Serializable]
 public struct YearPeriod : IEquatable<YearPeriod>
 {
 	public Month Month;

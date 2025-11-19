@@ -9,6 +9,7 @@ using UnityEngine;
 using Lib.Util;
 
 using App.Application.PresentationDatabase;
+using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 
 
@@ -28,7 +29,7 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 	}
 
 
-	public void Init(ISet<uint> resourceTypeIds)
+	public void Init(ISet<ResourceTypeId> resourceTypeIds)
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
 		var singletonEntity = EcsService.GetSingletonEntity();
@@ -41,14 +42,14 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 		var meshes = new SetList<Mesh>();
 		var materials = new SetList<Material>();
 
-		for (uint resourceTypeId = 0; resourceTypeId <= maxResourceTypeId; ++resourceTypeId) {
-			if (resourceTypeIds.Contains(resourceTypeId)) {
-				var resourceType = _resourceTypePresentationRepository.Get(resourceTypeId);
+		for (var resourceTypeId = 0; resourceTypeId <= (int) maxResourceTypeId; ++resourceTypeId) {
+			if (resourceTypeIds.Contains((ResourceTypeId) resourceTypeId)) {
+				var resourceType = _resourceTypePresentationRepository.Get((ResourceTypeId) resourceTypeId);
 
 				var meshIndex = meshes.Add(resourceType.Mesh);
 				var materialIndex = materials.Add(resourceType.Material);
 
-				mmiArray[(int)resourceTypeId] = new ResourceIcon_MaterialMeshInfo(
+				mmiArray[resourceTypeId] = new ResourceIcon_MaterialMeshInfo(
 					MaterialMeshInfo.FromRenderMeshArrayIndices(materialIndex, meshIndex));
 			}
 		}

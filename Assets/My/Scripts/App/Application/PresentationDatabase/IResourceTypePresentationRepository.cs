@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using App.Game.Database;
+
 
 
 namespace App.Application.PresentationDatabase {
@@ -8,15 +10,22 @@ namespace App.Application.PresentationDatabase {
 
 public struct ResourceTypePresentation
 {
-	public Mesh Mesh;
-	public Material Material;
+	public readonly Mesh Mesh;
+	public readonly Material Material;
+
+
+	public ResourceTypePresentation(Mesh mesh, Material material)
+	{
+		Mesh = mesh;
+		Material = material;
+	}
 }
 
 
 
 public interface IResourceTypePresentationRepository
 {
-	ResourceTypePresentation Get(uint resourceTypeId);
+	ResourceTypePresentation Get(ResourceTypeId resourceTypeId);
 }
 
 

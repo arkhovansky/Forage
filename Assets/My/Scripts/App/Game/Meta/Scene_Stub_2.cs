@@ -20,9 +20,9 @@ public class Scene_Stub_2 : IScene
 
 	public float TilePhysicalInnerDiameter { get; }
 
-	public IReadOnlyList<uint> TileTerrainTypes { get; }
+	public IReadOnlyList<TerrainTypeId> TileTerrainTypes { get; }
 
-	public IReadOnlyList<uint> ResourceTypes {
+	public IReadOnlyList<ResourceTypeId> ResourceTypes {
 		get {
 			return _resources.Select(r => r.Resource.Type).ToArray();
 		}
@@ -40,7 +40,7 @@ public class Scene_Stub_2 : IScene
 		}
 	}
 
-	public ISet<uint> ResourceTypeIds
+	public ISet<ResourceTypeId> ResourceTypeIds
 		=> _resources.Select(r => r.Resource.Type).ToHashSet();
 
 	public YearPeriod StartYearPeriod { get; }
@@ -50,7 +50,7 @@ public class Scene_Stub_2 : IScene
 
 
 	private record Resource(
-		uint Type,
+		ResourceTypeId Type,
 		float Biomass);
 
 	private record TileResource(
@@ -75,7 +75,7 @@ public class Scene_Stub_2 : IScene
 		uint tileCount = _width * _height;
 
 
-		TileTerrainTypes = new uint[] {
+		var tiles = new int[] {
 			//               10                  20                  30                  40                  50                  60                  70                  80                  90                 100
 			//2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
 			//
@@ -156,12 +156,15 @@ public class Scene_Stub_2 : IScene
 			6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,0,0,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
 		};
 
+		TileTerrainTypes = tiles.Cast<TerrainTypeId>().ToArray();
 
 		Assert.AreEqual(TileTerrainTypes.Count, tileCount);
 
 
-		_resources.Add(new TileResource(new Resource(0, 300), Map.AxialPositionFrom(new OffsetPosition(49, 14))));
-		_resources.Add(new TileResource(new Resource(0, 300), Map.AxialPositionFrom(new OffsetPosition(51, 10))));
+		_resources.Add(new TileResource(new Resource(ResourceTypeId.Yam, 300),
+		                                Map.AxialPositionFrom(new OffsetPosition(49, 14))));
+		_resources.Add(new TileResource(new Resource(ResourceTypeId.Yam, 300),
+		                                Map.AxialPositionFrom(new OffsetPosition(51, 10))));
 
 
 		StartYearPeriod = new YearPeriod {Month = Month.January};

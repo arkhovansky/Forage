@@ -13,6 +13,7 @@ using UnityEngine.Rendering;
 using Lib.Grid;
 using Lib.VisualGrid;
 
+using App.Game.Database;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
@@ -32,7 +33,7 @@ public partial class PlantResourcePresentation : SystemBase
 {
 	private struct ResourceIconsCreationData
 	{
-		public uint ResourceType;
+		public ResourceTypeId ResourceType;
 		public AxialPosition MapPosition;
 		public int IconCountToCreate;
 		public Entity ResourceEntity;

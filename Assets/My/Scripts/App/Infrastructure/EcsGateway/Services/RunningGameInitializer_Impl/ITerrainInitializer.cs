@@ -2,6 +2,8 @@
 
 using Lib.Grid;
 
+using App.Game.Database;
+
 
 
 namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
@@ -10,7 +12,7 @@ namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
 
 public interface ITerrainInitializer
 {
-	void Init(IReadOnlyList<uint> tileTerrainTypes,
+	void Init(IReadOnlyList<TerrainTypeId> tileTerrainTypes,
 	          RectangularHexMap map,
 	          float tilePhysicalInnerDiameter);
 }

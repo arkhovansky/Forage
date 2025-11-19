@@ -3,6 +3,7 @@
 using Lib.Grid;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 using App.Infrastructure.EcsGateway.Services;
@@ -20,7 +21,7 @@ public class Map_Adapter : IMap
 
 
 
-	public uint Get_TerrainTypeId(AxialPosition tile)
+	public TerrainTypeId Get_TerrainTypeId(AxialPosition tile)
 	{
 		var ecsMap = EcsService.GetEcsMap();
 		var tileEntity = ecsMap.GetTileEntity(tile);

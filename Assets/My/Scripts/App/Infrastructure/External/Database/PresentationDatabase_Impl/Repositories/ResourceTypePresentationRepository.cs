@@ -1,41 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using UnityEngine;
 
 using App.Application.PresentationDatabase;
+using App.Game.Database;
 
 
 
-namespace App.Infrastructure.External.PresentationDatabase_Impl {
+namespace App.Infrastructure.External.Database.PresentationDatabase_Impl.Repositories {
 
 
 
 public class ResourceTypePresentationRepository : IResourceTypePresentationRepository
 {
-	private readonly Dictionary<uint, ResourceTypePresentation> _resourceTypes = new();
-
+	private readonly Dictionary<ResourceTypeId, ResourceTypePresentation> _resourceTypes = new();
 
 
 	//----------------------------------------------------------------------------------------------
-	// public
+
 
 	public ResourceTypePresentationRepository()
 	{
 		var quadMesh = CreateQuadMesh();
 
-		var yamMaterial = Resources.Load<Material>("Materials/Resources/Yam");
-		// var acornMaterial = Resources.Load<Material>("Materials/Resources/Acorn");
-		// var bananaMaterial = Resources.Load<Material>("Materials/Resources/Banana");
-		// var wheatMaterial = Resources.Load<Material>("Materials/Resources/Wheat");
+		var resourceTypesDB = GameDatabase.Instance.Presentation.ResourceTypes;
 
-		_resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = yamMaterial };
-		// _resourceTypes[0] = new ResourceTypePresentation { Mesh = quadMesh, Material = acornMaterial };
-		// _resourceTypes[1] = new ResourceTypePresentation { Mesh = quadMesh, Material = bananaMaterial };
-		// _resourceTypes[2] = new ResourceTypePresentation { Mesh = quadMesh, Material = wheatMaterial };
+		foreach (ResourceTypeId typeId in Enum.GetValues(typeof(ResourceTypeId))) {
+			_resourceTypes[typeId] = new ResourceTypePresentation(
+				quadMesh,
+				resourceTypesDB.GetResourceTypeData(typeId).Material);
+		}
 	}
 
 
-	public ResourceTypePresentation Get(uint resourceTypeId)
+	public ResourceTypePresentation Get(ResourceTypeId resourceTypeId)
 	{
 		return _resourceTypes[resourceTypeId];
 	}

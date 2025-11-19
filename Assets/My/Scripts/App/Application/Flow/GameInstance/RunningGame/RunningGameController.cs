@@ -21,8 +21,8 @@ using App.Infrastructure.EcsGateway.Models_Impl.Domain;
 using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl;
-using App.Infrastructure.External.Database_Impl;
-using App.Infrastructure.External.PresentationDatabase_Impl;
+using App.Infrastructure.External.Database.Database_Impl.Repositories;
+using App.Infrastructure.External.Database.PresentationDatabase_Impl.Repositories;
 
 
 

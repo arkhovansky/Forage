@@ -33,7 +33,7 @@ public class ResourcesInitializer : IResourcesInitializer
 
 
 	public void Init(IReadOnlyList<AxialPosition> mapPositions,
-	                 IReadOnlyList<uint> resourceTypes,
+	                 IReadOnlyList<ResourceTypeId> resourceTypes,
 	                 IReadOnlyList<float> potentialBiomass,
 	                 in RectangularHexMap map)
 	{

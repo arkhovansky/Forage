@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915585317eba4d738dd140f2c20f3c5f, type: 3}
+  m_Name: TerrainTypes
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Database_Impl.ScriptableObjects.TerrainTypes
+  List:
+  - Id: 0
+    Name: Fresh water
+  - Id: 1
+    Name: Sea
+  - Id: 2
+    Name: Ocean
+  - Id: 3
+    Name: Grasslands
+  - Id: 4
+    Name: Plains
+  - Id: 5
+    Name: Forest
+  - Id: 6
+    Name: Tropical forest
+  - Id: 7
+    Name: Swampy tropical forest
+  - Id: 8
+    Name: Hills
+  - Id: 9
+    Name: Mountains

@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
+using App.Game.Database;
+
 
 
 namespace App.Application.PresentationDatabase {
 
 
 
-public class TerrainTypePresentation
+public struct TerrainTypePresentation
 {
-	public Mesh Mesh;
-	public Material Material;
+	public readonly Mesh Mesh;
+	public readonly Material Material;
 
 
 	public TerrainTypePresentation(Mesh mesh, Material material)
@@ -23,7 +25,7 @@ public class TerrainTypePresentation
 
 public interface ITerrainTypePresentationRepository
 {
-	TerrainTypePresentation Get(uint terrainTypeId);
+	TerrainTypePresentation Get(TerrainTypeId terrainTypeId);
 }
 
 

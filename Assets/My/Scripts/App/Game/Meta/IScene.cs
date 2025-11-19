@@ -2,6 +2,7 @@
 
 using Lib.Grid;
 
+using App.Game.Database;
 using App.Game.ECS.GameTime.Components;
 
 
@@ -16,13 +17,13 @@ public interface IScene
 
 	float TilePhysicalInnerDiameter { get; }
 
-	IReadOnlyList<uint> TileTerrainTypes { get; }
+	IReadOnlyList<TerrainTypeId> TileTerrainTypes { get; }
 
-	IReadOnlyList<uint> ResourceTypes { get; }
+	IReadOnlyList<ResourceTypeId> ResourceTypes { get; }
 	IReadOnlyList<AxialPosition> ResourceAxialPositions { get; }
 	IReadOnlyList<float> PotentialBiomass { get; }
 
-	ISet<uint> ResourceTypeIds { get; }
+	ISet<ResourceTypeId> ResourceTypeIds { get; }
 
 	YearPeriod StartYearPeriod { get; }
 

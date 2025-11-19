@@ -20,9 +20,9 @@ public class Scene_Stub : IScene
 
 	public float TilePhysicalInnerDiameter { get; }
 
-	public IReadOnlyList<uint> TileTerrainTypes { get; }
+	public IReadOnlyList<TerrainTypeId> TileTerrainTypes { get; }
 
-	public IReadOnlyList<uint> ResourceTypes {
+	public IReadOnlyList<ResourceTypeId> ResourceTypes {
 		get {
 			return _resources.Select(r => r.Resource.Type).ToArray();
 		}
@@ -40,7 +40,7 @@ public class Scene_Stub : IScene
 		}
 	}
 
-	public ISet<uint> ResourceTypeIds
+	public ISet<ResourceTypeId> ResourceTypeIds
 		=> _resources.Select(r => r.Resource.Type).ToHashSet();
 
 	public YearPeriod StartYearPeriod { get; }
@@ -50,7 +50,7 @@ public class Scene_Stub : IScene
 
 
 	private record Resource(
-		uint Type,
+		ResourceTypeId Type,
 		float Biomass);
 
 	private record TileResource(
@@ -75,7 +75,7 @@ public class Scene_Stub : IScene
 		uint tileCount = _width * _height;
 
 
-		TileTerrainTypes = new uint[] {
+		var tiles = new int[] {
 			5, 5, 5, 5, 5, 5, 3, 3, 4, 4, 4, 8,
 			5, 5, 5, 5, 5, 0, 3, 4, 4, 4, 7, 8,
 			5, 5, 5, 5, 5, 3, 3, 3, 4, 4, 7, 8,
@@ -85,6 +85,7 @@ public class Scene_Stub : IScene
 			6, 6, 6, 6, 1, 1, 1, 4, 4, 1, 4, 4,
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 		};
+		TileTerrainTypes = tiles.Cast<TerrainTypeId>().ToArray();
 
 		Assert.AreEqual(TileTerrainTypes.Count, tileCount);
 
@@ -109,15 +110,15 @@ public class Scene_Stub : IScene
 	}
 
 
-	private static Resource? ResourceForTerrain(uint terrainType)
+	private static Resource? ResourceForTerrain(TerrainTypeId terrainType)
 	{
 		const float scale = 1;
 
 		return terrainType switch {
-			3 => new Resource(2, 300 * scale),
-			4 => new Resource(3, 600 * scale),
-			5 => new Resource(0, 400 * scale),
-			6 => new Resource(1, 500 * scale),
+			TerrainTypeId.Grasslands => new Resource(ResourceTypeId.Yam, 300 * scale),
+			TerrainTypeId.Plains => new Resource(ResourceTypeId.Wheat, 600 * scale),
+			TerrainTypeId.Forest => new Resource(ResourceTypeId.Acorns, 400 * scale),
+			TerrainTypeId.TropicalForest => new Resource(ResourceTypeId.Bananas, 500 * scale),
 			_ => null
 		};
 	}
