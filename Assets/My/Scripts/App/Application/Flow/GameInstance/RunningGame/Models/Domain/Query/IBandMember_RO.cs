@@ -1,4 +1,5 @@
-﻿using App.Game.ECS.BandMember.AI.Components;
+﻿using App.Game.Database;
+using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Statistics.Components;
 
 
@@ -11,7 +12,7 @@ public interface IBandMember_RO
 {
 	int Id { get; }
 
-	uint TypeId { get; }
+	HumanTypeId TypeId { get; }
 
 
 	Goal? Get_Goal();

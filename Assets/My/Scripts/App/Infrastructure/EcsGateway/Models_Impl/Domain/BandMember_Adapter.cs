@@ -1,6 +1,7 @@
 ﻿using Unity.Entities;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Database;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.BandMember.General.Components;
@@ -22,7 +23,7 @@ public class BandMember_Adapter : IBandMember_RO
 
 
 
-	public BandMember_Adapter(Entity entity, int id, uint typeId)
+	public BandMember_Adapter(Entity entity, int id, HumanTypeId typeId)
 	{
 		_entity = entity;
 		Id = id;
@@ -32,7 +33,7 @@ public class BandMember_Adapter : IBandMember_RO
 
 	public int Id { get; }
 
-	public uint TypeId { get; }
+	public HumanTypeId TypeId { get; }
 
 
 	public Goal? Get_Goal()

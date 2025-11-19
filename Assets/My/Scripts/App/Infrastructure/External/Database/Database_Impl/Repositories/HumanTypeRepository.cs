@@ -10,22 +10,22 @@ namespace App.Infrastructure.External.Database.Database_Impl.Repositories {
 
 public class HumanTypeRepository : IHumanTypeRepository
 {
-	private readonly Dictionary<uint, HumanType> _humanTypes = new();
+	private readonly Dictionary<HumanTypeId, HumanType> _humanTypes = new();
 
 
 
 	public HumanTypeRepository()
 	{
-		_humanTypes[(uint)Gender.Male] = new HumanType {
+		_humanTypes[HumanTypeId.Man] = new HumanType {
 			Gender = Gender.Male
 		};
-		_humanTypes[(uint)Gender.Female] = new HumanType {
+		_humanTypes[HumanTypeId.Woman] = new HumanType {
 			Gender = Gender.Female
 		};
 	}
 
 
-	public HumanType Get(uint typeId)
+	public HumanType Get(HumanTypeId typeId)
 	{
 		return _humanTypes[typeId];
 	}

@@ -45,7 +45,7 @@ public class Scene_Stub : IScene
 
 	public YearPeriod StartYearPeriod { get; }
 
-	public IDictionary<uint, uint> HumanTypeCounts { get; }
+	public IDictionary<HumanTypeId, uint> HumanTypeCounts { get; }
 
 
 
@@ -104,9 +104,9 @@ public class Scene_Stub : IScene
 		StartYearPeriod = new YearPeriod {Month = Month.June};
 
 
-		HumanTypeCounts = new Dictionary<uint, uint>();
-		HumanTypeCounts.Add((uint)Gender.Male, 5);
-		HumanTypeCounts.Add((uint)Gender.Female, 5);
+		HumanTypeCounts = new Dictionary<HumanTypeId, uint>();
+		HumanTypeCounts.Add(HumanTypeId.Man, 5);
+		HumanTypeCounts.Add(HumanTypeId.Woman, 5);
 	}
 
 

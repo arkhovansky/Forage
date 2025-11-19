@@ -29,7 +29,7 @@ public class BandInitializer : IBandInitializer
 
 
 
-	public void Init(IDictionary<uint, uint> humanTypeCounts)
+	public void Init(IDictionary<HumanTypeId, uint> humanTypeCounts)
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 

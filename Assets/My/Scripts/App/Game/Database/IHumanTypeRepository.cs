@@ -18,7 +18,7 @@ public class HumanType
 
 public interface IHumanTypeRepository
 {
-	HumanType Get(uint typeId);
+	HumanType Get(HumanTypeId typeId);
 }
 
 

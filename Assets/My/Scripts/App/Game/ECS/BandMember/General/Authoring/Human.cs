@@ -2,6 +2,7 @@
 
 using UnityEngine;
 
+using App.Game.Database;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.BandMember.Statistics.Components;
@@ -15,7 +16,7 @@ namespace App.Game.ECS.BandMember.General.Authoring {
 
 public class Human : MonoBehaviour
 {
-	public uint TypeId;
+	public HumanTypeId TypeId;
 
 
 	private class Baker : Baker<Human>

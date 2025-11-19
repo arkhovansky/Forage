@@ -1,5 +1,7 @@
 ﻿using Unity.Entities;
 
+using App.Game.Database;
+
 
 
 namespace App.Game.ECS.BandMember.General.Components {
@@ -8,7 +10,7 @@ namespace App.Game.ECS.BandMember.General.Components {
 
 public struct Human : IComponentData
 {
-	public uint TypeId;
+	public HumanTypeId TypeId;
 }
 
 
