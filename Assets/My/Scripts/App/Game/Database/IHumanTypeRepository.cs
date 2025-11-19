@@ -9,16 +9,16 @@ public enum Gender
 }
 
 
-public class BandMemberType
+public class HumanType
 {
 	public Gender Gender;
 }
 
 
 
-public interface IBandMemberTypeRepository
+public interface IHumanTypeRepository
 {
-	BandMemberType Get(uint typeId);
+	HumanType Get(uint typeId);
 }
 
 

@@ -45,12 +45,12 @@ public class BandMemberVM
 
 	public BandMemberVM(IBandMember_RO bandMember,
 	                    ITime time,
-	                    IBandMemberTypeRepository bandMemberTypeRepository)
+	                    IHumanTypeRepository humanTypeRepository)
 	{
 		_bandMember = bandMember;
 		_time = time;
 
-		Gender = bandMemberTypeRepository.Get(bandMember.TypeId).Gender.ToString();
+		Gender = humanTypeRepository.Get(bandMember.TypeId).Gender.ToString();
 	}
 
 

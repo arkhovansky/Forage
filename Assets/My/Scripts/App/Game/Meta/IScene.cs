@@ -27,7 +27,7 @@ public interface IScene
 
 	YearPeriod StartYearPeriod { get; }
 
-	IDictionary<uint, uint> BandMemberTypeCounts { get; }
+	IDictionary<uint, uint> HumanTypeCounts { get; }
 }
 
 

@@ -48,7 +48,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 		                           scene.Map);
 		_resourcePresentationInitializer.Init(scene.ResourceTypeIds);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
-		_bandInitializer.Init(scene.BandMemberTypeCounts);
+		_bandInitializer.Init(scene.HumanTypeCounts);
 	}
 
 

@@ -38,13 +38,13 @@ public class RunningGameUI_VM : IViewModel
 	                        ICommandRouter commandRouter,
 	                        ITerrainTypeRepository terrainTypeRepository,
 	                        IResourceTypeRepository resourceTypeRepository,
-	                        IBandMemberTypeRepository bandMemberTypeRepository)
+	                        IHumanTypeRepository humanTypeRepository)
 	{
 		_game = runningGameInstance;
 
 		GameTime = string.Empty;
 
-		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, bandMemberTypeRepository);
+		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, humanTypeRepository);
 
 		TileInfoVM = new TileInfoVM(_game.World.Map, presentationModel, terrainTypeRepository, resourceTypeRepository);
 

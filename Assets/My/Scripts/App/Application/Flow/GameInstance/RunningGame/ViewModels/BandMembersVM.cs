@@ -20,7 +20,7 @@ public class BandMembersVM : IViewModel
 
 	private readonly ITime _time;
 
-	private readonly IBandMemberTypeRepository _bandMemberTypeRepository;
+	private readonly IHumanTypeRepository _humanTypeRepository;
 
 	private IReadOnlyList<IBandMember_RO>? _bandMembers;
 
@@ -28,11 +28,11 @@ public class BandMembersVM : IViewModel
 
 	public BandMembersVM(IBand_RO band,
 	                     ITime time,
-	                     IBandMemberTypeRepository bandMemberTypeRepository)
+	                     IHumanTypeRepository humanTypeRepository)
 	{
 		_band = band;
 		_time = time;
-		_bandMemberTypeRepository = bandMemberTypeRepository;
+		_humanTypeRepository = humanTypeRepository;
 
 		BandMembers = new List<BandMemberVM>();
 	}
@@ -53,7 +53,7 @@ public class BandMembersVM : IViewModel
 		_bandMembers = _band.Get_Members();
 
 		foreach (var member in _bandMembers)
-			BandMembers.Add(new BandMemberVM(member, _time, _bandMemberTypeRepository));
+			BandMembers.Add(new BandMemberVM(member, _time, _humanTypeRepository));
 	}
 }
 

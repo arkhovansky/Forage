@@ -93,15 +93,15 @@ public partial class RunningGameController : Controller
 		var terrainTypePresentationRepository = new TerrainTypePresentationRepository(hexLayout);
 		var resourceTypeRepository = new ResourceTypeRepository();
 		var resourceTypePresentationRepository = new ResourceTypePresentationRepository();
-		var bandMemberTypeRepository = new BandMemberTypeRepository();
+		var humanTypeRepository = new HumanTypeRepository();
 
 		_runningGameInitializer = Create_RunningGameInitializer(
 			hexLayout, terrainTypePresentationRepository, resourceTypeRepository,
-			resourceTypePresentationRepository, bandMemberTypeRepository);
+			resourceTypePresentationRepository, humanTypeRepository);
 
 		_uiVM = new RunningGameUI_VM(_runningGame, _scenePresentationModel, this,
 			commandRouter,
-			terrainTypeRepository, resourceTypeRepository, bandMemberTypeRepository);
+			terrainTypeRepository, resourceTypeRepository, humanTypeRepository);
 		_uiView = new RunningGameUI_View(_uiVM,
 			gui, vvmBinder);
 		gui.AddView(_uiView);
@@ -162,13 +162,13 @@ public partial class RunningGameController : Controller
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
 		IResourceTypeRepository resourceTypeRepository,
 		IResourceTypePresentationRepository resourceTypePresentationRepository,
-		IBandMemberTypeRepository bandMemberTypeRepository)
+		IHumanTypeRepository humanTypeRepository)
 	{
 		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
 		var resourcesInitializer = new ResourcesInitializer(resourceTypeRepository);
 		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
 		var gameTimeInitializer = new GameTimeInitializer();
-		var bandInitializer = new BandInitializer(bandMemberTypeRepository);
+		var bandInitializer = new BandInitializer(humanTypeRepository);
 		return new RunningGameInitializer(
 			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
 			bandInitializer, hexLayout);

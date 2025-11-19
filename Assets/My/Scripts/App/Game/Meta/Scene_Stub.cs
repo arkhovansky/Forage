@@ -45,7 +45,7 @@ public class Scene_Stub : IScene
 
 	public YearPeriod StartYearPeriod { get; }
 
-	public IDictionary<uint, uint> BandMemberTypeCounts { get; }
+	public IDictionary<uint, uint> HumanTypeCounts { get; }
 
 
 
@@ -104,9 +104,9 @@ public class Scene_Stub : IScene
 		StartYearPeriod = new YearPeriod {Month = Month.June};
 
 
-		BandMemberTypeCounts = new Dictionary<uint, uint>();
-		BandMemberTypeCounts.Add((uint)Gender.Male, 5);
-		BandMemberTypeCounts.Add((uint)Gender.Female, 5);
+		HumanTypeCounts = new Dictionary<uint, uint>();
+		HumanTypeCounts.Add((uint)Gender.Male, 5);
+		HumanTypeCounts.Add((uint)Gender.Female, 5);
 	}
 
 

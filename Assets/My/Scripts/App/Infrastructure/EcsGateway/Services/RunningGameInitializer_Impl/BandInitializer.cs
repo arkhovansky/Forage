@@ -16,20 +16,20 @@ namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
 
 public class BandInitializer : IBandInitializer
 {
-	private readonly IBandMemberTypeRepository _bandMemberTypeRepository;
+	private readonly IHumanTypeRepository _humanTypeRepository;
 
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public BandInitializer(IBandMemberTypeRepository bandMemberTypeRepository)
+	public BandInitializer(IHumanTypeRepository humanTypeRepository)
 	{
-		_bandMemberTypeRepository = bandMemberTypeRepository;
+		_humanTypeRepository = humanTypeRepository;
 	}
 
 
 
-	public void Init(IDictionary<uint, uint> bandMemberTypeCounts)
+	public void Init(IDictionary<uint, uint> humanTypeCounts)
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
@@ -37,19 +37,19 @@ public class BandInitializer : IBandInitializer
 			entityManager.CreateEntityQuery(typeof(PrefabReferences)).GetSingleton<PrefabReferences>();
 
 		int iBandMember = 0;
-		foreach (var (bandMemberTypeId, memberCountOfType) in bandMemberTypeCounts) {
-			var bandMemberType = _bandMemberTypeRepository.Get(bandMemberTypeId);
+		foreach (var (typeId, countOfType) in humanTypeCounts) {
+			var humanType = _humanTypeRepository.Get(typeId);
 
-			var prefabEntity = bandMemberType.Gender switch {
+			var prefabEntity = humanType.Gender switch {
 				Gender.Male => prefabReferences.Man,
 				Gender.Female => prefabReferences.Woman,
 				_ => throw new ArgumentOutOfRangeException()
 			};
 
-			var clonedEntities = new NativeArray<Entity>((int)memberCountOfType, Allocator.Temp);
+			var clonedEntities = new NativeArray<Entity>((int)countOfType, Allocator.Temp);
 			entityManager.Instantiate(prefabEntity, clonedEntities);
 
-			for (int i = 0; i < memberCountOfType; i++) {
+			for (int i = 0; i < countOfType; i++) {
 				var entity = clonedEntities[i];
 
 				entityManager.SetComponentData(entity, new BandMember {Id = iBandMember++});
