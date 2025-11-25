@@ -18,12 +18,14 @@ public partial struct DaylightSystem : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var rules = SystemAPI.GetComponent<Daylight_Rules>(state.SystemHandle);
+
 		var singletonEntity = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
 
 		var gameTime = SystemAPI.GetSingleton<Components.GameTime>();
 
 		// This works as long as simulation starts before daylight
-		bool daylightChanged = Daylight_Rules.GetDaylightEvent(in gameTime, out bool isDaylight);
+		bool daylightChanged = rules.GetDaylightEvent(in gameTime, out bool isDaylight);
 		if (daylightChanged) {
 			if (isDaylight)
 				state.EntityManager.AddComponent<Daylight>(singletonEntity);

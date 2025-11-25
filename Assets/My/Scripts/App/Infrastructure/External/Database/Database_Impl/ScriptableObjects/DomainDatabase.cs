@@ -13,6 +13,8 @@ public class DomainDatabase : ScriptableObject
 	public TerrainTypes TerrainTypes = null!;
 
 	public PlantResourceTypes PlantResourceTypes = null!;
+
+	public SystemParameters SystemParameters = null!;
 }
 
 

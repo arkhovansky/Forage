@@ -1,24 +1,34 @@
-﻿namespace App.Game.ECS.GameTime.Rules {
+﻿using System;
+
+using Unity.Entities;
+using UnityEngine;
 
 
 
-public static class Daylight_Rules
+namespace App.Game.ECS.GameTime.Rules {
+
+
+
+[Serializable]
+public struct Daylight_Rules : IComponentData
 {
-	private const int DaylightBeginHours = 5;
-	private const int DaylightEndHours = 21;
+	[SerializeField] private int DaylightBeginHours;
+	[SerializeField] private int DaylightEndHours;
 
 
 
-	public static bool IsDaylight(in Components.GameTime gameTime)
+	public bool IsDaylight(in Components.GameTime gameTime)
 	{
-		return gameTime.IntegerHours is >= DaylightBeginHours and < DaylightEndHours;
+		return gameTime.IntegerHours >= DaylightBeginHours &&
+		       gameTime.IntegerHours < DaylightEndHours;
 	}
 
 
-	public static bool GetDaylightEvent(in Components.GameTime gameTime, out bool isDaylight)
+	public bool GetDaylightEvent(in Components.GameTime gameTime, out bool isDaylight)
 	{
 		isDaylight = IsDaylight(gameTime);
-		return gameTime is {IntegerHoursChanged: true, IntegerHours: DaylightBeginHours or DaylightEndHours};
+		return gameTime.IntegerHoursChanged &&
+		       (gameTime.IntegerHours == DaylightBeginHours || gameTime.IntegerHours == DaylightEndHours);
 	}
 }
 

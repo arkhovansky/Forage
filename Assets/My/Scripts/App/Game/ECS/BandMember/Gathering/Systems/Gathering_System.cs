@@ -22,6 +22,8 @@ public partial struct Gathering_System : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var rules = SystemAPI.GetComponent<Gathering_Rules>(state.SystemHandle);
+
 		var hoursDelta = SystemAPI.GetSingleton<GameTime.Components.GameTime>().DeltaHours;
 		float innerCellDiameter = SystemAPI.GetSingleton<PhysicalMapParameters>().TileInnerDiameter;
 
@@ -38,8 +40,8 @@ public partial struct Gathering_System : ISystem
 		{
 			var ripeBiomass = SystemAPI.GetComponentRW<RipeBiomass>(gatheringActivity.ResourceEntity);
 
-			Gathering_Rules.Gather(ref ripeBiomass.ValueRW, ref foodConsumer.ValueRW,
-			                       gatherer, hoursDelta, innerCellDiameter);
+			rules.Gather(ref ripeBiomass.ValueRW, ref foodConsumer.ValueRW,
+			             gatherer, hoursDelta, innerCellDiameter);
 
 			if (!AI_Rules.Should_GatherOnTile(foodConsumer.ValueRO, ripeBiomass.ValueRO)) {
 				activityEnabled.ValueRW = false;

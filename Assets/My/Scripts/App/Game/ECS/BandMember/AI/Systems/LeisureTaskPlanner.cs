@@ -8,6 +8,8 @@ using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.AI.Rules;
 using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.BandMember.Movement.Components;
+using App.Game.ECS.BandMember.Movement.Rules;
+using App.Game.ECS.BandMember.Movement.Systems;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.SystemGroups;
 
@@ -35,6 +37,9 @@ public partial class LeisureTaskPlanner : SystemBase
 		var campEntity = SystemAPI.GetSingletonEntity<Camp.Components.Camp>();
 		var campPosition = SystemAPI.GetComponent<MapPosition>(campEntity).Value;
 
+		var movementSystem = World.GetExistingSystem(typeof(Movement_System));
+		var movementRules = SystemAPI.GetComponent<Movement_Rules>(movementSystem);
+
 		foreach (var (position,
 			         path,
 			         taskEnabled, leisureTaskEnabled,
@@ -48,7 +53,8 @@ public partial class LeisureTaskPlanner : SystemBase
 			         .WithDisabled<Task, Leisure_Task>()
 			         .WithEntityAccess())
 		{
-			var pathInfo = AI_Movement_Rules.CalculatePath(position, campPosition);
+			var pathInfo = AI_Movement_Rules.CalculatePath(position, campPosition,
+			                                               movementRules);
 
 			SetPath(in path, pathInfo.Path);
 

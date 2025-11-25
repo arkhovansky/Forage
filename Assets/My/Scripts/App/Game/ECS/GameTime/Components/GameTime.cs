@@ -3,6 +3,8 @@ using Unity.Entities;
 
 using UnityEngine;
 
+using App.Game.ECS.GameTime.Rules;
+
 
 
 namespace App.Game.ECS.GameTime.Components {
@@ -11,10 +13,6 @@ namespace App.Game.ECS.GameTime.Components {
 
 public struct GameTime : IComponentData
 {
-	public const uint DaysInYearPeriod = 30;
-
-
-
 	public YearPeriod YearPeriod;
 
 	public uint Day;
@@ -48,7 +46,7 @@ public struct GameTime : IComponentData
 	}
 
 
-	public void Advance(float deltaHours)
+	public void Advance(float deltaHours, GameTime_Rules rules)
 	{
 		Assert.IsTrue(deltaHours <= 24);
 
@@ -77,7 +75,7 @@ public struct GameTime : IComponentData
 		else
 			DayChanged = false;
 
-		if (Day > DaysInYearPeriod) {
+		if (Day > rules.DaysInYearPeriod) {
 			Day = 1;
 			YearPeriod.Advance();
 			YearPeriodChanged = true;

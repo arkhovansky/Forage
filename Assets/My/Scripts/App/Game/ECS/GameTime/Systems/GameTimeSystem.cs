@@ -4,6 +4,7 @@ using Unity.Entities;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
+using App.Game.ECS.GameTime.Rules;
 using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util.Components;
 using App.Game.ECS.Util.Systems;
@@ -30,6 +31,7 @@ public partial struct GameTimeSystem : ISystem
 	public void OnUpdate(ref SystemState state)
 	{
 		var singletonEntity = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
+		var rules = SystemAPI.GetComponent<GameTime_Rules>(state.SystemHandle);
 
 		const float gameTimeScale = 2f;
 
@@ -60,7 +62,7 @@ public partial struct GameTimeSystem : ISystem
 
 			if (SystemAPI.HasSingleton<GameTimeRun>()) {
 				var gameTime = SystemAPI.GetSingletonRW<Components.GameTime>();
-				gameTime.ValueRW.Advance(SystemAPI.Time.DeltaTime * gameTimeScale);
+				gameTime.ValueRW.Advance(SystemAPI.Time.DeltaTime * gameTimeScale, rules);
 
 				dayChanged = gameTime.ValueRO.DayChanged;
 				yearPeriodChanged = gameTime.ValueRO.YearPeriodChanged;

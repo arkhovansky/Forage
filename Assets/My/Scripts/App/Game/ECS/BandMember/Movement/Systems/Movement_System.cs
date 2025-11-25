@@ -22,6 +22,8 @@ public partial struct Movement_System : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var rules = SystemAPI.GetComponent<Movement_Rules>(state.SystemHandle);
+
 		float cellPhysicalInnerDiameter = SystemAPI.GetSingleton<PhysicalMapParameters>().TileInnerDiameter;
 
 		foreach (var (walker,
@@ -45,20 +47,20 @@ public partial struct Movement_System : ISystem
 					Assert.IsTrue(intraCellMovement.ValueRO.IsBeforeCenter);
 					Assert.IsTrue(mapPosition.ValueRO.Value == movementActivity.TargetPosition);
 
-					Movement_Rules.MoveInsideDestinationCell(ref intraCellMovement.ValueRW,
-					                                         ref hoursDelta,
-					                                         cellPhysicalInnerDiameter,
-					                                         walker.ValueRO);
+					rules.MoveInsideDestinationCell(ref intraCellMovement.ValueRW,
+					                                ref hoursDelta,
+					                                cellPhysicalInnerDiameter,
+					                                walker.ValueRO);
 				}
 				else {  // Not reached target cell yet
 					Assert.IsTrue(path[^1].Position == movementActivity.TargetPosition);
 
 					bool advancedToNextCell =
-						Movement_Rules.MoveInsideTransitCell(ref intraCellMovement.ValueRW,
-						                                     ref hoursDelta,
-						                                     cellPhysicalInnerDiameter,
-						                                     walker.ValueRO,
-						                                     mapPosition.ValueRO.Value);
+						rules.MoveInsideTransitCell(ref intraCellMovement.ValueRW,
+						                            ref hoursDelta,
+						                            cellPhysicalInnerDiameter,
+						                            walker.ValueRO,
+						                            mapPosition.ValueRO.Value);
 
 					if (advancedToNextCell) {
 						mapPosition.ValueRW.Value = path[0].Position;

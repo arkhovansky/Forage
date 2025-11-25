@@ -169,9 +169,13 @@ public partial class RunningGameController : Controller
 		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
 		var gameTimeInitializer = new GameTimeInitializer();
 		var bandInitializer = new BandInitializer(humanTypeRepository);
+
+		var systemParametersRepository = new SystemParametersRepository();
+		var systemParametersInitializer = new SystemsInitializer(systemParametersRepository);
+
 		return new RunningGameInitializer(
 			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
-			bandInitializer, hexLayout);
+			bandInitializer, systemParametersInitializer, hexLayout);
 	}
 
 

@@ -18,6 +18,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 	private readonly IResourcePresentationInitializer _resourcePresentationInitializer;
 	private readonly IGameTimeInitializer _gameTimeInitializer;
 	private readonly IBandInitializer _bandInitializer;
+	private readonly ISystemsInitializer _systemsInitializer;
 	private readonly HexLayout3D _grid;
 
 
@@ -28,6 +29,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 		IResourcePresentationInitializer resourcePresentationInitializer,
 		IGameTimeInitializer gameTimeInitializer,
 		IBandInitializer bandInitializer,
+		ISystemsInitializer systemsInitializer,
 		HexLayout3D grid)
 	{
 		_terrainInitializer = terrainInitializer;
@@ -35,6 +37,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 		_resourcePresentationInitializer = resourcePresentationInitializer;
 		_gameTimeInitializer = gameTimeInitializer;
 		_bandInitializer = bandInitializer;
+		_systemsInitializer = systemsInitializer;
 		_grid = grid;
 	}
 
@@ -49,6 +52,8 @@ public class RunningGameInitializer : IRunningGameInitializer
 		_resourcePresentationInitializer.Init(scene.ResourceTypeIds);
 		_gameTimeInitializer.Init(scene.StartYearPeriod);
 		_bandInitializer.Init(scene.HumanTypeCounts);
+
+		_systemsInitializer.Init();
 	}
 
 

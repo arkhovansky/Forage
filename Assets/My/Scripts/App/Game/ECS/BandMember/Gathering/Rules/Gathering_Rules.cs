@@ -1,5 +1,8 @@
 ﻿using System;
 
+using Unity.Entities;
+using UnityEngine;
+
 using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
 using App.Game.ECS.Resource.Plant.Components;
@@ -10,9 +13,10 @@ namespace App.Game.ECS.BandMember.Gathering.Rules {
 
 
 
-public static class Gathering_Rules
+[Serializable]
+public struct Gathering_Rules : IComponentData
 {
-	private const float EnergyDensity_KcalPerKg = 1000;
+	[SerializeField] private float EnergyDensity_KcalPerKg;
 
 	/// <summary>
 	/// The biomass density (kg/km^2) that is considered rich.
@@ -21,17 +25,17 @@ public static class Gathering_Rules
 	/// If density is larger, gathering speed equals to the base one.
 	/// If density is smaller, gathering speed is decreased.
 	/// </remarks>
-	private const float RichBiomassDensity = 1000;
+	[SerializeField] private float RichBiomassDensity;
 
-	private const float MinGatheringSpeedCoef = 0.2f;
+	[SerializeField] private float MinGatheringSpeedCoef;
 
 
 
-	public static void Gather(ref RipeBiomass ripeBiomass,
-	                          ref FoodConsumer foodConsumer,
-	                          Gatherer gatherer,
-	                          float hoursDelta,
-	                          float innerCellDiameter)
+	public void Gather(ref RipeBiomass ripeBiomass,
+	                   ref FoodConsumer foodConsumer,
+	                   Gatherer gatherer,
+	                   float hoursDelta,
+	                   float innerCellDiameter)
 	{
 		float gatheringSpeed =
 			GetGatheringSpeed(ripeBiomass.Value, innerCellDiameter, gatherer.GatheringSpeed);
@@ -49,14 +53,14 @@ public static class Gathering_Rules
 	}
 
 
-	public static float GetGatheringTime(float neededEnergy,
-	                                     float ripeBiomass, float cellArea, float baseGatheringSpeed)
+	public float GetGatheringTime(float neededEnergy,
+	                              float ripeBiomass, float cellArea, float baseGatheringSpeed)
 	{
 		return GetGatheringTime(neededEnergy,
 		                        GetGatheringSpeed(ripeBiomass, cellArea, baseGatheringSpeed));
 	}
 
-	public static float GetMinGatheringTime(float neededEnergy, float baseGatheringSpeed)
+	public float GetMinGatheringTime(float neededEnergy, float baseGatheringSpeed)
 	{
 		return GetGatheringTime(neededEnergy, baseGatheringSpeed);
 	}
@@ -66,7 +70,7 @@ public static class Gathering_Rules
 	// private
 
 
-	private static float GetGatheringSpeed(float ripeBiomass, float cellArea, float baseGatheringSpeed)
+	private float GetGatheringSpeed(float ripeBiomass, float cellArea, float baseGatheringSpeed)
 	{
 		float biomassDensity = ripeBiomass / cellArea;
 
@@ -80,7 +84,7 @@ public static class Gathering_Rules
 	}
 
 
-	private static float GetGatheringTime(float neededEnergy, float gatheringSpeed)
+	private float GetGatheringTime(float neededEnergy, float gatheringSpeed)
 	{
 		float mass = neededEnergy / EnergyDensity_KcalPerKg;
 		return mass / gatheringSpeed;

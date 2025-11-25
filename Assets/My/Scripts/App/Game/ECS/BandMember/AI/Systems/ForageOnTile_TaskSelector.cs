@@ -11,8 +11,12 @@ using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.AI.Rules;
 using App.Game.ECS.BandMember.Energy.Components;
 using App.Game.ECS.BandMember.Gathering.Components;
+using App.Game.ECS.BandMember.Gathering.Rules;
+using App.Game.ECS.BandMember.Gathering.Systems;
 using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.BandMember.Movement.Components;
+using App.Game.ECS.BandMember.Movement.Rules;
+using App.Game.ECS.BandMember.Movement.Systems;
 using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
@@ -45,6 +49,11 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 		var mapParams = SystemAPI.GetSingleton<PhysicalMapParameters>();
 		var ecsMap = new EcsMap(map, tileIndexBuffer);
 
+		var movementSystem = World.GetExistingSystem(typeof(Movement_System));
+		var movementRules = SystemAPI.GetComponent<Movement_Rules>(movementSystem);
+		var gatheringSystem = World.GetExistingSystem(typeof(Gathering_System));
+		var gatheringRules = SystemAPI.GetComponent<Gathering_Rules>(gatheringSystem);
+
 		foreach (var (foragerPosition, walker, gatherer, foodConsumer,
 			         path,
 			         taskEnabled, forageTaskEnabled,
@@ -69,14 +78,17 @@ public partial class ForageOnTile_TaskSelector : SystemBase
 				// Skip if we already have a target more optimal than theoretically possible for the current resource
 				if (target != null) {
 					float minResourceForageTime = AI_Foraging_Rules.GetMinForagingTime(
-						foragerPosition, resourcePosition, mapParams, walker, gatherer, foodConsumer);
+						foragerPosition, resourcePosition, mapParams, walker, gatherer, foodConsumer,
+						movementRules, gatheringRules);
 					if (target.ForageTime < minResourceForageTime)
 						continue;
 				}
 
-				var pathInfo = AI_Movement_Rules.CalculatePath(foragerPosition, resourcePosition);
+				var pathInfo = AI_Movement_Rules.CalculatePath(foragerPosition, resourcePosition,
+				                                               movementRules);
 				float forageTime = AI_Foraging_Rules.GetForagingTime(
-					pathInfo, mapParams, walker, ripeBiomass, gatherer, foodConsumer);
+					pathInfo, mapParams, walker, ripeBiomass, gatherer, foodConsumer,
+					movementRules, gatheringRules);
 
 				if (target == null || forageTime < target.ForageTime) {
 					target = new TargetResourceInfo(resourcePosition, pathInfo, resourceEntity, forageTime);

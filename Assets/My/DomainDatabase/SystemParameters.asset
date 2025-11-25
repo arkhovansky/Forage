@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52d95974baba485bbf3875f3b8580b4c, type: 3}
+  m_Name: SystemParameters
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Database_Impl.ScriptableObjects.SystemParameters
+  GameTime:
+    DaysInYearPeriod: 30
+  Daylight:
+    DaylightBeginHours: 5
+    DaylightEndHours: 21
+  Movement:
+    MovementCost: 1.5
+    MinMovementCost: 1.5
+  Gathering:
+    EnergyDensity_KcalPerKg: 1000
+    RichBiomassDensity: 1000
+    MinGatheringSpeedCoef: 0.2

@@ -1,4 +1,9 @@
-﻿using Lib.Grid;
+﻿using System;
+
+using Unity.Entities;
+using UnityEngine;
+
+using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Game.ECS.BandMember.Movement.Components;
@@ -9,11 +14,12 @@ namespace App.Game.ECS.BandMember.Movement.Rules {
 
 
 
-public static class Movement_Rules
+[Serializable]
+public struct Movement_Rules : IComponentData
 {
-	public const float MovementCost = 1.5f;
+	public float MovementCost;
 
-	private const float MinMovementCost = MovementCost;
+	[SerializeField] private float MinMovementCost;
 
 
 	/// <summary>
@@ -23,10 +29,10 @@ public static class Movement_Rules
 	/// <param name="hoursDelta"></param>
 	/// <param name="cellPhysicalInnerDiameter"></param>
 	/// <param name="walker"></param>
-	public static void MoveInsideDestinationCell(ref IntraCellMovement intraCellMovement,
-	                                             ref float hoursDelta,
-	                                             float cellPhysicalInnerDiameter,
-	                                             Walker walker)
+	public void MoveInsideDestinationCell(ref IntraCellMovement intraCellMovement,
+	                                      ref float hoursDelta,
+	                                      float cellPhysicalInnerDiameter,
+	                                      Walker walker)
 	{
 		var distanceToCellCenter = intraCellMovement.DistanceToCenter * cellPhysicalInnerDiameter;
 		var speed = walker.BaseSpeed_KmPerH / MovementCost;
@@ -55,11 +61,11 @@ public static class Movement_Rules
 	/// <param name="walker"></param>
 	/// <param name="cellPosition"></param>
 	/// <returns>Boolean indicating if entity has advanced to the next cell</returns>
-	public static bool MoveInsideTransitCell(ref IntraCellMovement intraCellMovement,
-	                                         ref float hoursDelta,
-	                                         float cellPhysicalInnerDiameter,
-	                                         Walker walker,
-	                                         AxialPosition cellPosition)
+	public bool MoveInsideTransitCell(ref IntraCellMovement intraCellMovement,
+	                                  ref float hoursDelta,
+	                                  float cellPhysicalInnerDiameter,
+	                                  Walker walker,
+	                                  AxialPosition cellPosition)
 	{
 		var distanceToCellEdge = intraCellMovement.DistanceToFinalEdge * cellPhysicalInnerDiameter;
 		var speed = walker.BaseSpeed_KmPerH / MovementCost;
@@ -84,14 +90,14 @@ public static class Movement_Rules
 
 
 
-	public static float GetMovementTime(float pathTotalMovementCost, float tilePhysicalInnerDiameter, float baseSpeed)
+	public float GetMovementTime(float pathTotalMovementCost, float tilePhysicalInnerDiameter, float baseSpeed)
 	{
 		return (tilePhysicalInnerDiameter / baseSpeed) * pathTotalMovementCost;
 	}
 
-	public static float GetMinMovementTime(AxialPosition foragerPosition, AxialPosition resourcePosition,
-	                                       float tilePhysicalInnerDiameter,
-	                                       float baseSpeed)
+	public float GetMinMovementTime(AxialPosition foragerPosition, AxialPosition resourcePosition,
+	                                float tilePhysicalInnerDiameter,
+	                                float baseSpeed)
 	{
 		var pathTileCount = HexLayout.Distance(foragerPosition, resourcePosition);
 		return GetMovementTime(pathTileCount * MinMovementCost, tilePhysicalInnerDiameter, baseSpeed);

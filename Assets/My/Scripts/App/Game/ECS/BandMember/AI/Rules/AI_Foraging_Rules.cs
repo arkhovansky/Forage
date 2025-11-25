@@ -17,11 +17,12 @@ namespace App.Game.ECS.BandMember.AI.Rules {
 public static class AI_Foraging_Rules
 {
 	public static float GetForagingTime(PathInfo pathInfo, PhysicalMapParameters physicalMapParams, Walker walker,
-	                                    RipeBiomass ripeBiomass, Gatherer gatherer, FoodConsumer foodConsumer)
+	                                    RipeBiomass ripeBiomass, Gatherer gatherer, FoodConsumer foodConsumer,
+	                                    Movement_Rules movementRules, Gathering_Rules gatheringRules)
 	{
-		float moveTime = Movement_Rules.GetMovementTime(
+		float moveTime = movementRules.GetMovementTime(
 			pathInfo.TotalMovementCost, physicalMapParams.TileInnerDiameter, walker.BaseSpeed_KmPerH);
-		float gatherTime = Gathering_Rules.GetGatheringTime(
+		float gatherTime = gatheringRules.GetGatheringTime(
 			foodConsumer.EnergyNeededPerDay,
 			ripeBiomass.Value, physicalMapParams.CellArea, gatherer.GatheringSpeed);
 
@@ -31,11 +32,12 @@ public static class AI_Foraging_Rules
 
 	public static float GetMinForagingTime(AxialPosition foragerPosition, AxialPosition resourcePosition,
 	                                       PhysicalMapParameters physicalMapParams, Walker walker,
-	                                       Gatherer gatherer, FoodConsumer foodConsumer)
+	                                       Gatherer gatherer, FoodConsumer foodConsumer,
+	                                       Movement_Rules movementRules, Gathering_Rules gatheringRules)
 	{
-		float moveTime = Movement_Rules.GetMinMovementTime(
+		float moveTime = movementRules.GetMinMovementTime(
 			foragerPosition, resourcePosition, physicalMapParams.TileInnerDiameter, walker.BaseSpeed_KmPerH);
-		float gatherTime = Gathering_Rules.GetMinGatheringTime(
+		float gatherTime = gatheringRules.GetMinGatheringTime(
 			foodConsumer.EnergyNeededPerDay, gatherer.GatheringSpeed);
 
 		return GetForagingTime(moveTime, gatherTime);

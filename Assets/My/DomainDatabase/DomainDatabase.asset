@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Database_Impl.ScriptableObjects.DomainDatabase
   TerrainTypes: {fileID: 11400000, guid: 90a945edefe4020448d25553cf2abcfd, type: 2}
   PlantResourceTypes: {fileID: 11400000, guid: a21694f181255804a9df21aa0226e18d, type: 2}
+  SystemParameters: {fileID: 11400000, guid: 485edbc9a3f11fe47908f26d6f724f62, type: 2}

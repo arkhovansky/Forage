@@ -20,11 +20,12 @@ public record PathInfo(
 
 public static class AI_Movement_Rules
 {
-	public static PathInfo CalculatePath(AxialPosition start, AxialPosition end)
+	public static PathInfo CalculatePath(AxialPosition start, AxialPosition end,
+	                                     Movement_Rules movementRules)
 	{
 		var path = HexLayout.GetLinearPath(start, end);
 
-		return new PathInfo(path, path.Length * Movement_Rules.MovementCost);
+		return new PathInfo(path, path.Length * movementRules.MovementCost);
 	}
 }
 
