@@ -428,6 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.GameDatabase
   Domain: {fileID: 11400000, guid: e9a23fbfaf70a304caa088bc6e2dff7b, type: 2}
+  DomainSettings: {fileID: 11400000, guid: fd9802c12045d4e4d898c21652b3c455, type: 2}
   Presentation: {fileID: 11400000, guid: 267c290a09b38094a9b7bd3f1a4d0b26, type: 2}
 --- !u!1 &832575517
 GameObject:

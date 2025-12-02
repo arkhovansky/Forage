@@ -22,6 +22,7 @@ using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl;
 using App.Infrastructure.External.Database.Database_Impl.Repositories;
+using App.Infrastructure.External.Database.DomainSettings_Impl.Repositories;
 using App.Infrastructure.External.Database.PresentationDatabase_Impl.Repositories;
 
 
@@ -171,7 +172,9 @@ public partial class RunningGameController : Controller
 		var bandInitializer = new BandInitializer(humanTypeRepository);
 
 		var systemParametersRepository = new SystemParametersRepository();
-		var systemParametersInitializer = new SystemsInitializer(systemParametersRepository);
+		var domainSettingsRepository = new DomainSettingsRepository();
+		var systemParametersInitializer =
+			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
 
 		return new RunningGameInitializer(
 			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,

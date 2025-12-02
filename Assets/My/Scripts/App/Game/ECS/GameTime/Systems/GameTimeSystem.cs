@@ -5,6 +5,7 @@ using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.GameTime.Rules;
+using App.Game.ECS.GameTime.Settings;
 using App.Game.ECS.SystemGroups;
 using App.Game.ECS.Util.Components;
 using App.Game.ECS.Util.Systems;
@@ -32,8 +33,7 @@ public partial struct GameTimeSystem : ISystem
 	{
 		var singletonEntity = SystemAPI.GetSingletonEntity<SingletonEntity_Tag>();
 		var rules = SystemAPI.GetComponent<GameTime_Rules>(state.SystemHandle);
-
-		const float gameTimeScale = 2f;
+		var settings = SystemAPI.GetComponent<GameTime_Settings>(state.SystemHandle);
 
 		bool dayChanged = false;
 		bool yearPeriodChanged = false;
@@ -62,7 +62,7 @@ public partial struct GameTimeSystem : ISystem
 
 			if (SystemAPI.HasSingleton<GameTimeRun>()) {
 				var gameTime = SystemAPI.GetSingletonRW<Components.GameTime>();
-				gameTime.ValueRW.Advance(SystemAPI.Time.DeltaTime * gameTimeScale, rules);
+				gameTime.ValueRW.Advance(SystemAPI.Time.DeltaTime * settings.GameTimeScale, rules);
 
 				dayChanged = gameTime.ValueRO.DayChanged;
 				yearPeriodChanged = gameTime.ValueRO.YearPeriodChanged;
