@@ -3,7 +3,7 @@
 using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Game.Database;
+using App.Application.PresentationDatabase;
 
 
 
@@ -34,17 +34,17 @@ public class ResourceInfoVM : IViewModel
 
 	private readonly IScenePresentationModel_RO _presentationModel;
 
-	private readonly IResourceTypeRepository _resourceTypeRepository;
+	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
 
 
 
 	public ResourceInfoVM(IMap map,
 	                      IScenePresentationModel_RO presentationModel,
-	                      IResourceTypeRepository resourceTypeRepository)
+	                      IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		_map = map;
 		_presentationModel = presentationModel;
-		_resourceTypeRepository = resourceTypeRepository;
+		_resourceTypePresentationRepository = resourceTypePresentationRepository;
 
 		Name = string.Empty;
 		RipenessPeriod = string.Empty;
@@ -65,9 +65,8 @@ public class ResourceInfoVM : IViewModel
 		}
 
 		var resource = plantResource.Get_StaticData();
-		var resourceType = _resourceTypeRepository.Get(resource.TypeId);
 
-		Name = resourceType.Name;
+		Name = _resourceTypePresentationRepository.GetName(resource.TypeId);
 		PotentialBiomass = (uint) resource.PotentialBiomass;
 		RipenessPeriod = resource.RipenessPeriod.Month.ToString();
 		RipeBiomass = (uint) plantResource.Get_RipeBiomass();

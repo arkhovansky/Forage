@@ -2,7 +2,7 @@
 
 using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
-using App.Game.Database;
+using App.Application.PresentationDatabase;
 
 
 
@@ -20,7 +20,7 @@ public class BandMembersVM : IViewModel
 
 	private readonly ITime _time;
 
-	private readonly IHumanTypeRepository _humanTypeRepository;
+	private readonly IHumanTypePresentationRepository _humanTypePresentationRepository;
 
 	private IReadOnlyList<IBandMember_RO>? _bandMembers;
 
@@ -28,11 +28,11 @@ public class BandMembersVM : IViewModel
 
 	public BandMembersVM(IBand_RO band,
 	                     ITime time,
-	                     IHumanTypeRepository humanTypeRepository)
+	                     IHumanTypePresentationRepository humanTypePresentationRepository)
 	{
 		_band = band;
 		_time = time;
-		_humanTypeRepository = humanTypeRepository;
+		_humanTypePresentationRepository = humanTypePresentationRepository;
 
 		BandMembers = new List<BandMemberVM>();
 	}
@@ -53,7 +53,7 @@ public class BandMembersVM : IViewModel
 		_bandMembers = _band.Get_Members();
 
 		foreach (var member in _bandMembers)
-			BandMembers.Add(new BandMemberVM(member, _time, _humanTypeRepository));
+			BandMembers.Add(new BandMemberVM(member, _time, _humanTypePresentationRepository));
 	}
 }
 

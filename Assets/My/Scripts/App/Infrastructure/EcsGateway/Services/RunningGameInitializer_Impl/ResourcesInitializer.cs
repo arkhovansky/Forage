@@ -6,6 +6,9 @@ using Unity.Entities;
 
 using Lib.Grid;
 
+#if !DOTS_DISABLE_DEBUG_NAMES
+using App.Application.PresentationDatabase;
+#endif
 using App.Game.Database;
 using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;
@@ -23,11 +26,23 @@ public class ResourcesInitializer : IResourcesInitializer
 {
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 
+#if !DOTS_DISABLE_DEBUG_NAMES
+	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
+#endif
 
 
-	public ResourcesInitializer(IResourceTypeRepository resourceTypeRepository)
+
+	public ResourcesInitializer(
+		IResourceTypeRepository resourceTypeRepository
+#if !DOTS_DISABLE_DEBUG_NAMES
+		, IResourceTypePresentationRepository resourceTypePresentationRepository
+#endif
+	)
 	{
 		_resourceTypeRepository = resourceTypeRepository;
+#if !DOTS_DISABLE_DEBUG_NAMES
+		_resourceTypePresentationRepository = resourceTypePresentationRepository;
+#endif
 	}
 
 
@@ -72,7 +87,10 @@ public class ResourcesInitializer : IResourcesInitializer
 
 				em.SetComponentData(entity, new RipeBiomass());
 
-				em.SetName(entity, $"Resource: {resourceType.Name} {mapPosition}");
+#if !DOTS_DISABLE_DEBUG_NAMES
+				var name = _resourceTypePresentationRepository.GetName(resourceTypeId);
+				em.SetName(entity, $"Resource: {name} {mapPosition}");
+#endif
 
 				Set_TilePlantResource(ecsMap.GetTileEntity(mapPosition), entity);
 			}

@@ -3,7 +3,7 @@
 using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Game.Database;
+using App.Application.PresentationDatabase;
 
 
 
@@ -25,22 +25,22 @@ public class TileInfoVM : IViewModel
 
 	private readonly IScenePresentationModel_RO _presentationModel;
 
-	private readonly ITerrainTypeRepository _terrainTypeRepository;
+	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
 
 
 
 	public TileInfoVM(IMap map,
 	                  IScenePresentationModel_RO presentationModel,
-	                  ITerrainTypeRepository terrainTypeRepository,
-	                  IResourceTypeRepository resourceTypeRepository)
+	                  ITerrainTypePresentationRepository terrainTypePresentationRepository,
+	                  IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		_map = map;
 		_presentationModel = presentationModel;
-		_terrainTypeRepository = terrainTypeRepository;
+		_terrainTypePresentationRepository = terrainTypePresentationRepository;
 
 		TerrainType = string.Empty;
 
-		ResourceInfoVM = new ResourceInfoVM(map, presentationModel, resourceTypeRepository);
+		ResourceInfoVM = new ResourceInfoVM(map, presentationModel, resourceTypePresentationRepository);
 	}
 
 
@@ -59,8 +59,7 @@ public class TileInfoVM : IViewModel
 		}
 
 		var terrainTypeId = _map.Get_TerrainTypeId(_presentationModel.HoveredTile.Value);
-		var terrainType = _terrainTypeRepository.Get(terrainTypeId);
-		TerrainType = terrainType.Name;
+		TerrainType = _terrainTypePresentationRepository.GetName(terrainTypeId);
 	}
 }
 

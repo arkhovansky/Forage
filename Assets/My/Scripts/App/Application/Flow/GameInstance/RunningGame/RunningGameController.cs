@@ -15,7 +15,6 @@ using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 using App.Application.PresentationDatabase;
 using App.Application.Services;
-using App.Game.Database;
 using App.Game.Meta;
 using App.Infrastructure.EcsGateway.Models_Impl.Domain;
 using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
@@ -90,19 +89,16 @@ public partial class RunningGameController : Controller
 
 		_inGameMode = new InGameMode();
 
-		var terrainTypeRepository = new TerrainTypeRepository();
 		var terrainTypePresentationRepository = new TerrainTypePresentationRepository(hexLayout);
-		var resourceTypeRepository = new ResourceTypeRepository();
 		var resourceTypePresentationRepository = new ResourceTypePresentationRepository();
-		var humanTypeRepository = new HumanTypeRepository();
+		var humanTypePresentationRepository = new HumanTypePresentationRepository();
 
 		_runningGameInitializer = Create_RunningGameInitializer(
-			hexLayout, terrainTypePresentationRepository, resourceTypeRepository,
-			resourceTypePresentationRepository, humanTypeRepository);
+			hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		_uiVM = new RunningGameUI_VM(_runningGame, _scenePresentationModel, this,
 			commandRouter,
-			terrainTypeRepository, resourceTypeRepository, humanTypeRepository);
+			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		_uiView = new RunningGameUI_View(_uiVM,
 			gui, vvmBinder);
 		gui.AddView(_uiView);
@@ -161,14 +157,23 @@ public partial class RunningGameController : Controller
 	private IRunningGameInitializer Create_RunningGameInitializer(
 		HexLayout3D hexLayout,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
-		IResourceTypeRepository resourceTypeRepository,
-		IResourceTypePresentationRepository resourceTypePresentationRepository,
-		IHumanTypeRepository humanTypeRepository)
+		IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
-		var resourcesInitializer = new ResourcesInitializer(resourceTypeRepository);
+
+		var resourceTypeRepository = new ResourceTypeRepository();
+		var resourcesInitializer = new ResourcesInitializer(
+			resourceTypeRepository
+#if !DOTS_DISABLE_DEBUG_NAMES
+			, resourceTypePresentationRepository
+#endif
+		);
+
 		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
+
 		var gameTimeInitializer = new GameTimeInitializer();
+
+		var humanTypeRepository = new HumanTypeRepository();
 		var bandInitializer = new BandInitializer(humanTypeRepository);
 
 		var systemParametersRepository = new SystemParametersRepository();

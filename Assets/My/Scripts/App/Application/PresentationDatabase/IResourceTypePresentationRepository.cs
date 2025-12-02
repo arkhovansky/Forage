@@ -25,7 +25,9 @@ public struct ResourceTypePresentation
 
 public interface IResourceTypePresentationRepository
 {
-	ResourceTypePresentation Get(ResourceTypeId resourceTypeId);
+	string GetName(ResourceTypeId typeId);
+
+	ResourceTypePresentation Get(ResourceTypeId typeId);
 }
 
 

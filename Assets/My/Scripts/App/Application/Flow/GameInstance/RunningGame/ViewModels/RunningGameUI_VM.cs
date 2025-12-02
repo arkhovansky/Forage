@@ -4,7 +4,7 @@ using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Mvvm;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Game.Database;
+using App.Application.PresentationDatabase;
 
 
 
@@ -36,17 +36,18 @@ public class RunningGameUI_VM : IViewModel
 	                        IScenePresentationModel_RO presentationModel,
 	                        IController controller,
 	                        ICommandRouter commandRouter,
-	                        ITerrainTypeRepository terrainTypeRepository,
-	                        IResourceTypeRepository resourceTypeRepository,
-	                        IHumanTypeRepository humanTypeRepository)
+	                        ITerrainTypePresentationRepository terrainTypePresentationRepository,
+	                        IResourceTypePresentationRepository resourceTypePresentationRepository,
+	                        IHumanTypePresentationRepository humanTypePresentationRepository)
 	{
 		_game = runningGameInstance;
 
 		GameTime = string.Empty;
 
-		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, humanTypeRepository);
+		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, humanTypePresentationRepository);
 
-		TileInfoVM = new TileInfoVM(_game.World.Map, presentationModel, terrainTypeRepository, resourceTypeRepository);
+		TileInfoVM = new TileInfoVM(_game.World.Map, presentationModel,
+		                            terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
 			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));

@@ -14,18 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Database_Impl.ScriptableObjects.PlantResourceTypes
   List:
   - Id: 0
-    Name: Yam
     RipenessPeriod:
       Month: 1
   - Id: 1
-    Name: Acorns
     RipenessPeriod:
       Month: 2
   - Id: 2
-    Name: Bananas
     RipenessPeriod:
       Month: 3
   - Id: 3
-    Name: Wheat
     RipenessPeriod:
       Month: 4

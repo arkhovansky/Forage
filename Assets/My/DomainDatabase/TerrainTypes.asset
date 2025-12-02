@@ -14,22 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Database_Impl.ScriptableObjects.TerrainTypes
   List:
   - Id: 0
-    Name: Fresh water
   - Id: 1
-    Name: Sea
   - Id: 2
-    Name: Ocean
   - Id: 3
-    Name: Grasslands
   - Id: 4
-    Name: Plains
   - Id: 5
-    Name: Forest
   - Id: 6
-    Name: Tropical forest
   - Id: 7
-    Name: Swampy tropical forest
   - Id: 8
-    Name: Hills
   - Id: 9
-    Name: Mountains

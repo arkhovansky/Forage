@@ -27,6 +27,7 @@ public class TerrainTypes_Presentation : ScriptableObject
 	[Serializable]
 	public class TerrainType_Presentation
 	{
+		public string Name = null!;
 		public Material Material = null!;
 	}
 

@@ -27,6 +27,7 @@ public class ResourceTypes_Presentation : ScriptableObject
 	[Serializable]
 	public class ResourceType_Presentation
 	{
+		public string Name = null!;
 		public Material Material = null!;
 	}
 

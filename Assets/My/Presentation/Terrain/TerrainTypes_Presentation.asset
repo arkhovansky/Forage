@@ -15,31 +15,41 @@ MonoBehaviour:
   List:
   - Id: 0
     Data:
+      Name: Fresh Water
       Material: {fileID: 2100000, guid: 974a8b84000b3444d8393f826ab3cfc8, type: 2}
   - Id: 1
     Data:
+      Name: Sea
       Material: {fileID: 2100000, guid: be69c83820923ca4ea85ba5c75ccde00, type: 2}
   - Id: 2
     Data:
+      Name: Ocean
       Material: {fileID: 2100000, guid: e4027a1a2ec04ad44adb6500281be0ee, type: 2}
   - Id: 3
     Data:
+      Name: Grasslands
       Material: {fileID: 2100000, guid: e8079f25ab88d9a4a8ec69047e2657ed, type: 2}
   - Id: 4
     Data:
+      Name: Plains
       Material: {fileID: 2100000, guid: 243fe1a2455fd1c4a94e252b8f5e7fe2, type: 2}
   - Id: 5
     Data:
+      Name: Forest
       Material: {fileID: 2100000, guid: 78fdcdc512977cd4190747484fbb65fa, type: 2}
   - Id: 6
     Data:
+      Name: Tropical Forest
       Material: {fileID: 2100000, guid: 249c1f0967054d44c851d27222d5e91b, type: 2}
   - Id: 7
     Data:
+      Name: Swampy Tropical Forest
       Material: {fileID: 2100000, guid: dc466e5ba3b41244584bc679209134a2, type: 2}
   - Id: 8
     Data:
+      Name: Hills
       Material: {fileID: 2100000, guid: a10103a846bdffc4297c34feaccd050d, type: 2}
   - Id: 9
     Data:
+      Name: Mountains
       Material: {fileID: 2100000, guid: 3ff75052004bb2744a05cb774601ed93, type: 2}

@@ -10,8 +10,6 @@ namespace App.Game.Database {
 public class TerrainType
 {
 	public TerrainTypeId Id;
-
-	public string Name = null!;
 }
 
 

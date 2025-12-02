@@ -1,7 +1,7 @@
 ﻿using Unity.Properties;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
-using App.Game.Database;
+using App.Application.PresentationDatabase;
 
 
 
@@ -45,12 +45,12 @@ public class BandMemberVM
 
 	public BandMemberVM(IBandMember_RO bandMember,
 	                    ITime time,
-	                    IHumanTypeRepository humanTypeRepository)
+	                    IHumanTypePresentationRepository humanTypePresentationRepository)
 	{
 		_bandMember = bandMember;
 		_time = time;
 
-		Gender = humanTypeRepository.Get(bandMember.TypeId).Gender.ToString();
+		Gender = humanTypePresentationRepository.GetName(bandMember.TypeId);
 	}
 
 

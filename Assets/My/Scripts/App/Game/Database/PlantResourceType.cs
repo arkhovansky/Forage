@@ -13,8 +13,6 @@ public class PlantResourceType
 {
 	public ResourceTypeId Id;
 
-	public string Name = null!;
-
 	public YearPeriod RipenessPeriod;
 }
 

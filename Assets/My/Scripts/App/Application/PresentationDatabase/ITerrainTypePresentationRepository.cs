@@ -25,7 +25,9 @@ public struct TerrainTypePresentation
 
 public interface ITerrainTypePresentationRepository
 {
-	TerrainTypePresentation Get(TerrainTypeId terrainTypeId);
+	string GetName(TerrainTypeId typeId);
+
+	TerrainTypePresentation Get(TerrainTypeId typeId);
 }
 
 

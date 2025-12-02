@@ -14,7 +14,11 @@ namespace App.Infrastructure.External.Database.PresentationDatabase_Impl.Reposit
 
 public class ResourceTypePresentationRepository : IResourceTypePresentationRepository
 {
-	private readonly Dictionary<ResourceTypeId, ResourceTypePresentation> _resourceTypes = new();
+	private record ResourceType_Data(
+		string Name,
+		ResourceTypePresentation GraphicalData);
+
+	private readonly Dictionary<ResourceTypeId, ResourceType_Data> _resourceTypes = new();
 
 
 	//----------------------------------------------------------------------------------------------
@@ -27,16 +31,23 @@ public class ResourceTypePresentationRepository : IResourceTypePresentationRepos
 		var resourceTypesDB = GameDatabase.Instance.Presentation.ResourceTypes;
 
 		foreach (ResourceTypeId typeId in Enum.GetValues(typeof(ResourceTypeId))) {
-			_resourceTypes[typeId] = new ResourceTypePresentation(
-				quadMesh,
-				resourceTypesDB.GetResourceTypeData(typeId).Material);
+			var dbData = resourceTypesDB.GetResourceTypeData(typeId);
+			_resourceTypes[typeId] = new ResourceType_Data(
+				dbData.Name,
+				new ResourceTypePresentation(quadMesh, dbData.Material));
 		}
 	}
 
 
-	public ResourceTypePresentation Get(ResourceTypeId resourceTypeId)
+	public string GetName(ResourceTypeId typeId)
 	{
-		return _resourceTypes[resourceTypeId];
+		return _resourceTypes[typeId].Name;
+	}
+
+
+	public ResourceTypePresentation Get(ResourceTypeId typeId)
+	{
+		return _resourceTypes[typeId].GraphicalData;
 	}
 
 
