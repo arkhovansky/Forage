@@ -12,7 +12,7 @@ namespace App.Application.Flow.GameInstance.RunningGame.ViewModels {
 public class BandMemberVM
 {
 	[CreateProperty]
-	public string Gender { get; set; }
+	public string HumanType { get; set; }
 
 	[CreateProperty]
 	public string Goal { get; set; } = string.Empty;
@@ -50,7 +50,7 @@ public class BandMemberVM
 		_bandMember = bandMember;
 		_time = time;
 
-		Gender = humanTypePresentationRepository.GetName(bandMember.TypeId);
+		HumanType = humanTypePresentationRepository.GetName(bandMember.TypeId);
 	}
 
 

@@ -11,7 +11,7 @@
         <ui:VisualElement name="bandMembersBlock">
             <ui:MultiColumnListView name="bandMembers" binding-source-selection-mode="AutoAssign" selection-type="None" show-bound-collection-size="false" allow-remove="false" allow-add="false">
                 <ui:Columns reorderable="false">
-                    <ui:Column name="Gender" title="Gender" optional="false" sortable="false" stretchable="true" />
+                    <ui:Column name="HumanType" title="Type" optional="false" sortable="false" stretchable="true" />
                     <ui:Column name="Goal" title="Goal" optional="false" sortable="false" stretchable="true" />
                     <ui:Column name="Activity" title="Activity" sortable="false" optional="false" stretchable="true" />
                     <ui:Column name="AverageForagingHours" title="Forage, h" sortable="false" optional="false" stretchable="true" />
