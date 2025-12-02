@@ -16,11 +16,4 @@ public class HumanType
 
 
 
-public interface IHumanTypeRepository
-{
-	HumanType Get(HumanTypeId typeId);
-}
-
-
-
 }

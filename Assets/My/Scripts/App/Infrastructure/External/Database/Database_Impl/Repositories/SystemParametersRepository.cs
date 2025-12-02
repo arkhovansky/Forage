@@ -1,7 +1,7 @@
-﻿using App.Game.Database;
-using App.Game.ECS.BandMember.Gathering.Rules;
+﻿using App.Game.ECS.BandMember.Gathering.Rules;
 using App.Game.ECS.BandMember.Movement.Rules;
 using App.Game.ECS.GameTime.Rules;
+using App.Infrastructure.EcsGateway.Database.Domain;
 using App.Infrastructure.External.Database.Database_Impl.ScriptableObjects;
 
 

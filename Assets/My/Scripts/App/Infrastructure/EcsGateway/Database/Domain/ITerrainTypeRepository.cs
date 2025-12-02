@@ -1,4 +1,8 @@
-﻿namespace App.Game.Database {
+﻿using App.Game.Database;
+
+
+
+namespace App.Infrastructure.EcsGateway.Database.Domain {
 
 
 

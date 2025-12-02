@@ -1,9 +1,9 @@
 ﻿using Unity.Entities;
 
-using App.Game.Database;
 using App.Game.ECS.BandMember.Gathering.Systems;
 using App.Game.ECS.BandMember.Movement.Systems;
 using App.Game.ECS.GameTime.Systems;
+using App.Infrastructure.EcsGateway.Database.Domain;
 using App.Infrastructure.EcsGateway.Database.DomainSettings;
 
 

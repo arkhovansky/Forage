@@ -7,6 +7,7 @@ using Unity.Entities;
 using App.Game.Database;
 using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.Prefabs.Components;
+using App.Infrastructure.EcsGateway.Database.Domain;
 
 
 

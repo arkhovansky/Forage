@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using App.Game.Database;
+using App.Infrastructure.EcsGateway.Database.Domain;
 
 
 
