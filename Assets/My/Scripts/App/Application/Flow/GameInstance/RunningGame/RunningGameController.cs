@@ -10,19 +10,19 @@ using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Flow.Impl;
 using App.Application.Framework.UICore.Gui;
 using App.Application.Framework.UICore.Mvvm;
+using App.Application.Database.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
-using App.Application.PresentationDatabase;
 using App.Application.Services;
 using App.Game.Meta;
 using App.Infrastructure.EcsGateway.Models_Impl.Domain;
 using App.Infrastructure.EcsGateway.Models_Impl.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl;
-using App.Infrastructure.External.Database.Database_Impl.Repositories;
-using App.Infrastructure.External.Database.DomainSettings_Impl.Repositories;
-using App.Infrastructure.External.Database.PresentationDatabase_Impl.Repositories;
+using App.Infrastructure.External.Database.Domain.Repositories;
+using App.Infrastructure.External.Database.DomainSettings.Repositories;
+using App.Infrastructure.External.Database.Presentation.Repositories;
 
 
 

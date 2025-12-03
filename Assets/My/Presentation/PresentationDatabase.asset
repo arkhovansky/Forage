@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 850660c3d77540389e055cc2c5fbfe5f, type: 3}
   m_Name: PresentationDatabase
-  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.PresentationDatabase_Impl.ScriptableObjects.PresentationDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Presentation.ScriptableObjects.PresentationDatabase
   TerrainTypes: {fileID: 11400000, guid: 1083dfd1ad719ff4b98187518afdfb2d, type: 2}
   TerrainGridMaterial: {fileID: 2100000, guid: f8bd0a8c80e84c249949eec8853407da, type: 2}
   ResourceTypes: {fileID: 11400000, guid: 1aaff6732e56db449989cb4f92c9696b, type: 2}

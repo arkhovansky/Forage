@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-using App.Infrastructure.External.Database.Database_Impl.ScriptableObjects;
-using App.Infrastructure.External.Database.DomainSettings_Impl.ScriptableObjects;
-using App.Infrastructure.External.Database.PresentationDatabase_Impl.ScriptableObjects;
+using App.Infrastructure.External.Database.Domain.ScriptableObjects;
+using App.Infrastructure.External.Database.Presentation.ScriptableObjects;
 
 
 
@@ -18,7 +17,7 @@ public class GameDatabase : MonoBehaviour
 
 	public DomainDatabase Domain = null!;
 
-	public DomainSettings DomainSettings = null!;
+	public DomainSettings.ScriptableObjects.DomainSettings DomainSettings = null!;
 
 	public PresentationDatabase Presentation = null!;
 

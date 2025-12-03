@@ -8,7 +8,7 @@ using App.Game.Database;
 
 
 
-namespace App.Infrastructure.External.Database.PresentationDatabase_Impl.ScriptableObjects {
+namespace App.Infrastructure.External.Database.Presentation.ScriptableObjects {
 
 
 

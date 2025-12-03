@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0af4ee13f25a7344daed62531faf0b88, type: 3}
   m_Name: TerrainTypes_Presentation
-  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.PresentationDatabase_Impl.ScriptableObjects.TerrainTypes_Presentation
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Presentation.ScriptableObjects.TerrainTypes_Presentation
   List:
   - Id: 0
     Data:

@@ -6,7 +6,7 @@ using App.Game.ECS.GameTime.Rules;
 
 
 
-namespace App.Infrastructure.External.Database.Database_Impl.ScriptableObjects {
+namespace App.Infrastructure.External.Database.Domain.ScriptableObjects {
 
 
 

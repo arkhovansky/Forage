@@ -7,7 +7,7 @@ using App.Infrastructure.EcsGateway.Database.Domain;
 
 
 
-namespace App.Infrastructure.External.Database.Database_Impl.Repositories {
+namespace App.Infrastructure.External.Database.Domain.Repositories {
 
 
 

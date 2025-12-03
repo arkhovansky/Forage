@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 
-namespace App.Infrastructure.External.Database.Database_Impl.ScriptableObjects {
+namespace App.Infrastructure.External.Database.Domain.ScriptableObjects {
 
 
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using App.Application.PresentationDatabase;
+using App.Application.Database.Presentation;
 using App.Game.Database;
 
 
 
-namespace App.Infrastructure.External.Database.PresentationDatabase_Impl.Repositories {
+namespace App.Infrastructure.External.Database.Presentation.Repositories {
 
 
 

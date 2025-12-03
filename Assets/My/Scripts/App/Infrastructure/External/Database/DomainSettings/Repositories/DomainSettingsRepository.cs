@@ -3,7 +3,7 @@ using App.Infrastructure.EcsGateway.Database.DomainSettings;
 
 
 
-namespace App.Infrastructure.External.Database.DomainSettings_Impl.Repositories {
+namespace App.Infrastructure.External.Database.DomainSettings.Repositories {
 
 
 

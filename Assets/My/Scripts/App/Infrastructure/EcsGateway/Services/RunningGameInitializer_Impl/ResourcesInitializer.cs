@@ -7,7 +7,7 @@ using Unity.Entities;
 using Lib.Grid;
 
 #if !DOTS_DISABLE_DEBUG_NAMES
-using App.Application.PresentationDatabase;
+using App.Application.Database.Presentation;
 #endif
 using App.Game.Database;
 using App.Game.ECS.Map;

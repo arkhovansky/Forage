@@ -4,7 +4,7 @@ using App.Game.ECS.GameTime.Settings;
 
 
 
-namespace App.Infrastructure.External.Database.DomainSettings_Impl.ScriptableObjects {
+namespace App.Infrastructure.External.Database.DomainSettings.ScriptableObjects {
 
 
 

@@ -2,11 +2,11 @@
 using App.Game.ECS.BandMember.Movement.Rules;
 using App.Game.ECS.GameTime.Rules;
 using App.Infrastructure.EcsGateway.Database.Domain;
-using App.Infrastructure.External.Database.Database_Impl.ScriptableObjects;
+using App.Infrastructure.External.Database.Domain.ScriptableObjects;
 
 
 
-namespace App.Infrastructure.External.Database.Database_Impl.Repositories {
+namespace App.Infrastructure.External.Database.Domain.Repositories {
 
 
 
