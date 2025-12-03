@@ -8,7 +8,7 @@ using App.Infrastructure.EcsGateway.Database.DomainSettings;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
 
 
 

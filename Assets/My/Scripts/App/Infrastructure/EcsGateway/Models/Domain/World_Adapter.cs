@@ -2,7 +2,7 @@
 
 
 
-namespace App.Infrastructure.EcsGateway.Models_Impl.Domain {
+namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 
 

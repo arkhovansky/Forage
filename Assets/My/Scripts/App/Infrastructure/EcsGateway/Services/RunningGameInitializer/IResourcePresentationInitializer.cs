@@ -4,7 +4,7 @@ using App.Game.Database;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
 
 
 

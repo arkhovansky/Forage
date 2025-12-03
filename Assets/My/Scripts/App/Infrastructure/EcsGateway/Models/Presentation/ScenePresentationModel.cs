@@ -6,7 +6,7 @@ using App.Infrastructure.EcsGateway.Services;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models_Impl.Presentation {
+namespace App.Infrastructure.EcsGateway.Models.Presentation {
 
 
 

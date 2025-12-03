@@ -14,7 +14,7 @@ using App.Game.ECS.Resource.Plant.Presentation.Components;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer_Impl {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
 
 
 
