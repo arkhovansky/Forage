@@ -9,7 +9,7 @@ namespace App.Infrastructure.External.Database.DomainSettings.ScriptableObjects 
 
 
 [CreateAssetMenu(fileName = nameof(DomainSettings),
-                 menuName = AssetMenuNames.Database_+nameof(DomainSettings))]
+                 menuName = AssetMenuNames.Root_Database_+nameof(DomainSettings))]
 public class DomainSettings : ScriptableObject
 {
 	public GameTime_Settings GameTime;

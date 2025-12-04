@@ -7,7 +7,8 @@ namespace App.Infrastructure.External.Database.Domain.ScriptableObjects {
 
 
 [CreateAssetMenu(fileName = nameof(DomainDatabase),
-                 menuName = AssetMenuNames.Database_Domain_+nameof(DomainDatabase))]
+                 menuName = AssetMenuNames.Root_Database_Domain_+nameof(DomainDatabase),
+                 order = 0)]
 public class DomainDatabase : ScriptableObject
 {
 	public TerrainTypes TerrainTypes = null!;

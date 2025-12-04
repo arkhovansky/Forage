@@ -4,10 +4,12 @@
 
 public static class AssetMenuNames
 {
-	public const string Database_ = "Database/";
+	public const string Root_ = "My/";
 
-	public const string Database_Domain_ = Database_ + "Domain/";
-	public const string Database_GamePresentation_ = Database_ + "Game Presentation/";
+	public const string Root_Database_ = Root_+"Database/";
+
+	public const string Root_Database_Domain_ = Root_Database_+"Domain/";
+	public const string Root_Database_GamePresentation_ = Root_Database_+"Game Presentation/";
 }
 
 

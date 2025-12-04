@@ -13,7 +13,8 @@ namespace App.Infrastructure.External.Database.Presentation.ScriptableObjects {
 
 
 [CreateAssetMenu(fileName = nameof(ResourceTypes_Presentation),
-                 menuName = AssetMenuNames.Database_GamePresentation_+nameof(ResourceTypes_Presentation))]
+                 menuName = AssetMenuNames.Root_Database_GamePresentation_+nameof(ResourceTypes_Presentation),
+                 order = 2)]
 public class ResourceTypes_Presentation : ScriptableObject
 {
 	[Serializable]

@@ -11,7 +11,8 @@ namespace App.Infrastructure.External.Database.Domain.ScriptableObjects {
 
 
 [CreateAssetMenu(fileName = nameof(SystemParameters),
-                 menuName = AssetMenuNames.Database_Domain_+nameof(SystemParameters))]
+                 menuName = AssetMenuNames.Root_Database_Domain_+nameof(SystemParameters),
+                 order = 1)]
 public class SystemParameters : ScriptableObject
 {
 	public GameTime_Rules GameTime;
