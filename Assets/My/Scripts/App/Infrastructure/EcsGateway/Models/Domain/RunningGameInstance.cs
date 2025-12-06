@@ -1,4 +1,6 @@
-﻿using Lib.Grid;
+﻿using UnityEngine.Assertions;
+
+using Lib.Grid;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
@@ -22,7 +24,8 @@ public class RunningGameInstance : IRunningGameInstance
 	public RunningGameInstance(IWorld_RO world)
 	{
 		World = world;
-		EcsService.GameSystems_Enabled = false;
+
+		Assert.IsFalse(EcsService.GameSystems_Enabled);
 	}
 
 

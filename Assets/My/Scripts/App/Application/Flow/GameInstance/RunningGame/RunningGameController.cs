@@ -39,27 +39,30 @@ public partial class RunningGameController : Controller
 
 	private readonly IGameInstance _game;
 
-	private readonly IRunningGameInstance _runningGame;
+	private readonly IGui _gui;
+	private readonly IVvmBinder _vvmBinder;
 
-	private readonly ILocale _locale;
 
-	private readonly VisualRectangularHexMap3D _map;
+	#region Semantically readonly
 
-	private readonly IScenePresentationModel _scenePresentationModel;
+	private IInGameMode _inGameMode = null!;
 
-	private readonly IInGameMode _inGameMode;
+	private IRunningGameInstance _runningGame = null!;
 
-	private readonly IRunningGameInitializer _runningGameInitializer;
+	private IScenePresentationModel _scenePresentationModel = null!;
 
-	private readonly RunningGameUI_VM _uiVM;
-	private readonly RunningGameUI_View _uiView;
+	private RunningGameUI_VM _uiVM = null!;
+	private RunningGameUI_View _uiView = null!;
 
-	private readonly Arrival_Mode _arrival_Mode;
-	private readonly CampPlacing_Mode _campPlacing_Mode;
-	private readonly PeriodRunning_Mode _periodRunning_Mode;
-	private readonly InterPeriod_Mode _interPeriod_Mode;
+	private Arrival_Mode _arrival_Mode = null!;
+	private CampPlacing_Mode _campPlacing_Mode = null!;
+	private PeriodRunning_Mode _periodRunning_Mode = null!;
+	private InterPeriod_Mode _interPeriod_Mode = null!;
 
-	private IMode _mode;
+	#endregion
+
+
+	private IMode _mode = null!;
 
 	//----------------------------------------------------------------------------------------------
 
@@ -81,70 +84,43 @@ public partial class RunningGameController : Controller
 	{
 		_game = game;
 
-		_runningGame = new RunningGameInstance(
-			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
-
-		var hexLayout = new HexLayout3D(
-			new HexLayout(HexOrientation),
-			new Matrix3x2(Vector3.right, Vector3.forward));
-
-		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
-		var localeFactory = new LocaleFactory(localeRepository);
-		_locale = localeFactory.Create(_game.LocaleId);
-
-		_map = new VisualRectangularHexMap3D(_locale.Map, hexLayout);
-
-		_scenePresentationModel = new ScenePresentationModel();
-
-		_inGameMode = new InGameMode();
-
-		var terrainTypePresentationRepository =
-			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, hexLayout);
-		var resourceTypePresentationRepository =
-			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
-		var humanTypePresentationRepository = new HumanTypePresentationRepository();
-
-		_runningGameInitializer = Create_RunningGameInitializer(
-			hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
-
-		_uiVM = new RunningGameUI_VM(_runningGame, _scenePresentationModel, this,
-			commandRouter,
-			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
-		_uiView = new RunningGameUI_View(_uiVM,
-			gui, vvmBinder);
-		gui.AddView(_uiView);
+		_gui = gui;
+		_vvmBinder = vvmBinder;
 
 		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
 		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
 		base.AddCommandHandler<YearPeriodChanged>(OnYearPeriodChanged);
 		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
-
-		// Should come at the end since modes might use fields (or properties) of this
-		_arrival_Mode = new Arrival_Mode(this);
-		_campPlacing_Mode = new CampPlacing_Mode(this);
-		_periodRunning_Mode = new PeriodRunning_Mode(this);
-		_interPeriod_Mode = new InterPeriod_Mode(this);
-
-		_mode = _arrival_Mode;
 	}
 
 
 	public override async UniTask Start()
 	{
+		_inGameMode = new InGameMode();
+
 		await _inGameMode.Enter();
+		// GameDatabase.Instance is available now
 
-		_runningGameInitializer.Initialize(_locale);
+		Compose(out var localeFactory,
+		        out var runningGameInitializer,
+		        out var hexLayout);
 
+		var locale = localeFactory.Create(_game.LocaleId);
+
+		runningGameInitializer.Initialize(locale);
 		_runningGame.Start();
 
-		var sceneViewController = new SceneViewController(Camera.main!, _map,
+		var map = new VisualRectangularHexMap3D(locale.Map, hexLayout);
+
+		var sceneViewController = new SceneViewController(Camera.main!, map,
 		                                                  CommandRouter);
 		AddChildController(sceneViewController);
 		await sceneViewController.Start();
 
 		sceneViewController.PositionCameraToOverview();
 
+		_mode = _arrival_Mode;
 		_mode.Enter();
 	}
 
@@ -163,6 +139,47 @@ public partial class RunningGameController : Controller
 
 	//----------------------------------------------------------------------------------------------
 	// private
+
+
+	private void Compose(out ILocaleFactory localeFactory,
+	                     out IRunningGameInitializer runningGameInitializer,
+	                     out HexLayout3D hexLayout)
+	{
+		_runningGame = new RunningGameInstance(
+			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
+
+		_scenePresentationModel = new ScenePresentationModel();
+
+		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
+		localeFactory = new LocaleFactory(localeRepository);
+
+		hexLayout = new HexLayout3D(
+			new HexLayout(HexOrientation),
+			new Matrix3x2(Vector3.right, Vector3.forward));
+
+		var terrainTypePresentationRepository =
+			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, hexLayout);
+		var resourceTypePresentationRepository =
+			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
+		var humanTypePresentationRepository = new HumanTypePresentationRepository();
+
+		runningGameInitializer = Create_RunningGameInitializer(
+			hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
+
+		_uiVM = new RunningGameUI_VM(
+			_runningGame, _scenePresentationModel, this,
+			CommandRouter,
+			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
+		_uiView = new RunningGameUI_View(_uiVM,
+		                                 _gui, _vvmBinder);
+		_gui.AddView(_uiView);
+
+		// Should come at the end of composition root since modes might use data members of this
+		_arrival_Mode = new Arrival_Mode(this);
+		_campPlacing_Mode = new CampPlacing_Mode(this);
+		_periodRunning_Mode = new PeriodRunning_Mode(this);
+		_interPeriod_Mode = new InterPeriod_Mode(this);
+	}
 
 
 	private IRunningGameInitializer Create_RunningGameInitializer(

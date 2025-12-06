@@ -21,6 +21,7 @@ public class InGameMode : IInGameMode
 
 	public async UniTask Enter()
 	{
+		EcsService.GameSystems_Enabled = false;
 		EcsService.SetEcsSystemsEnabled(true);
 		await LoadGameScene_Async();
 	}
