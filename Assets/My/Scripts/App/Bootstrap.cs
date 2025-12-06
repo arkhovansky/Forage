@@ -27,11 +27,11 @@ public class Bootstrap : MonoBehaviour
 
 	private ApplicationSettings _applicationSettings = null!;
 
-	private IGui? _gui;
-	private IVvmBinder? _vvmBinder;
-	private ICommandRouter? _commandRouter;
+	private IGui _gui = null!;
+	private IVvmBinder _vvmBinder = null!;
+	private ICommandRouter _commandRouter = null!;
 
-	private ApplicationController? _applicationController;
+	private ApplicationController _applicationController = null!;
 
 	private bool _isStarted;
 
@@ -55,7 +55,7 @@ public class Bootstrap : MonoBehaviour
 
 		_applicationController = new ApplicationController(
 			_applicationSettings,
-			_gui!, _vvmBinder!, _commandRouter!);
+			_gui, _vvmBinder, _commandRouter);
 		await _applicationController.Start();
 
 		_isStarted = true;
@@ -69,7 +69,7 @@ public class Bootstrap : MonoBehaviour
 
 		var uiDocument = GetComponent<UIDocument>();
 
-		_gui!.SetRootVisualNode(new UITKVisualNode(uiDocument.rootVisualElement));
+		_gui.SetRootVisualNode(new UITKVisualNode(uiDocument.rootVisualElement));
 	}
 
 
@@ -78,8 +78,8 @@ public class Bootstrap : MonoBehaviour
 		if (!_isStarted)
 			return;
 
-		_commandRouter!.Update();
-		_applicationController!.Update();
+		_commandRouter.Update();
+		_applicationController.Update();
 	}
 
 
@@ -88,7 +88,7 @@ public class Bootstrap : MonoBehaviour
 		if (!_isStarted)
 			return;
 
-		_applicationController!.UpdateViewModels();
+		_applicationController.UpdateViewModels();
 	}
 }
 
