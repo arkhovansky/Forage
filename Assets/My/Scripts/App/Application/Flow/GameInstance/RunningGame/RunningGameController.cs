@@ -34,6 +34,15 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 
 public partial class RunningGameController : Controller
 {
+	private interface IMode
+	{
+		void Enter() {}
+		void Exit() {}
+
+		void Update() {}
+	}
+
+
 	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
 
 
@@ -54,26 +63,16 @@ public partial class RunningGameController : Controller
 	private RunningGameUI_VM _uiVM = null!;
 	private RunningGameUI_View _uiView = null!;
 
-	private Arrival_Mode _arrival_Mode = null!;
-	private CampPlacing_Mode _campPlacing_Mode = null!;
-	private PeriodRunning_Mode _periodRunning_Mode = null!;
-	private InterPeriod_Mode _interPeriod_Mode = null!;
+	private IMode _arrival_Mode = null!;
+	private IMode _campPlacing_Mode = null!;
+	private IMode _periodRunning_Mode = null!;
+	private IMode _interPeriod_Mode = null!;
 
 	#endregion
 
 
 	private IMode _mode = null!;
 
-	//----------------------------------------------------------------------------------------------
-
-
-	private interface IMode
-	{
-		void Enter() {}
-		void Exit() {}
-
-		void Update() {}
-	}
 
 	//----------------------------------------------------------------------------------------------
 
@@ -120,8 +119,7 @@ public partial class RunningGameController : Controller
 
 		sceneViewController.PositionCameraToOverview();
 
-		_mode = _arrival_Mode;
-		_mode.Enter();
+		SetMode(_arrival_Mode);
 	}
 
 
@@ -256,7 +254,10 @@ public partial class RunningGameController : Controller
 		if (_mode == mode)
 			return;
 
-		_mode.Exit();
+		// _mode is null before initialization
+		// ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
+		_mode?.Exit();
+
 		_mode = mode;
 		_mode.Enter();
 	}
