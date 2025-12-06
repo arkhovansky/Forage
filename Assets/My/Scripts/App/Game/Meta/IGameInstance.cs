@@ -4,7 +4,7 @@
 
 public interface IGameInstance
 {
-	IScene Scene { get; }
+	LocaleId LocaleId { get; }
 }
 
 

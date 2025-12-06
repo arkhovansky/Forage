@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5129088f16944fc6a47e29b628ca84aa, type: 3}
   m_Name: PlantResourceTypes
-  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Domain.ScriptableObjects.PlantResourceTypes
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Data.Database.Domain.ScriptableObjects.PlantResourceTypes
   List:
   - Id: 0
     RipenessPeriod:

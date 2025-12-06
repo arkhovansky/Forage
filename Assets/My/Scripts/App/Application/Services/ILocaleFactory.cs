@@ -6,9 +6,9 @@ namespace App.Application.Services {
 
 
 
-public interface IRunningGameInitializer
+public interface ILocaleFactory
 {
-	void Initialize(ILocale locale);
+	ILocale Create(LocaleId localeId);
 }
 
 

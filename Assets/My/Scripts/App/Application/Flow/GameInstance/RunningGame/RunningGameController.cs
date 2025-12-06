@@ -20,9 +20,11 @@ using App.Infrastructure.EcsGateway.Models.Domain;
 using App.Infrastructure.EcsGateway.Models.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
-using App.Infrastructure.External.Database.Domain.Repositories;
-using App.Infrastructure.External.Database.DomainSettings.Repositories;
-using App.Infrastructure.External.Database.Presentation.Repositories;
+using App.Infrastructure.External.Data.Database;
+using App.Infrastructure.External.Data.Database.Domain.Repositories;
+using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
+using App.Infrastructure.External.Data.Database.Presentation.Repositories;
+using App.Infrastructure.External.Data.Locale;
 
 
 
@@ -38,6 +40,8 @@ public partial class RunningGameController : Controller
 	private readonly IGameInstance _game;
 
 	private readonly IRunningGameInstance _runningGame;
+
+	private readonly ILocale _locale;
 
 	private readonly VisualRectangularHexMap3D _map;
 
@@ -83,7 +87,12 @@ public partial class RunningGameController : Controller
 		var hexLayout = new HexLayout3D(
 			new HexLayout(HexOrientation),
 			new Matrix3x2(Vector3.right, Vector3.forward));
-		_map = new VisualRectangularHexMap3D(_game.Scene.Map, hexLayout);
+
+		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
+		var localeFactory = new LocaleFactory(localeRepository);
+		_locale = localeFactory.Create(_game.LocaleId);
+
+		_map = new VisualRectangularHexMap3D(_locale.Map, hexLayout);
 
 		_scenePresentationModel = new ScenePresentationModel();
 
@@ -123,7 +132,7 @@ public partial class RunningGameController : Controller
 	{
 		await _inGameMode.Enter();
 
-		_runningGameInitializer.Initialize(_game.Scene);
+		_runningGameInitializer.Initialize(_locale);
 
 		_runningGame.Start();
 

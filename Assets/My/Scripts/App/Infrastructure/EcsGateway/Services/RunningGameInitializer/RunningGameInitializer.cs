@@ -42,16 +42,16 @@ public class RunningGameInitializer : IRunningGameInitializer
 	}
 
 
-	public void Initialize(IScene scene)
+	public void Initialize(ILocale locale)
 	{
-		InitMap(scene.Map);
+		InitMap(locale.Map);
 
-		_terrainInitializer.Init(scene.TileTerrainTypes, scene.Map, scene.TilePhysicalInnerDiameter);
-		_resourcesInitializer.Init(scene.ResourceAxialPositions, scene.ResourceTypes, scene.PotentialBiomass,
-		                           scene.Map);
-		_resourcePresentationInitializer.Init(scene.ResourceTypeIds);
-		_gameTimeInitializer.Init(scene.StartYearPeriod);
-		_bandInitializer.Init(scene.HumanTypeCounts);
+		_terrainInitializer.Init(locale.TileTerrainTypes, locale.Map, locale.TilePhysicalInnerDiameter);
+		_resourcesInitializer.Init(locale.ResourceAxialPositions, locale.ResourceTypes, locale.PotentialBiomass,
+		                           locale.Map);
+		_resourcePresentationInitializer.Init(locale.ResourceTypeIds);
+		_gameTimeInitializer.Init(locale.StartYearPeriod);
+		_bandInitializer.Init(locale.HumanTypeCounts);
 
 		_systemsInitializer.Init();
 	}

@@ -12,6 +12,7 @@ using App.Application.Framework.UnityUICore.Mvvm;
 
 using App.Application.Flow;
 using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.External.Data.Settings;
 
 
 
@@ -21,6 +22,11 @@ namespace App {
 
 public class Bootstrap : MonoBehaviour
 {
+	[SerializeField] private ApplicationSettings_Asset ApplicationSettings = null!;
+
+
+	private ApplicationSettings _applicationSettings = null!;
+
 	private IGui? _gui;
 	private IVvmBinder? _vvmBinder;
 	private ICommandRouter? _commandRouter;
@@ -33,6 +39,8 @@ public class Bootstrap : MonoBehaviour
 
 	private void Awake()
 	{
+		_applicationSettings = new ApplicationSettings(ApplicationSettings);
+
 		_gui = new Gui();
 		_vvmBinder = new VvmBinder();
 		_commandRouter = new CommandRouter();
@@ -46,6 +54,7 @@ public class Bootstrap : MonoBehaviour
 		EcsService.SetEcsSystemsEnabled(false);
 
 		_applicationController = new ApplicationController(
+			_applicationSettings,
 			_gui!, _vvmBinder!, _commandRouter!);
 		await _applicationController.Start();
 

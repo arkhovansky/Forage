@@ -11,7 +11,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b5aaa18239e4942b0e3f3e67422d748, type: 3}
   m_Name: DomainDatabase
-  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Domain.ScriptableObjects.DomainDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Data.Database.Domain.ScriptableObjects.DomainDatabase
   TerrainTypes: {fileID: 11400000, guid: 90a945edefe4020448d25553cf2abcfd, type: 2}
   PlantResourceTypes: {fileID: 11400000, guid: a21694f181255804a9df21aa0226e18d, type: 2}
   SystemParameters: {fileID: 11400000, guid: 485edbc9a3f11fe47908f26d6f724f62, type: 2}
+  Locales: {fileID: 11400000, guid: 350046b5e52e666429d214df91646e7f, type: 2}

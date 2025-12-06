@@ -22,7 +22,7 @@ using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
-using App.Infrastructure.External.Database;
+using App.Infrastructure.External.Data.Database;
 
 
 

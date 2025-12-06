@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52d95974baba485bbf3875f3b8580b4c, type: 3}
   m_Name: SystemParameters
-  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Database.Domain.ScriptableObjects.SystemParameters
+  m_EditorClassIdentifier: Assembly-CSharp::App.Infrastructure.External.Data.Database.Domain.ScriptableObjects.SystemParameters
   GameTime:
     DaysInYearPeriod: 30
   Daylight:
