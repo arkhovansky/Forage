@@ -98,8 +98,10 @@ public partial class RunningGameController : Controller
 
 		_inGameMode = new InGameMode();
 
-		var terrainTypePresentationRepository = new TerrainTypePresentationRepository(hexLayout);
-		var resourceTypePresentationRepository = new ResourceTypePresentationRepository();
+		var terrainTypePresentationRepository =
+			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, hexLayout);
+		var resourceTypePresentationRepository =
+			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
 		var humanTypePresentationRepository = new HumanTypePresentationRepository();
 
 		_runningGameInitializer = Create_RunningGameInitializer(
@@ -170,7 +172,7 @@ public partial class RunningGameController : Controller
 	{
 		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
 
-		var resourceTypeRepository = new ResourceTypeRepository();
+		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
 			resourceTypeRepository
 #if !DOTS_DISABLE_DEBUG_NAMES
@@ -185,8 +187,8 @@ public partial class RunningGameController : Controller
 		var humanTypeRepository = new HumanTypeRepository();
 		var bandInitializer = new BandInitializer(humanTypeRepository);
 
-		var systemParametersRepository = new SystemParametersRepository();
-		var domainSettingsRepository = new DomainSettingsRepository();
+		var systemParametersRepository = new SystemParametersRepository(GameDatabase.Instance.Domain.SystemParameters);
+		var domainSettingsRepository = new DomainSettingsRepository(GameDatabase.Instance.DomainSettings);
 		var systemParametersInitializer =
 			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
 

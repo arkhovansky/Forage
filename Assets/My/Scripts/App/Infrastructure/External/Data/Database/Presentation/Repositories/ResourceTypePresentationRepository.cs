@@ -5,6 +5,7 @@ using UnityEngine;
 
 using App.Application.Database.Presentation;
 using App.Game.Database;
+using App.Infrastructure.External.Data.Database.Presentation.ScriptableObjects;
 
 
 
@@ -24,14 +25,12 @@ public class ResourceTypePresentationRepository : IResourceTypePresentationRepos
 	//----------------------------------------------------------------------------------------------
 
 
-	public ResourceTypePresentationRepository()
+	public ResourceTypePresentationRepository(ResourceTypes_Presentation asset)
 	{
 		var quadMesh = CreateQuadMesh();
 
-		var resourceTypesDB = GameDatabase.Instance.Presentation.ResourceTypes;
-
 		foreach (ResourceTypeId typeId in Enum.GetValues(typeof(ResourceTypeId))) {
-			var dbData = resourceTypesDB.GetResourceTypeData(typeId);
+			var dbData = asset.GetResourceTypeData(typeId);
 			_resourceTypes[typeId] = new ResourceType_Data(
 				dbData.Name,
 				new ResourceTypePresentation(quadMesh, dbData.Material));

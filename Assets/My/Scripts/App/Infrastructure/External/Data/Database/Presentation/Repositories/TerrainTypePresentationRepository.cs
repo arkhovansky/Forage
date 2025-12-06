@@ -6,6 +6,7 @@ using Lib.VisualGrid;
 
 using App.Application.Database.Presentation;
 using App.Game.Database;
+using App.Infrastructure.External.Data.Database.Presentation.ScriptableObjects;
 
 
 
@@ -28,60 +29,58 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 	//----------------------------------------------------------------------------------------------
 
 
-	public TerrainTypePresentationRepository(HexLayout3D hexLayout)
+	public TerrainTypePresentationRepository(TerrainTypes_Presentation asset, HexLayout3D hexLayout)
 	{
 		_hexLayout = hexLayout;
 
 		var flatMesh = CreateFlatTileMesh();
 
-		var terrainTypesDB = GameDatabase.Instance.Presentation.TerrainTypes;
-
-		var dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.FreshWater);
+		var dbData = asset.GetTerrainTypeData(TerrainTypeId.FreshWater);
 		_terrainTypes[TerrainTypeId.FreshWater] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Sea);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Sea);
 		_terrainTypes[TerrainTypeId.Sea] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Ocean);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Ocean);
 		_terrainTypes[TerrainTypeId.Ocean] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Grasslands);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Grasslands);
 		_terrainTypes[TerrainTypeId.Grasslands] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Plains);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Plains);
 		_terrainTypes[TerrainTypeId.Plains] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Forest);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Forest);
 		_terrainTypes[TerrainTypeId.Forest] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.TropicalForest);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.TropicalForest);
 		_terrainTypes[TerrainTypeId.TropicalForest] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.SwampyTropicalForest);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.SwampyTropicalForest);
 		_terrainTypes[TerrainTypeId.SwampyTropicalForest] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(flatMesh, dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Hills);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Hills);
 		_terrainTypes[TerrainTypeId.Hills] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(CreateHillsMesh(), dbData.Material));
 
-		dbData = terrainTypesDB.GetTerrainTypeData(TerrainTypeId.Mountains);
+		dbData = asset.GetTerrainTypeData(TerrainTypeId.Mountains);
 		_terrainTypes[TerrainTypeId.Mountains] = new TerrainType_Data(
 			dbData.Name,
 			new TerrainTypePresentation(CreateMountainsMesh(), dbData.Material));

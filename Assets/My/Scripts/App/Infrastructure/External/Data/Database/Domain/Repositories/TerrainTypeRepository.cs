@@ -4,6 +4,7 @@ using System.Linq;
 
 using App.Game.Database;
 using App.Infrastructure.EcsGateway.Database.Domain;
+using App.Infrastructure.External.Data.Database.Domain.ScriptableObjects;
 
 
 
@@ -19,12 +20,10 @@ public class TerrainTypeRepository : ITerrainTypeRepository
 	//----------------------------------------------------------------------------------------------
 
 
-	public TerrainTypeRepository()
+	public TerrainTypeRepository(TerrainTypes terrainTypes_Asset)
 	{
-		var typeList = GameDatabase.Instance.Domain.TerrainTypes.List;
-
 		foreach (TerrainTypeId typeId in Enum.GetValues(typeof(TerrainTypeId))) {
-			_terrainTypes[typeId] = typeList.First(x => x.Id == typeId);
+			_terrainTypes[typeId] = terrainTypes_Asset.List.First(x => x.Id == typeId);
 		}
 	}
 

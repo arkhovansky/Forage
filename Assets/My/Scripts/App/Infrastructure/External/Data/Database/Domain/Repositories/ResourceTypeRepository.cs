@@ -4,6 +4,7 @@ using System.Linq;
 
 using App.Game.Database;
 using App.Infrastructure.EcsGateway.Database.Domain;
+using App.Infrastructure.External.Data.Database.Domain.ScriptableObjects;
 
 
 
@@ -19,12 +20,10 @@ public class ResourceTypeRepository : IResourceTypeRepository
 	//----------------------------------------------------------------------------------------------
 
 
-	public ResourceTypeRepository()
+	public ResourceTypeRepository(PlantResourceTypes resourceTypes_Asset)
 	{
-		var typeList = GameDatabase.Instance.Domain.PlantResourceTypes.List;
-
 		foreach (ResourceTypeId typeId in Enum.GetValues(typeof(ResourceTypeId))) {
-			_resourceTypes[typeId] = typeList.First(x => x.Id == typeId);
+			_resourceTypes[typeId] = resourceTypes_Asset.List.First(x => x.Id == typeId);
 		}
 	}
 
