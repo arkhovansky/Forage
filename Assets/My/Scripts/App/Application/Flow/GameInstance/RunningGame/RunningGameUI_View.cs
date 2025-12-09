@@ -1,5 +1,6 @@
-﻿using App.Application.Framework.UICore.Gui;
-using App.Application.Framework.UICore.Mvvm;
+﻿using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
+
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 
 

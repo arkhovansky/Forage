@@ -3,12 +3,12 @@ using UnityEngine.UIElements;
 
 using Cysharp.Threading.Tasks;
 
-using App.Application.Framework.UICore.Flow;
-using App.Application.Framework.UICore.Flow.Impl;
-using App.Application.Framework.UICore.Gui;
-using App.Application.Framework.UICore.Mvvm;
-using App.Application.Framework.UnityUICore.Gui;
-using App.Application.Framework.UnityUICore.Mvvm;
+using Lib.AppFlow;
+using Lib.AppFlow.Impl;
+using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
+using Lib.UICore.Unity.Gui;
+using Lib.UICore.Unity.Mvvm;
 
 using App.Application.Flow;
 using App.Infrastructure.EcsGateway.Services;

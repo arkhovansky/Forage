@@ -1,9 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 
-using App.Application.Framework.UICore.Flow;
-using App.Application.Framework.UICore.Flow.Impl;
-using App.Application.Framework.UICore.Gui;
-using App.Application.Framework.UICore.Mvvm;
+using Lib.AppFlow;
+using Lib.AppFlow.Impl;
+using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
+
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;

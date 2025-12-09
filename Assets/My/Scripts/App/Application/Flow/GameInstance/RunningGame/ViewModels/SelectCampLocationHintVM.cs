@@ -1,6 +1,6 @@
 ﻿using Unity.Properties;
 
-using App.Application.Framework.UICore.Mvvm;
+using Lib.UICore.Mvvm;
 
 
 

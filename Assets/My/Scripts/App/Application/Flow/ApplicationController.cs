@@ -1,9 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 
-using App.Application.Framework.UICore.Flow;
-using App.Application.Framework.UICore.Gui;
-using App.Application.Framework.UICore.Mvvm;
-using App.Application.Framework.UnityUICore.Flow;
+using Lib.AppFlow;
+using Lib.AppFlow.Unity;
+using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
 
 using App.Application.Flow.GameInstance.RunningGame;
 using App.Application.Settings;

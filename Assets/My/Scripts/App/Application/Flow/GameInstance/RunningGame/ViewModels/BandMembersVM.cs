@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using App.Application.Framework.UICore.Mvvm;
+using Lib.UICore.Mvvm;
+
 using App.Application.Database.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 
