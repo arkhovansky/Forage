@@ -1,30 +1,14 @@
-﻿using UnityEngine;
-
-using Cysharp.Threading.Tasks;
-
-using Lib.Grid;
-using Lib.VisualGrid;
-using Lib.Math;
+﻿using Cysharp.Threading.Tasks;
 
 using App.Application.Framework.UICore.Flow;
 using App.Application.Framework.UICore.Flow.Impl;
 using App.Application.Framework.UICore.Gui;
 using App.Application.Framework.UICore.Mvvm;
-using App.Application.Database.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 using App.Application.Services;
 using App.Game.Meta;
-using App.Infrastructure.EcsGateway.Models.Domain;
-using App.Infrastructure.EcsGateway.Models.Presentation;
-using App.Infrastructure.EcsGateway.Services;
-using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
-using App.Infrastructure.External.Data.Database;
-using App.Infrastructure.External.Data.Database.Domain.Repositories;
-using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
-using App.Infrastructure.External.Data.Database.Presentation.Repositories;
-using App.Infrastructure.External.Data.Locale;
 
 
 
@@ -41,9 +25,6 @@ public partial class RunningGameController : Controller
 
 		void Update() {}
 	}
-
-
-	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
 
 
 	private readonly IGameInstance _game;
@@ -96,24 +77,20 @@ public partial class RunningGameController : Controller
 
 	public override async UniTask Start()
 	{
-		_inGameMode = new InGameMode();
+		_inGameMode = Create_InGameMode();
 
 		await _inGameMode.Enter();
 		// GameDatabase.Instance is available now
 
 		Compose(out var localeFactory,
-		        out var runningGameInitializer,
-		        out var hexLayout);
+		        out var runningGameInitializer);
 
 		var locale = localeFactory.Create(_game.LocaleId);
 
 		runningGameInitializer.Initialize(locale);
 		_runningGame.Start();
 
-		var map = new VisualRectangularHexMap3D(locale.Map, hexLayout);
-
-		var sceneViewController = new SceneViewController(Camera.main!, map,
-		                                                  CommandRouter);
+		var sceneViewController = Create_SceneViewController(locale.Map);
 		AddChildController(sceneViewController);
 		await sceneViewController.Start();
 
@@ -137,80 +114,6 @@ public partial class RunningGameController : Controller
 
 	//----------------------------------------------------------------------------------------------
 	// private
-
-
-	private void Compose(out ILocaleFactory localeFactory,
-	                     out IRunningGameInitializer runningGameInitializer,
-	                     out HexLayout3D hexLayout)
-	{
-		_runningGame = new RunningGameInstance(
-			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
-
-		_scenePresentationModel = new ScenePresentationModel();
-
-		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
-		localeFactory = new LocaleFactory(localeRepository);
-
-		hexLayout = new HexLayout3D(
-			new HexLayout(HexOrientation),
-			new Matrix3x2(Vector3.right, Vector3.forward));
-
-		var terrainTypePresentationRepository =
-			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, hexLayout);
-		var resourceTypePresentationRepository =
-			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
-		var humanTypePresentationRepository = new HumanTypePresentationRepository();
-
-		runningGameInitializer = Create_RunningGameInitializer(
-			hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
-
-		_uiVM = new RunningGameUI_VM(
-			_runningGame, _scenePresentationModel, this,
-			CommandRouter,
-			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
-		_uiView = new RunningGameUI_View(_uiVM,
-		                                 _gui, _vvmBinder);
-		_gui.AddView(_uiView);
-
-		// Should come at the end of composition root since modes might use data members of this
-		_arrival_Mode = new Arrival_Mode(this);
-		_campPlacing_Mode = new CampPlacing_Mode(this);
-		_periodRunning_Mode = new PeriodRunning_Mode(this);
-		_interPeriod_Mode = new InterPeriod_Mode(this);
-	}
-
-
-	private IRunningGameInitializer Create_RunningGameInitializer(
-		HexLayout3D hexLayout,
-		ITerrainTypePresentationRepository terrainTypePresentationRepository,
-		IResourceTypePresentationRepository resourceTypePresentationRepository)
-	{
-		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
-
-		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
-		var resourcesInitializer = new ResourcesInitializer(
-			resourceTypeRepository
-#if !DOTS_DISABLE_DEBUG_NAMES
-			, resourceTypePresentationRepository
-#endif
-		);
-
-		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
-
-		var gameTimeInitializer = new GameTimeInitializer();
-
-		var humanTypeRepository = new HumanTypeRepository();
-		var bandInitializer = new BandInitializer(humanTypeRepository);
-
-		var systemParametersRepository = new SystemParametersRepository(GameDatabase.Instance.Domain.SystemParameters);
-		var domainSettingsRepository = new DomainSettingsRepository(GameDatabase.Instance.DomainSettings);
-		var systemParametersInitializer =
-			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
-
-		return new RunningGameInitializer(
-			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
-			bandInitializer, systemParametersInitializer, hexLayout);
-	}
 
 
 	#region Command handlers
