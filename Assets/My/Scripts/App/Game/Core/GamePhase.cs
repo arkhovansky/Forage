@@ -1,4 +1,4 @@
-﻿namespace App.Game.Models {
+﻿namespace App.Game.Core {
 
 
 

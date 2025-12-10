@@ -2,12 +2,11 @@
 
 using Lib.Grid;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Core;
+using App.Game.Core.Query;
 using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
-using App.Game.Models;
 using App.Infrastructure.EcsGateway.Services;
 
 

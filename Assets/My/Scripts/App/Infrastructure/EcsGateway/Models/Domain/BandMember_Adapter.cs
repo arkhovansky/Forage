@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Core.Query;
 using App.Game.Database;
 using App.Game.ECS.BandMember.AI.Components;
 using App.Game.ECS.BandMember.Gathering.Components;

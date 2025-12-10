@@ -1,10 +1,10 @@
 ﻿using Lib.Grid;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Core.Query;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame.Models.Domain {
+namespace App.Game.Core {
 
 
 

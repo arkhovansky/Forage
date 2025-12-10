@@ -8,12 +8,11 @@ using Lib.AppFlow.Impl;
 using Lib.UICore.Gui;
 using Lib.UICore.Mvvm;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Presentation;
 using App.Application.Services;
+using App.Game.Core;
 using App.Game.Meta;
-using App.Game.Models;
 
 
 

@@ -5,10 +5,10 @@ using Lib.AppFlow;
 using Lib.UICore.Mvvm;
 
 using App.Application.Flow.GameInstance.RunningGame;
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Presentation;
-using App.Game.Models;
+using App.Game.Core;
+using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels.Children;
 

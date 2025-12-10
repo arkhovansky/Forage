@@ -2,7 +2,7 @@
 
 using Lib.UICore.Mvvm;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 
 

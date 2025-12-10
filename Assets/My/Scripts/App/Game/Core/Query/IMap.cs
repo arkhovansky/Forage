@@ -4,7 +4,7 @@ using App.Game.Database;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query {
+namespace App.Game.Core.Query {
 
 
 

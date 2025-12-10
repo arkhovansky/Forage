@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Domain.Query;
+using App.Game.Core.Query;
 using App.Game.ECS.Resource.Plant.Components;
 
 
