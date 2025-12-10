@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Unity.Properties;
-
 using Lib.AppFlow;
 using Lib.UICore.Mvvm;
 
@@ -22,8 +20,7 @@ namespace App.Infrastructure.External.Presentation.GameInstance.RunningGame.View
 
 public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 {
-	[CreateProperty]
-	public string GameTime { get; private set; }
+	public GameTimeVM GameTimeVM { get; }
 
 	public BandMembersVM BandMembersVM { get; }
 
@@ -68,7 +65,7 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 		_game = runningGameInstance;
 		_presentationModel = presentationModel;
 
-		GameTime = string.Empty;
+		GameTimeVM = new GameTimeVM(_game.World.Time);
 
 		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, humanTypePresentationRepository);
 
@@ -103,7 +100,7 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 
 	private void UpdateSimulationData()
 	{
-		UpdateGameTime();
+		GameTimeVM.Update();
 		BandMembersVM.Update();
 	}
 
@@ -151,17 +148,6 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 
 		_mode = mode;
 		_mode.Enter();
-	}
-
-
-	private void UpdateGameTime()
-	{
-		var gameTime = _game.World.Time.Get_Time();
-		bool daylight = _game.World.Time.Get_IsDaylight();
-
-		var partOfDay = daylight ? "Day" : "Night";
-		GameTime = $"{gameTime.YearPeriod.Month.ToString()}   Day: {gameTime.Day}   Hour: {(uint)gameTime.Hours}   " +
-		           $"({partOfDay})";
 	}
 }
 
