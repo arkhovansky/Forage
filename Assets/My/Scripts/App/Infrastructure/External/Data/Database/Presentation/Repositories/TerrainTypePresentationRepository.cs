@@ -4,8 +4,8 @@ using UnityEngine;
 
 using Lib.VisualGrid;
 
-using App.Application.Database.Presentation;
 using App.Game.Database;
+using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.External.Data.Database.Presentation.ScriptableObjects;
 
 

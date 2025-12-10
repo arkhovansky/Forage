@@ -18,13 +18,11 @@ public partial class RunningGameController
 
 		public void Enter()
 		{
-			_controller._uiVM.SelectCampLocationHintVM.IsVisible = true;
 			_controller.AddCommandHandler<TileClicked>(OnTileClicked);
 		}
 
 		public void Exit()
 		{
-			_controller._uiVM.SelectCampLocationHintVM.IsVisible = false;
 			_controller.RemoveCommandHandler<TileClicked>();
 		}
 

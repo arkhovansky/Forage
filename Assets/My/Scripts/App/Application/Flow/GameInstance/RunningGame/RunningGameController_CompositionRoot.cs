@@ -4,9 +4,8 @@ using Lib.Grid;
 using Lib.VisualGrid;
 using Lib.Math;
 
-using App.Application.Database.Presentation;
-using App.Application.Flow.GameInstance.RunningGame.ViewModels;
 using App.Application.Services;
+using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Models.Domain;
 using App.Infrastructure.EcsGateway.Models.Presentation;
 using App.Infrastructure.EcsGateway.Services;
@@ -16,6 +15,8 @@ using App.Infrastructure.External.Data.Database.Domain.Repositories;
 using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
 using App.Infrastructure.External.Data.Database.Presentation.Repositories;
 using App.Infrastructure.External.Data.Locale;
+using App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels;
+using App.Infrastructure.External.Presentation.GameInstance.RunningGame.Views;
 
 
 
@@ -45,7 +46,7 @@ public partial class RunningGameController
 		_runningGame = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
 
-		_scenePresentationModel = new ScenePresentationModel();
+		_presentationModel = new RunningGame_PresentationModel();
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
@@ -63,19 +64,20 @@ public partial class RunningGameController
 		runningGameInitializer = Create_RunningGameInitializer(
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
-		_uiVM = new RunningGameUI_VM(
-			_runningGame, _scenePresentationModel, this,
+		var uiVM = new RunningGameUI_VM(
+			_runningGame, _presentationModel, this,
 			CommandRouter,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
-		_uiView = new RunningGameUI_View(_uiVM,
+		_uiVM = uiVM;
+		_uiView = new RunningGameUI_View(uiVM,
 		                                 _gui, _vvmBinder);
 		_gui.AddView(_uiView);
 
 		// Should come at the end of composition root since modes might use data members of this
-		_arrival_Mode = new Arrival_Mode(this);
-		_campPlacing_Mode = new CampPlacing_Mode(this);
-		_periodRunning_Mode = new PeriodRunning_Mode(this);
-		_interPeriod_Mode = new InterPeriod_Mode(this);
+		_modes.Add(ModeId.Arrival, new Arrival_Mode());
+		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
+		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode());
+		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode(this));
 	}
 
 

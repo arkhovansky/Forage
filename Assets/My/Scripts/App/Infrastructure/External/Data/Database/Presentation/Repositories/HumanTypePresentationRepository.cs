@@ -1,5 +1,5 @@
-﻿using App.Application.Database.Presentation;
-using App.Game.Database;
+﻿using App.Game.Database;
+using App.Infrastructure.Common.Contracts.Database.Presentation;
 
 
 

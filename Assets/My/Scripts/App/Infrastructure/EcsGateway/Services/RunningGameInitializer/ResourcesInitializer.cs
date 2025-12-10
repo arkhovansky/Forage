@@ -6,15 +6,15 @@ using Unity.Entities;
 
 using Lib.Grid;
 
-#if !DOTS_DISABLE_DEBUG_NAMES
-using App.Application.Database.Presentation;
-#endif
 using App.Game.Database;
 using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+#if !DOTS_DISABLE_DEBUG_NAMES
+using App.Infrastructure.Common.Contracts.Database.Presentation;
+#endif
 using App.Infrastructure.EcsGateway.Database.Domain;
 
 

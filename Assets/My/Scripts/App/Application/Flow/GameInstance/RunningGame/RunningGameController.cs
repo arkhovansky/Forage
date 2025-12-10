@@ -1,4 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+
+using Cysharp.Threading.Tasks;
 
 using Lib.AppFlow;
 using Lib.AppFlow.Impl;
@@ -7,9 +10,10 @@ using Lib.UICore.Mvvm;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Domain;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Application.Flow.GameInstance.RunningGame.ViewModels;
+using App.Application.Flow.GameInstance.RunningGame.Presentation;
 using App.Application.Services;
 using App.Game.Meta;
+using App.Game.Models;
 
 
 
@@ -27,11 +31,16 @@ public partial class RunningGameController : Controller
 		void Update() {}
 	}
 
+	private class Arrival_Mode : IMode {}
+	private class InterPeriod_Mode : IMode {}
+
 
 	private readonly IGameInstance _game;
 
 	private readonly IGui _gui;
 	private readonly IVvmBinder _vvmBinder;
+
+	private readonly Dictionary<ModeId, IMode> _modes = new();
 
 
 	#region Semantically readonly
@@ -40,15 +49,10 @@ public partial class RunningGameController : Controller
 
 	private IRunningGameInstance _runningGame = null!;
 
-	private IScenePresentationModel _scenePresentationModel = null!;
+	private IRunningGame_PresentationModel _presentationModel = null!;
 
-	private RunningGameUI_VM _uiVM = null!;
-	private RunningGameUI_View _uiView = null!;
-
-	private IMode _arrival_Mode = null!;
-	private IMode _campPlacing_Mode = null!;
-	private IMode _periodRunning_Mode = null!;
-	private IMode _interPeriod_Mode = null!;
+	private IRunningGameUI_VM _uiVM = null!;
+	private IView _uiView = null!;
 
 	#endregion
 
@@ -97,7 +101,7 @@ public partial class RunningGameController : Controller
 
 		sceneViewController.PositionCameraToOverview();
 
-		SetMode(_arrival_Mode);
+		UpdateMode();
 	}
 
 
@@ -121,36 +125,64 @@ public partial class RunningGameController : Controller
 
 	private void OnEnterPlaceCampMode(EnterPlaceCampMode command)
 	{
-		SetMode(_campPlacing_Mode);
+		_presentationModel.Is_CampPlacing_Mode = true;
+		UpdateMode();
 	}
 
 
 	private void OnPlaceCamp(PlaceCamp command)
 	{
 		_runningGame.PlaceCamp(command.Position);
-		SetMode(_interPeriod_Mode);
+		UpdateMode();
 	}
 
 
 	private void OnRunYearPeriod(RunYearPeriod command)
 	{
 		_runningGame.RunYearPeriod();
-		SetMode(_periodRunning_Mode);
+		UpdateMode();
 	}
 
 
 	private void OnYearPeriodChanged(YearPeriodChanged evt)
 	{
-		SetMode(_interPeriod_Mode);
+		UpdateMode();
 	}
 
 
 	private void OnHoveredTileChanged(HoveredTileChanged evt)
 	{
-		_scenePresentationModel.HoveredTile = evt.Position;
+		_presentationModel.HoveredTile = evt.Position;
 	}
 
 	#endregion
+
+
+	private void UpdateMode()
+	{
+		var gamePhase = _runningGame.GamePhase;
+		bool isCampPlacing = _presentationModel.Is_CampPlacing_Mode;
+
+		var modeId = gamePhase switch {
+			GamePhase.Arrival =>
+				isCampPlacing
+					? ModeId.CampPlacing
+					: ModeId.Arrival,
+
+			GamePhase.InterPeriod => ModeId.InterPeriod,
+			GamePhase.PeriodRunning => ModeId.PeriodRunning,
+
+			_ => throw new ArgumentOutOfRangeException(nameof(gamePhase), gamePhase, null)
+		};
+
+		SetMode(modeId);
+	}
+
+
+	private void SetMode(ModeId modeId)
+	{
+		SetMode(_modes[modeId]);
+	}
 
 
 	private void SetMode(IMode mode)

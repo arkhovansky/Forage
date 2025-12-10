@@ -16,12 +16,12 @@ using Lib.Grid;
 using Lib.Util;
 using Lib.VisualGrid;
 
-using App.Application.Database.Presentation;
 using App.Game.Database;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
+using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.External.Data.Database;
 
 
