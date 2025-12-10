@@ -19,6 +19,7 @@ public partial class RunningGameUI_VM
 		public void Enter()
 		{
 			_context.EnterPlaceCampModeCommand.IsVisible = true;
+			_context.UpdateSimulationData();
 		}
 
 		public void Exit()

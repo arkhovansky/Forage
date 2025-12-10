@@ -14,6 +14,18 @@ public partial class RunningGameUI_VM
 		{
 			_context = context;
 		}
+
+
+		public void Exit()
+		{
+			_context.UpdateSimulationData();
+		}
+
+
+		public void Update()
+		{
+			_context.UpdateSimulationData();
+		}
 	}
 }
 

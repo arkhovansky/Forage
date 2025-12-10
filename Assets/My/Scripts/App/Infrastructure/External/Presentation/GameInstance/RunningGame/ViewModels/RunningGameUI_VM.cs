@@ -93,14 +93,25 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 	public void Update()
 	{
 		UpdateMode();
+		_mode.Update();
 
-		UpdateGameTime();
-		BandMembersVM.Update();
-		TileInfoVM.Update();
+		UpdatePresentationData();
 	}
 
 	//----------------------------------------------------------------------------------------------
 	// private
+
+	private void UpdateSimulationData()
+	{
+		UpdateGameTime();
+		BandMembersVM.Update();
+	}
+
+	private void UpdatePresentationData()
+	{
+		TileInfoVM.Update();
+	}
+
 
 	private void UpdateMode()
 	{
