@@ -23,6 +23,7 @@ public abstract class Controller : IController
 	// ReSharper disable once InconsistentNaming
 	protected readonly Dictionary<Type, Delegate> commandHandlers = new();
 
+	//----------------------------------------------------------------------------------------------
 
 
 	protected Controller(ICommandRouter commandRouter)
@@ -30,6 +31,9 @@ public abstract class Controller : IController
 		CommandRouter = commandRouter;
 	}
 
+
+	//----------------------------------------------------------------------------------------------
+	// IController implementation
 
 
 	public virtual UniTask Start() { return UniTask.CompletedTask; }
@@ -42,9 +46,6 @@ public abstract class Controller : IController
 	}
 
 
-	protected virtual void DoUpdate() {}
-
-
 	public virtual void UpdateViewModels()
 	{
 		UpdateViewModel();
@@ -52,11 +53,11 @@ public abstract class Controller : IController
 	}
 
 
-	protected virtual void UpdateViewModel() {}
-
-
 	public virtual void Destroy() {}
 
+
+	//----------------------------------------------------------------------------------------------
+	// protected
 
 
 	protected virtual void AddCommandHandler<TCommand>(Action<TCommand> method)
@@ -70,12 +71,6 @@ public abstract class Controller : IController
 	}
 
 
-	protected virtual void EmitCommand(ICommand command)
-	{
-		CommandRouter.EmitCommand(command, this);
-	}
-
-
 	protected virtual void AddChildController(IController child)
 	{
 		child.Parent = this;
@@ -83,6 +78,17 @@ public abstract class Controller : IController
 
 		CommandRouter.AddController(child);
 	}
+
+
+	protected virtual void EmitCommand(ICommand command)
+	{
+		CommandRouter.EmitCommand(command, this);
+	}
+
+
+	protected virtual void DoUpdate() {}
+
+	protected virtual void UpdateViewModel() {}
 }
 
 
