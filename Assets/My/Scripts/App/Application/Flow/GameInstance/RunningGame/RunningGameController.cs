@@ -109,7 +109,7 @@ public partial class RunningGameController : Controller
 	}
 
 
-	public override void UpdateViewModel()
+	protected override void UpdateViewModel()
 	{
 		_uiVM.Update();
 	}

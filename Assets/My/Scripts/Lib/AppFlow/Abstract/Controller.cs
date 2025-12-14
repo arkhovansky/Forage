@@ -16,7 +16,7 @@ public abstract class Controller : IController
 	public IReadOnlyDictionary<Type, Delegate> CommandHandlers => commandHandlers;
 
 
-	protected List<IController> Children = new();
+	protected readonly List<IController> Children = new();
 
 	protected readonly ICommandRouter CommandRouter;
 
@@ -28,8 +28,6 @@ public abstract class Controller : IController
 	protected Controller(ICommandRouter commandRouter)
 	{
 		CommandRouter = commandRouter;
-
-		Parent = null;
 	}
 
 
@@ -54,7 +52,7 @@ public abstract class Controller : IController
 	}
 
 
-	public virtual void UpdateViewModel() {}
+	protected virtual void UpdateViewModel() {}
 
 
 	public virtual void Destroy() {}
