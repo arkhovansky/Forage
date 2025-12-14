@@ -17,9 +17,7 @@ public record PlaceCamp(
 
 
 
-public class RunYearPeriod : ICommand
-{
-}
+public class RunYearPeriod : ICommand {}
 
 
 
