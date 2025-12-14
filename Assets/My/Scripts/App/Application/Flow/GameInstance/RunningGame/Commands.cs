@@ -11,16 +11,9 @@ public class EnterPlaceCampMode : ICommand {}
 
 
 
-public class PlaceCamp : ICommand
-{
-	public AxialPosition Position { get; set; }
-
-
-	public PlaceCamp(AxialPosition position)
-	{
-		Position = position;
-	}
-}
+public record PlaceCamp(
+	AxialPosition Position
+) : ICommand;
 
 
 
