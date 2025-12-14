@@ -20,6 +20,7 @@ public abstract class Controller : IController
 
 	protected readonly ICommandRouter CommandRouter;
 
+	// ReSharper disable once InconsistentNaming
 	protected readonly Dictionary<Type, Delegate> commandHandlers = new();
 
 
