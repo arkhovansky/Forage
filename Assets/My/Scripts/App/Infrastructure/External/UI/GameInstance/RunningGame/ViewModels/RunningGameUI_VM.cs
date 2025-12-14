@@ -56,8 +56,7 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 
 	public RunningGameUI_VM(IRunningGameInstance_RO runningGameInstance,
 	                        IRunningGame_PresentationModel_RO presentationModel,
-	                        IController controller,
-	                        ICommandRouter commandRouter,
+	                        IMessageEmitter messageEmitter,
 	                        ITerrainTypePresentationRepository terrainTypePresentationRepository,
 	                        IResourceTypePresentationRepository resourceTypePresentationRepository,
 	                        IHumanTypePresentationRepository humanTypePresentationRepository)
@@ -73,9 +72,9 @@ public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
 		                            terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
-			() => commandRouter.EmitCommand(new EnterPlaceCampMode(), controller));
+			() => messageEmitter.EmitCommand(new EnterPlaceCampMode()));
 		RunYearPeriodCommand = new RunYearPeriod_CommandVM(
-			() => commandRouter.EmitCommand(new RunYearPeriod(), controller));
+			() => messageEmitter.EmitCommand(new RunYearPeriod()));
 
 		SelectCampLocationHintVM = new SelectCampLocationHintVM();
 

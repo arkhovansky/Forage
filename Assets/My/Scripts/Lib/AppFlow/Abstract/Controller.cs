@@ -9,7 +9,7 @@ namespace Lib.AppFlow {
 
 
 
-public abstract class Controller : IController
+public abstract class Controller : IController, IMessageEmitter
 {
 	public IController? Parent { get; set; }
 
@@ -57,6 +57,16 @@ public abstract class Controller : IController
 
 
 	//----------------------------------------------------------------------------------------------
+	// IMessageEmitter implementation
+
+
+	public virtual void EmitCommand(ICommand command)
+	{
+		CommandRouter.EmitCommand(command, this);
+	}
+
+
+	//----------------------------------------------------------------------------------------------
 	// protected
 
 
@@ -77,12 +87,6 @@ public abstract class Controller : IController
 		Children.Add(child);
 
 		CommandRouter.AddController(child);
-	}
-
-
-	protected virtual void EmitCommand(ICommand command)
-	{
-		CommandRouter.EmitCommand(command, this);
 	}
 
 

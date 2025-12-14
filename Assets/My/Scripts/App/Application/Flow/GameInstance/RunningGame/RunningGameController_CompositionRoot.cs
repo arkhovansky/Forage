@@ -65,8 +65,8 @@ public partial class RunningGameController
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		var uiVM = new RunningGameUI_VM(
-			_runningGame, _presentationModel, this,
-			CommandRouter,
+			_runningGame, _presentationModel,
+			this,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		_uiVM = uiVM;
 		_uiView = new RunningGameUI_View(uiVM,
