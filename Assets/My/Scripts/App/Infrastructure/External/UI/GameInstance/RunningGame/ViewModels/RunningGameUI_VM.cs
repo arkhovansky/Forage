@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 
 using Lib.AppFlow;
-using Lib.UICore.Mvvm;
+using Lib.UICore.Gui;
 
 using App.Application.Flow.GameInstance.RunningGame;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Application.Flow.GameInstance.RunningGame.Presentation;
 using App.Game.Core;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
@@ -18,7 +17,7 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels {
 
 
 
-public partial class RunningGameUI_VM : IRunningGameUI_VM, IViewModel
+public partial class RunningGameUI_VM : IViewModel
 {
 	public GameTimeVM GameTimeVM { get; }
 

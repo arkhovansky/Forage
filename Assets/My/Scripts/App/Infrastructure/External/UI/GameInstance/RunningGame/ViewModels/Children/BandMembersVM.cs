@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using Lib.UICore.Mvvm;
+using Lib.UICore.Gui;
 
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;

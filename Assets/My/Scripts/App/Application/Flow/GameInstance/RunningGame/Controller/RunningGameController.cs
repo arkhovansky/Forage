@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Cysharp.Threading.Tasks;
-
 using Lib.AppFlow;
-using Lib.UICore.Gui;
-using Lib.UICore.Mvvm;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
-using App.Application.Flow.GameInstance.RunningGame.Presentation;
-using App.Application.Services;
 using App.Game.Core;
-using App.Game.Meta;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame {
+namespace App.Application.Flow.GameInstance.RunningGame.Controller {
 
 
 
-public partial class RunningGameController : Controller
+public partial class RunningGameController : Lib.AppFlow.Controller
 {
 	private interface IMode
 	{
@@ -33,26 +26,13 @@ public partial class RunningGameController : Controller
 	private class InterPeriod_Mode : IMode {}
 
 
-	private readonly IGameInstance _game;
+	private readonly IRunningGameInstance _runningGame;
 
-	private readonly IGui _gui;
-	private readonly IVvmBinder _vvmBinder;
+	private readonly IRunningGame_PresentationModel _presentationModel;
+
+	private readonly ISceneViewController _sceneViewController;
 
 	private readonly Dictionary<ModeId, IMode> _modes = new();
-
-
-	#region Semantically readonly
-
-	private IInGameMode _inGameMode = null!;
-
-	private IRunningGameInstance _runningGame = null!;
-
-	private IRunningGame_PresentationModel _presentationModel = null!;
-
-	private IRunningGameUI_VM _uiVM = null!;
-	private IView _uiView = null!;
-
-	#endregion
 
 
 	private IMode _mode = null!;
@@ -61,57 +41,41 @@ public partial class RunningGameController : Controller
 	//----------------------------------------------------------------------------------------------
 
 
-	public RunningGameController(IGameInstance game,
-	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
-		: base(commandRouter)
+	public RunningGameController(IRunningGameInstance runningGame,
+	                             IRunningGame_PresentationModel presentationModel,
+	                             ISceneViewController sceneViewController,
+	                             IMessageEmitter messageEmitter)
+		: base(messageEmitter)
 	{
-		_game = game;
-
-		_gui = gui;
-		_vvmBinder = vvmBinder;
+		_runningGame = runningGame;
+		_presentationModel = presentationModel;
+		_sceneViewController = sceneViewController;
 
 		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
 		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
 		base.AddCommandHandler<YearPeriodChanged>(OnYearPeriodChanged);
 		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
+
+		// Should come at the end since modes might use data members of this
+		_modes.Add(ModeId.Arrival, new Arrival_Mode());
+		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
+		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode());
+		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode(this));
 	}
 
 
-	public override async UniTask Start()
+	public override void Start()
 	{
-		_inGameMode = Create_InGameMode();
-
-		await _inGameMode.Enter();
-		// GameDatabase.Instance is available now
-
-		Compose(out var localeFactory,
-		        out var runningGameInitializer);
-
-		var locale = localeFactory.Create(_game.LocaleId);
-
-		runningGameInitializer.Initialize(locale);
-		_runningGame.Start();
-
-		var sceneViewController = Create_SceneViewController(locale.Map);
-		AddChildController(sceneViewController);
-		await sceneViewController.Start();
-
-		sceneViewController.PositionCameraToOverview();
-
 		UpdateMode();
+		_sceneViewController.PositionCameraToOverview();
 	}
 
 
-	protected override void DoUpdate()
+	public override void Update()
 	{
 		_mode.Update();
-	}
-
-
-	protected override void UpdateViewModel()
-	{
-		_uiVM.Update();
+		_sceneViewController.Update();
 	}
 
 

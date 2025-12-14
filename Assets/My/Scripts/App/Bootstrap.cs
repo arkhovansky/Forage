@@ -31,7 +31,7 @@ public class Bootstrap : MonoBehaviour
 	private IVvmBinder _vvmBinder = null!;
 	private ICommandRouter _commandRouter = null!;
 
-	private ApplicationController _applicationController = null!;
+	private ApplicationContext _applicationContext = null!;
 
 	private bool _isStarted;
 
@@ -53,10 +53,10 @@ public class Bootstrap : MonoBehaviour
 	{
 		EcsService.SetEcsSystemsEnabled(false);
 
-		_applicationController = new ApplicationController(
+		_applicationContext = new ApplicationContext(
 			_applicationSettings,
 			_gui, _vvmBinder, _commandRouter);
-		await _applicationController.Start();
+		await _applicationContext.Start();
 
 		_isStarted = true;
 	}
@@ -79,7 +79,7 @@ public class Bootstrap : MonoBehaviour
 			return;
 
 		_commandRouter.Update();
-		_applicationController.Update();
+		_applicationContext.Update();
 	}
 
 
@@ -88,7 +88,7 @@ public class Bootstrap : MonoBehaviour
 		if (!_isStarted)
 			return;
 
-		_applicationController.UpdateViewModels();
+		_applicationContext.UpdateViewModels();
 	}
 }
 

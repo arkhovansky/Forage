@@ -1,6 +1,6 @@
 ﻿using Unity.Properties;
 
-using Lib.UICore.Mvvm;
+using Lib.UICore.Gui;
 
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.Core.Query;

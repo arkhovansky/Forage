@@ -6,9 +6,11 @@ using Lib.AppFlow;
 using Lib.Grid;
 using Lib.VisualGrid;
 
+using App.Application.Flow.GameInstance.RunningGame;
 
 
-namespace App.Application.Flow.GameInstance.RunningGame {
+
+namespace App.Infrastructure.External.UI.GameInstance.RunningGame {
 
 
 
@@ -16,10 +18,7 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 /// Acts as both View and Controller for the scene. Encapsulates low-level details of reading user input, moving camera,
 /// and generates high-level hovering/selection events.
 /// </summary>
-/// <remarks>
-/// It should be a child of <see cref="RunningGameController"/> with identical lifetime.
-/// </remarks>
-public class SceneViewController : Controller
+public class SceneViewController : ISceneViewController
 {
 	private const int MapOverviewVerticalMargin = 50;
 	private const float ZoomSpeed = 1.0f;
@@ -28,6 +27,8 @@ public class SceneViewController : Controller
 	private readonly Camera _camera;
 
 	private readonly VisualRectangularHexMap3D _map;
+
+	private readonly IMessageEmitter _messageEmitter;
 
 	private readonly InputAction _pointAction;
 	private readonly InputAction _clickAction;
@@ -59,12 +60,13 @@ public class SceneViewController : Controller
 	//----------------------------------------------------------------------------------------------
 
 
-	public SceneViewController(Camera camera, VisualRectangularHexMap3D map,
-	                           ICommandRouter commandRouter)
-		: base(commandRouter)
+	public SceneViewController(Camera camera,
+	                           VisualRectangularHexMap3D map,
+	                           IMessageEmitter messageEmitter)
 	{
 		_camera = camera;
 		_map = map;
+		_messageEmitter = messageEmitter;
 
 		_pointAction = InputSystem.actions.FindAction("Point");
 		_clickAction = InputSystem.actions.FindAction("Click");
@@ -81,7 +83,7 @@ public class SceneViewController : Controller
 	}
 
 
-	protected override void DoUpdate()
+	public void Update()
 	{
 		var screenPoint = _pointAction.ReadValue<Vector2>();
 
@@ -104,7 +106,7 @@ public class SceneViewController : Controller
 
 		if (_clickAction.WasPerformedThisFrame()) {
 			if (_hoveredTile.HasValue)
-				EmitCommand(new TileClicked(_hoveredTile.Value));
+				_messageEmitter.EmitCommand(new TileClicked(_hoveredTile.Value));
 		}
 	}
 
@@ -178,7 +180,7 @@ public class SceneViewController : Controller
 		if (newTile == _hoveredTile)
 			return;
 		_hoveredTile = newTile;
-		EmitCommand(new HoveredTileChanged(newTile));
+		_messageEmitter.EmitCommand(new HoveredTileChanged(newTile));
 	}
 
 

@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Cysharp.Threading.Tasks;
-
 
 
 namespace Lib.AppFlow {
 
 
 
-public abstract class Controller : IController, IMessageEmitter
+public abstract class Controller : IController
 {
-	public IController? Parent { get; set; }
-
 	public IReadOnlyDictionary<Type, Delegate> CommandHandlers => commandHandlers;
 
 
-	protected readonly List<IController> Children = new();
-
-	protected readonly ICommandRouter CommandRouter;
+	protected readonly IMessageEmitter MessageEmitter;
 
 	// ReSharper disable once InconsistentNaming
 	protected readonly Dictionary<Type, Delegate> commandHandlers = new();
@@ -26,9 +20,9 @@ public abstract class Controller : IController, IMessageEmitter
 	//----------------------------------------------------------------------------------------------
 
 
-	protected Controller(ICommandRouter commandRouter)
+	protected Controller(IMessageEmitter messageEmitter)
 	{
-		CommandRouter = commandRouter;
+		MessageEmitter = messageEmitter;
 	}
 
 
@@ -36,34 +30,9 @@ public abstract class Controller : IController, IMessageEmitter
 	// IController implementation
 
 
-	public virtual UniTask Start() { return UniTask.CompletedTask; }
+	public virtual void Start() {}
 
-
-	public virtual void Update()
-	{
-		DoUpdate();
-		Children.ForEach(c => c.Update());
-	}
-
-
-	public virtual void UpdateViewModels()
-	{
-		UpdateViewModel();
-		Children.ForEach(c => c.UpdateViewModels());
-	}
-
-
-	public virtual void Destroy() {}
-
-
-	//----------------------------------------------------------------------------------------------
-	// IMessageEmitter implementation
-
-
-	public virtual void EmitCommand(ICommand command)
-	{
-		CommandRouter.EmitCommand(command, this);
-	}
+	public virtual void Update() {}
 
 
 	//----------------------------------------------------------------------------------------------
@@ -81,18 +50,10 @@ public abstract class Controller : IController, IMessageEmitter
 	}
 
 
-	protected virtual void AddChildController(IController child)
+	protected virtual void EmitCommand(ICommand command)
 	{
-		child.Parent = this;
-		Children.Add(child);
-
-		CommandRouter.AddController(child);
+		MessageEmitter.EmitCommand(command);
 	}
-
-
-	protected virtual void DoUpdate() {}
-
-	protected virtual void UpdateViewModel() {}
 }
 
 

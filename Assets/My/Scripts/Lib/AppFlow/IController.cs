@@ -1,28 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Cysharp.Threading.Tasks;
-
 
 
 namespace Lib.AppFlow {
 
 
 
+/// <summary>
+/// Controller handles business commands in a Context
+/// </summary>
 public interface IController
 {
-	IController? Parent { get; set; }
-
 	IReadOnlyDictionary<Type, Delegate> CommandHandlers { get; }
 
 
-	UniTask Start();
+	void Start();
 
 	void Update();
-
-	void UpdateViewModels();
-
-	void Destroy();
 }
 
 

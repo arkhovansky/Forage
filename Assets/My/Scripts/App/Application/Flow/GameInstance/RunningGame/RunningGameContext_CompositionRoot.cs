@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
+using Lib.AppFlow;
 using Lib.Grid;
 using Lib.VisualGrid;
 using Lib.Math;
 
+using App.Application.Flow.GameInstance.RunningGame.Controller;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Services;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Models.Domain;
@@ -15,6 +18,7 @@ using App.Infrastructure.External.Data.Database.Domain.Repositories;
 using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
 using App.Infrastructure.External.Data.Database.Presentation.Repositories;
 using App.Infrastructure.External.Data.Locale;
+using App.Infrastructure.External.UI.GameInstance.RunningGame;
 using App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels;
 using App.Infrastructure.External.UI.GameInstance.RunningGame.Views;
 
@@ -24,10 +28,12 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 
 
 
-public partial class RunningGameController
+public partial class RunningGameContext
 {
 	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
 
+
+	private IRunningGame_PresentationModel _presentationModel = null!;
 
 	private HexLayout3D _hexLayout;
 
@@ -72,12 +78,6 @@ public partial class RunningGameController
 		_uiView = new RunningGameUI_View(uiVM,
 		                                 _gui, _vvmBinder);
 		_gui.AddView(_uiView);
-
-		// Should come at the end of composition root since modes might use data members of this
-		_modes.Add(ModeId.Arrival, new Arrival_Mode());
-		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
-		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode());
-		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode(this));
 	}
 
 
@@ -114,11 +114,17 @@ public partial class RunningGameController
 	}
 
 
+	private IController Create_Controller(RectangularHexMap map)
+	{
+		var sceneViewController = Create_SceneViewController(map);
+		return new RunningGameController(_runningGame, _presentationModel, sceneViewController, this);
+	}
+
+
 	private SceneViewController Create_SceneViewController(RectangularHexMap map)
 	{
 		var visualMap = new VisualRectangularHexMap3D(map, _hexLayout);
-		return new SceneViewController(Camera.main!, visualMap,
-		                               CommandRouter);
+		return new SceneViewController(Camera.main!, visualMap, this);
 	}
 }
 

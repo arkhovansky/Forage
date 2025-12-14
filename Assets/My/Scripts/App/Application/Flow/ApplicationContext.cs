@@ -15,7 +15,7 @@ namespace App.Application.Flow {
 
 
 
-public class ApplicationController : ApplicationController_Base
+public class ApplicationContext : ApplicationContext_Base
 {
 	private readonly IApplicationSettings _settings;
 
@@ -27,8 +27,8 @@ public class ApplicationController : ApplicationController_Base
 
 
 
-	public ApplicationController(IApplicationSettings settings,
-	                             IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
+	public ApplicationContext(IApplicationSettings settings,
+	                          IGui gui, IVvmBinder vvmBinder, ICommandRouter commandRouter)
 		: base(commandRouter)
 	{
 		_settings = settings;
@@ -43,9 +43,9 @@ public class ApplicationController : ApplicationController_Base
 		var localeId = _settings.DefaultLocale;
 		_gameInstance = new Game.Meta.Impl.GameInstance(localeId);
 
-		var child = new RunningGameController(_gameInstance,
+		var child = new RunningGameContext(_gameInstance,
 			_gui, _vvmBinder, _commandRouter);
-		AddChildController(child);
+		AddChildContext(child);
 		await child.Start();
 	}
 }

@@ -6,9 +6,9 @@ namespace Lib.AppFlow.Unity {
 
 
 
-public abstract class ApplicationController_Base : Controller
+public abstract class ApplicationContext_Base : Context
 {
-	protected ApplicationController_Base(
+	protected ApplicationContext_Base(
 		ICommandRouter commandRouter
 	)
 		: base(commandRouter)

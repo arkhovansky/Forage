@@ -1,4 +1,4 @@
-﻿namespace App.Application.Flow.GameInstance.RunningGame {
+﻿namespace App.Application.Flow.GameInstance.RunningGame.Controller {
 
 
 

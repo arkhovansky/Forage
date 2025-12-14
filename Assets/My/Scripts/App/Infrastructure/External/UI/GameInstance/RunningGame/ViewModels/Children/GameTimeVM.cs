@@ -2,7 +2,7 @@
 
 using JetBrains.Annotations;
 
-using Lib.UICore.Mvvm;
+using Lib.UICore.Gui;
 
 using App.Game.Core.Query;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 
@@ -10,7 +11,7 @@ public class CommandRouter : ICommandRouter
 {
 	private record EmittedCommand(
 		ICommand Command,
-		IController Emitter
+		IContext Emitter
 	);
 
 	private readonly Queue<EmittedCommand> _commands = new ();
@@ -20,20 +21,7 @@ public class CommandRouter : ICommandRouter
 
 
 
-	public void AddController(IController controller)
-	{
-		//TODO
-	}
-
-
-	public void RemoveController(IController controller)
-	{
-		//TODO
-	}
-
-
-
-	public void EmitCommand(ICommand command, IController emitter)
+	public void EmitCommand(ICommand command, IContext emitter)
 	{
 		if (_commandEmittingBlocked) {
 			return;
@@ -50,19 +38,42 @@ public class CommandRouter : ICommandRouter
 	}
 
 
-	private void HandleCommand(ICommand command, IController emitter)
+	private void HandleCommand(ICommand command, IContext emitter)
 	{
-		IController? controller = emitter;
-		do {
-			if (controller.CommandHandlers.TryGetValue(command.GetType(), out var handler)) {
-				handler.DynamicInvoke(command);
+		IContext? context = emitter;
+		bool searchInController = true;
 
+		do {
+			var handler = FindHandler(command.GetType(), context, searchInController);
+
+			if (handler != null) {
+				handler.DynamicInvoke(command);
 				return;
 			}
 
-			controller = controller.Parent;
+			context = context.Parent;
+			searchInController = false;
 		}
-		while (controller != null);
+		while (context != null);
+	}
+
+
+	private Delegate? FindHandler(Type commandType, IContext context, bool searchInController)
+	{
+		Delegate handler;
+
+		if (searchInController) {
+			if (context.Controller != null
+			    && context.Controller.CommandHandlers.TryGetValue(commandType, out handler))
+			{
+				return handler;
+			}
+		}
+
+		if (context.CommandHandlers.TryGetValue(commandType, out handler))
+			return handler;
+
+		return null;
 	}
 
 
