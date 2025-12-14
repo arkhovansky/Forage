@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 
 
-namespace Lib.AppFlow.Impl {
+namespace Lib.AppFlow {
 
 
 
