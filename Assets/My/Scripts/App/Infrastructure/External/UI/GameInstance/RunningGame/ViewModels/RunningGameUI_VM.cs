@@ -10,11 +10,11 @@ using App.Application.Flow.GameInstance.RunningGame.Presentation;
 using App.Game.Core;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
-using App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels.Children;
+using App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels.Children;
 
 
 
-namespace App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels {
+namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels {
 
 
 

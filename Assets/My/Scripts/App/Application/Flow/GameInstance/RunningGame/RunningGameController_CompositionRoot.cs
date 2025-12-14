@@ -15,8 +15,8 @@ using App.Infrastructure.External.Data.Database.Domain.Repositories;
 using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
 using App.Infrastructure.External.Data.Database.Presentation.Repositories;
 using App.Infrastructure.External.Data.Locale;
-using App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels;
-using App.Infrastructure.External.Presentation.GameInstance.RunningGame.Views;
+using App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels;
+using App.Infrastructure.External.UI.GameInstance.RunningGame.Views;
 
 
 

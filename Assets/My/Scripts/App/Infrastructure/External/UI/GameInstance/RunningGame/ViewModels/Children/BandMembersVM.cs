@@ -7,7 +7,7 @@ using App.Infrastructure.Common.Contracts.Database.Presentation;
 
 
 
-namespace App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels.Children {
+namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels.Children {
 
 
 

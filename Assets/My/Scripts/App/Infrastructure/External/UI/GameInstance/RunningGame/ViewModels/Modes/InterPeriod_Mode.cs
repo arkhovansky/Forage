@@ -1,4 +1,4 @@
-﻿namespace App.Infrastructure.External.Presentation.GameInstance.RunningGame.ViewModels {
+﻿namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels {
 
 
 
