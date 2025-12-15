@@ -7,6 +7,7 @@ using Lib.Grid;
 using Lib.VisualGrid;
 
 using App.Application.Flow.GameInstance.RunningGame;
+using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
 
 
 
@@ -28,7 +29,7 @@ public class SceneViewController : ISceneViewController
 
 	private readonly VisualRectangularHexMap3D _map;
 
-	private readonly IMessageEmitter _messageEmitter;
+	private readonly IInputEvent_Emitter _inputEvent_Emitter;
 
 	private readonly InputAction _pointAction;
 	private readonly InputAction _clickAction;
@@ -62,11 +63,11 @@ public class SceneViewController : ISceneViewController
 
 	public SceneViewController(Camera camera,
 	                           VisualRectangularHexMap3D map,
-	                           IMessageEmitter messageEmitter)
+	                           IInputEvent_Emitter inputEvent_Emitter)
 	{
 		_camera = camera;
 		_map = map;
-		_messageEmitter = messageEmitter;
+		_inputEvent_Emitter = inputEvent_Emitter;
 
 		_pointAction = InputSystem.actions.FindAction("Point");
 		_clickAction = InputSystem.actions.FindAction("Click");
@@ -106,7 +107,7 @@ public class SceneViewController : ISceneViewController
 
 		if (_clickAction.WasPerformedThisFrame()) {
 			if (_hoveredTile.HasValue)
-				_messageEmitter.EmitCommand(new TileClicked(_hoveredTile.Value));
+				_inputEvent_Emitter.Emit(new TileClicked(_hoveredTile.Value));
 		}
 	}
 
@@ -180,7 +181,7 @@ public class SceneViewController : ISceneViewController
 		if (newTile == _hoveredTile)
 			return;
 		_hoveredTile = newTile;
-		_messageEmitter.EmitCommand(new HoveredTileChanged(newTile));
+		_inputEvent_Emitter.Emit(new HoveredTileChanged(newTile));
 	}
 
 

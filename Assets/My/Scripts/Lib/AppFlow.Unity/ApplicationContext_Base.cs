@@ -9,11 +9,11 @@ namespace Lib.AppFlow.Unity {
 public abstract class ApplicationContext_Base : Context
 {
 	protected ApplicationContext_Base(
-		ICommandDispatcher commandDispatcher
+		IMessageDispatcher messageDispatcher
 	)
-		: base(commandDispatcher)
+		: base(messageDispatcher)
 	{
-		base.AddCommandHandler<ExitApplicationCommand>(OnQuitCommand);
+		base.Add_Command_Handler<ExitApplicationCommand>(OnQuitCommand);
 
 		// Intercept standard OS quit commands
 		Application.wantsToQuit += OnWantsToQuit;
@@ -31,7 +31,7 @@ public abstract class ApplicationContext_Base : Context
 
 	protected virtual bool OnWantsToQuit()
 	{
-		EmitCommand(new ExitApplicationCommand());
+		Emit(new ExitApplicationCommand());
 
 		return false;
 	}

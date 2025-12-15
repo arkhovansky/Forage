@@ -1,4 +1,8 @@
-﻿namespace App.Application.Flow.GameInstance.RunningGame.Controller {
+﻿using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
+
+
+
+namespace App.Application.Flow.GameInstance.RunningGame.Controller {
 
 
 

@@ -33,8 +33,8 @@ public partial class RunningGameContext : Context
 
 
 	public RunningGameContext(IGameInstance game,
-	                          IGui gui, IVvmBinder vvmBinder, ICommandDispatcher commandDispatcher)
-		: base(commandDispatcher)
+	                          IGui gui, IVvmBinder vvmBinder, IMessageDispatcher messageDispatcher)
+		: base(messageDispatcher)
 	{
 		_game = game;
 

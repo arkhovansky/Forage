@@ -3,7 +3,7 @@ using Lib.Grid;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame {
+namespace App.Application.Flow.GameInstance.RunningGame.Messages.Commands {
 
 
 
@@ -18,6 +18,10 @@ public record PlaceCamp(
 
 
 public class RunYearPeriod : ICommand {}
+
+
+
+public class YearPeriodChanged : ICommand {}
 
 
 

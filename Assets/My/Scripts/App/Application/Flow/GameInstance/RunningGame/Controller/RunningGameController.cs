@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Lib.AppFlow;
 
+using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
+using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.Core;
 
@@ -44,18 +46,18 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	public RunningGameController(IRunningGameInstance runningGame,
 	                             IRunningGame_PresentationModel presentationModel,
 	                             ISceneViewController sceneViewController,
-	                             IMessageEmitter messageEmitter)
-		: base(messageEmitter)
+	                             ICommand_Emitter commandEmitter)
+		: base(commandEmitter)
 	{
 		_runningGame = runningGame;
 		_presentationModel = presentationModel;
 		_sceneViewController = sceneViewController;
 
-		base.AddCommandHandler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
-		base.AddCommandHandler<PlaceCamp>(OnPlaceCamp);
-		base.AddCommandHandler<RunYearPeriod>(OnRunYearPeriod);
-		base.AddCommandHandler<YearPeriodChanged>(OnYearPeriodChanged);
-		base.AddCommandHandler<HoveredTileChanged>(OnHoveredTileChanged);
+		base.Add_Command_Handler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
+		base.Add_Command_Handler<PlaceCamp>(OnPlaceCamp);
+		base.Add_Command_Handler<RunYearPeriod>(OnRunYearPeriod);
+		base.Add_Command_Handler<YearPeriodChanged>(OnYearPeriodChanged);
+		base.Add_InputEvent_Handler<HoveredTileChanged>(OnHoveredTileChanged);
 
 		// Should come at the end since modes might use data members of this
 		_modes.Add(ModeId.Arrival, new Arrival_Mode());
@@ -83,7 +85,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	// private
 
 
-	#region Command handlers
+	#region Message handlers
 
 	private void OnEnterPlaceCampMode(EnterPlaceCampMode command)
 	{

@@ -3,23 +3,19 @@ using Lib.Grid;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame {
+namespace App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents {
 
 
 
 public record HoveredTileChanged(
 	AxialPosition? Position
-) : ICommand;
+) : IInputEvent;
 
 
 
 public record TileClicked(
 	AxialPosition Position
-) : ICommand;
-
-
-
-public class YearPeriodChanged : ICommand {}
+) : IInputEvent;
 
 
 

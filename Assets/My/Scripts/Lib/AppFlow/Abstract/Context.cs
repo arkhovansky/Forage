@@ -18,16 +18,16 @@ public abstract class Context
 {
 	protected readonly List<IContext> Children = new();
 
-	protected readonly ICommandDispatcher CommandDispatcher;
+	protected readonly IMessageDispatcher MessageDispatcher;
 
-	protected readonly Dictionary<Type, Delegate> CommandHandlers = new();
+	protected readonly Dictionary<Type, Delegate> Command_Handlers = new();
 
 	//----------------------------------------------------------------------------------------------
 
 
-	protected Context(ICommandDispatcher commandDispatcher)
+	protected Context(IMessageDispatcher messageDispatcher)
 	{
-		CommandDispatcher = commandDispatcher;
+		MessageDispatcher = messageDispatcher;
 	}
 
 
@@ -35,7 +35,7 @@ public abstract class Context
 	// IContext_Internal implementation
 
 
-	IReadOnlyDictionary<Type, Delegate> IContext_Internal.CommandHandlers => CommandHandlers;
+	IReadOnlyDictionary<Type, Delegate> IContext_Internal.Command_Handlers => Command_Handlers;
 
 	public IController? Controller { get; protected set; }
 
@@ -71,9 +71,29 @@ public abstract class Context
 	// IMessageEmitter implementation
 
 
-	public virtual void EmitCommand(ICommand command)
+	public void Emit(IInputEvent evt)
 	{
-		CommandDispatcher.EmitCommand(command, this);
+		Emit((IMessage) evt);
+	}
+
+	public void Emit(ICommand command)
+	{
+		Emit((IMessage) command);
+	}
+
+	public void Emit(IDomainEvent evt)
+	{
+		Emit((IMessage) evt);
+	}
+
+	public void Emit(IPresentationEvent evt)
+	{
+		Emit((IMessage) evt);
+	}
+
+	public virtual void Emit(IMessage message)
+	{
+		MessageDispatcher.Emit(message, this);
 	}
 
 
@@ -81,14 +101,16 @@ public abstract class Context
 	// protected
 
 
-	protected virtual void AddCommandHandler<TCommand>(Action<TCommand> method)
+	protected virtual void Add_Command_Handler<TMessage>(Action<TMessage> method)
+		where TMessage : ICommand
 	{
-		CommandHandlers[typeof(TCommand)] = method;
+		Command_Handlers[typeof(TMessage)] = method;
 	}
 
-	protected virtual void RemoveCommandHandler<TCommand>()
+	protected virtual void Remove_Command_Handler<TMessage>()
+		where TMessage : ICommand
 	{
-		CommandHandlers.Remove(typeof(TCommand));
+		Command_Handlers.Remove(typeof(TMessage));
 	}
 
 

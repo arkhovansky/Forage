@@ -5,6 +5,7 @@ using Lib.AppFlow;
 using Lib.UICore.Gui;
 
 using App.Application.Flow.GameInstance.RunningGame;
+using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Game.Core;
 using App.Game.Core.Query;
@@ -55,7 +56,7 @@ public partial class RunningGameUI_VM : IViewModel
 
 	public RunningGameUI_VM(IRunningGameInstance_RO runningGameInstance,
 	                        IRunningGame_PresentationModel_RO presentationModel,
-	                        IMessageEmitter messageEmitter,
+	                        ICommand_Emitter commandEmitter,
 	                        ITerrainTypePresentationRepository terrainTypePresentationRepository,
 	                        IResourceTypePresentationRepository resourceTypePresentationRepository,
 	                        IHumanTypePresentationRepository humanTypePresentationRepository)
@@ -71,9 +72,9 @@ public partial class RunningGameUI_VM : IViewModel
 		                            terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
-			() => messageEmitter.EmitCommand(new EnterPlaceCampMode()));
+			() => commandEmitter.Emit(new EnterPlaceCampMode()));
 		RunYearPeriodCommand = new RunYearPeriod_CommandVM(
-			() => messageEmitter.EmitCommand(new RunYearPeriod()));
+			() => commandEmitter.Emit(new RunYearPeriod()));
 
 		SelectCampLocationHintVM = new SelectCampLocationHintVM();
 

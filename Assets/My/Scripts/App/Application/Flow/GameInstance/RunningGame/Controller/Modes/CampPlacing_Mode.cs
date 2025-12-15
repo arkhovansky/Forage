@@ -1,4 +1,9 @@
-﻿namespace App.Application.Flow.GameInstance.RunningGame.Controller {
+﻿using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
+using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
+
+
+
+namespace App.Application.Flow.GameInstance.RunningGame.Controller {
 
 
 
@@ -18,12 +23,12 @@ public partial class RunningGameController
 
 		public void Enter()
 		{
-			_controller.AddCommandHandler<TileClicked>(OnTileClicked);
+			_controller.Add_InputEvent_Handler<TileClicked>(OnTileClicked);
 		}
 
 		public void Exit()
 		{
-			_controller.RemoveCommandHandler<TileClicked>();
+			_controller.Remove_InputEvent_Handler<TileClicked>();
 		}
 
 
