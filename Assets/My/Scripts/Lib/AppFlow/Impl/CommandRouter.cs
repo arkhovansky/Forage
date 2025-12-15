@@ -19,16 +19,9 @@ public class CommandRouter : ICommandRouter
 	private readonly Queue<EmittedCommand> _commands = new ();
 
 
-	private bool _commandEmittingBlocked;
-
-
 
 	public void EmitCommand(ICommand command, IContext emitter)
 	{
-		if (_commandEmittingBlocked) {
-			return;
-		}
-
 		_commands.Enqueue(new EmittedCommand(command, emitter));
 	}
 
