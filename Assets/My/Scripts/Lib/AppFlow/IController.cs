@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-
-
-namespace Lib.AppFlow {
+﻿namespace Lib.AppFlow {
 
 
 
@@ -12,9 +7,6 @@ namespace Lib.AppFlow {
 /// </summary>
 public interface IController
 {
-	IReadOnlyDictionary<Type, Delegate> CommandHandlers { get; }
-
-
 	void Start();
 
 	void Update();

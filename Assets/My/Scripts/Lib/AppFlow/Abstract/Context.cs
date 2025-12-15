@@ -3,21 +3,19 @@ using System.Collections.Generic;
 
 using Cysharp.Threading.Tasks;
 
+using Lib.AppFlow.Internal;
+
 
 
 namespace Lib.AppFlow {
 
 
 
-public abstract class Context : IContext, IMessageEmitter
+public abstract class Context
+	: IContext,
+	  IContext_Internal,
+	  IMessageEmitter
 {
-	public IContext? Parent { get; set; }
-
-	public IReadOnlyDictionary<Type, Delegate> CommandHandlers => commandHandlers;
-
-	public IController? Controller { get; protected set; }
-
-
 	protected readonly List<IContext> Children = new();
 
 	protected readonly ICommandRouter CommandRouter;
@@ -35,7 +33,19 @@ public abstract class Context : IContext, IMessageEmitter
 
 
 	//----------------------------------------------------------------------------------------------
+	// IContext_Internal implementation
+
+
+	IReadOnlyDictionary<Type, Delegate> IContext_Internal.CommandHandlers => commandHandlers;
+
+	public IController? Controller { get; protected set; }
+
+
+	//----------------------------------------------------------------------------------------------
 	// IContext implementation
+
+
+	public IContext? Parent { get; set; }
 
 
 	public virtual UniTask Start() { return UniTask.CompletedTask; }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Lib.AppFlow.Internal;
+
 
 
 namespace Lib.AppFlow.Impl {
@@ -60,17 +62,20 @@ public class CommandRouter : ICommandRouter
 
 	private Delegate? FindHandler(Type commandType, IContext context, bool searchInController)
 	{
+		var context_Internal = (IContext_Internal) context;
+
 		Delegate handler;
 
 		if (searchInController) {
-			if (context.Controller != null
-			    && context.Controller.CommandHandlers.TryGetValue(commandType, out handler))
+			if (context_Internal.Controller != null &&
+			    ((IController_Internal)context_Internal.Controller).CommandHandlers.TryGetValue(
+				    commandType, out handler))
 			{
 				return handler;
 			}
 		}
 
-		if (context.CommandHandlers.TryGetValue(commandType, out handler))
+		if (context_Internal.CommandHandlers.TryGetValue(commandType, out handler))
 			return handler;
 
 		return null;

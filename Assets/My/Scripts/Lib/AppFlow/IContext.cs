@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 
 
@@ -19,10 +16,6 @@ namespace Lib.AppFlow {
 public interface IContext
 {
 	IContext? Parent { get; set; }
-
-	IReadOnlyDictionary<Type, Delegate> CommandHandlers { get; }
-
-	IController? Controller { get; }
 
 
 	UniTask Start();

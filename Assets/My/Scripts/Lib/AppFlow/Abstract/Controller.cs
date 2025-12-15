@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Lib.AppFlow.Internal;
+
 
 
 namespace Lib.AppFlow {
 
 
 
-public abstract class Controller : IController
+public abstract class Controller
+	: IController,
+	  IController_Internal
 {
-	public IReadOnlyDictionary<Type, Delegate> CommandHandlers => commandHandlers;
-
-
 	protected readonly IMessageEmitter MessageEmitter;
 
 	// ReSharper disable once InconsistentNaming
@@ -24,6 +25,13 @@ public abstract class Controller : IController
 	{
 		MessageEmitter = messageEmitter;
 	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// IController_Internal implementation
+
+
+	IReadOnlyDictionary<Type, Delegate> IController_Internal.CommandHandlers => commandHandlers;
 
 
 	//----------------------------------------------------------------------------------------------
