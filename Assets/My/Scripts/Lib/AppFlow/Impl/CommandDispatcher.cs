@@ -16,8 +16,11 @@ public class CommandDispatcher : ICommandDispatcher
 		IContext Emitter
 	);
 
-	private readonly Queue<EmittedCommand> _commands = new ();
+	private readonly Queue<EmittedCommand> _commands = new();
 
+
+	//----------------------------------------------------------------------------------------------
+	// ICommandDispatcher implementation
 
 
 	public void EmitCommand(ICommand command, IContext emitter)
@@ -25,6 +28,18 @@ public class CommandDispatcher : ICommandDispatcher
 		_commands.Enqueue(new EmittedCommand(command, emitter));
 	}
 
+
+	public void Update()
+	{
+		while (_commands.Count > 0) {
+			EmittedCommand command = _commands.Dequeue();
+			HandleCommand(command);
+		}
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
 
 
 	private void HandleCommand(EmittedCommand command)
@@ -72,16 +87,6 @@ public class CommandDispatcher : ICommandDispatcher
 			return handler;
 
 		return null;
-	}
-
-
-
-	public void Update()
-	{
-		while (_commands.Count > 0) {
-			EmittedCommand command = _commands.Dequeue();
-			HandleCommand(command);
-		}
 	}
 }
 
