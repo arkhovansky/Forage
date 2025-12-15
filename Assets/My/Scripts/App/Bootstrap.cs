@@ -29,7 +29,7 @@ public class Bootstrap : MonoBehaviour
 
 	private IGui _gui = null!;
 	private IVvmBinder _vvmBinder = null!;
-	private ICommandRouter _commandRouter = null!;
+	private ICommandDispatcher _commandDispatcher = null!;
 
 	private ApplicationContext _applicationContext = null!;
 
@@ -43,7 +43,7 @@ public class Bootstrap : MonoBehaviour
 
 		_gui = new Gui();
 		_vvmBinder = new VvmBinder();
-		_commandRouter = new CommandRouter();
+		_commandDispatcher = new CommandDispatcher();
 	}
 
 
@@ -55,7 +55,7 @@ public class Bootstrap : MonoBehaviour
 
 		_applicationContext = new ApplicationContext(
 			_applicationSettings,
-			_gui, _vvmBinder, _commandRouter);
+			_gui, _vvmBinder, _commandDispatcher);
 		await _applicationContext.Start();
 
 		_isStarted = true;
@@ -78,7 +78,7 @@ public class Bootstrap : MonoBehaviour
 		if (!_isStarted)
 			return;
 
-		_commandRouter.Update();
+		_commandDispatcher.Update();
 		_applicationContext.Update();
 	}
 

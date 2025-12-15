@@ -2,7 +2,7 @@
 
 
 
-public interface ICommandRouter
+public interface ICommandDispatcher
 {
 	void EmitCommand(ICommand command, IContext emitter);
 

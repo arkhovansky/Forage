@@ -18,7 +18,7 @@ public abstract class Context
 {
 	protected readonly List<IContext> Children = new();
 
-	protected readonly ICommandRouter CommandRouter;
+	protected readonly ICommandDispatcher CommandDispatcher;
 
 	// ReSharper disable once InconsistentNaming
 	protected readonly Dictionary<Type, Delegate> commandHandlers = new();
@@ -26,9 +26,9 @@ public abstract class Context
 	//----------------------------------------------------------------------------------------------
 
 
-	protected Context(ICommandRouter commandRouter)
+	protected Context(ICommandDispatcher commandDispatcher)
 	{
-		CommandRouter = commandRouter;
+		CommandDispatcher = commandDispatcher;
 	}
 
 
@@ -74,7 +74,7 @@ public abstract class Context
 
 	public virtual void EmitCommand(ICommand command)
 	{
-		CommandRouter.EmitCommand(command, this);
+		CommandDispatcher.EmitCommand(command, this);
 	}
 
 

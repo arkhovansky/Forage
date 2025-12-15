@@ -9,7 +9,7 @@ namespace Lib.AppFlow.Impl {
 
 
 
-public class CommandRouter : ICommandRouter
+public class CommandDispatcher : ICommandDispatcher
 {
 	private record EmittedCommand(
 		ICommand Command,
