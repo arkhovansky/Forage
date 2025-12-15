@@ -20,8 +20,7 @@ public abstract class Context
 
 	protected readonly ICommandDispatcher CommandDispatcher;
 
-	// ReSharper disable once InconsistentNaming
-	protected readonly Dictionary<Type, Delegate> commandHandlers = new();
+	protected readonly Dictionary<Type, Delegate> CommandHandlers = new();
 
 	//----------------------------------------------------------------------------------------------
 
@@ -36,7 +35,7 @@ public abstract class Context
 	// IContext_Internal implementation
 
 
-	IReadOnlyDictionary<Type, Delegate> IContext_Internal.CommandHandlers => commandHandlers;
+	IReadOnlyDictionary<Type, Delegate> IContext_Internal.CommandHandlers => CommandHandlers;
 
 	public IController? Controller { get; protected set; }
 
@@ -84,12 +83,12 @@ public abstract class Context
 
 	protected virtual void AddCommandHandler<TCommand>(Action<TCommand> method)
 	{
-		commandHandlers[typeof(TCommand)] = method;
+		CommandHandlers[typeof(TCommand)] = method;
 	}
 
 	protected virtual void RemoveCommandHandler<TCommand>()
 	{
-		commandHandlers.Remove(typeof(TCommand));
+		CommandHandlers.Remove(typeof(TCommand));
 	}
 
 
