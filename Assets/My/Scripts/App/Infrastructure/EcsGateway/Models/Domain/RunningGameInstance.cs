@@ -17,13 +17,6 @@ namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 public class RunningGameInstance : IRunningGameInstance
 {
-	public IWorld_RO World { get; }
-
-	public GamePhase GamePhase { get; private set; }
-
-	//----------------------------------------------------------------------------------------------
-
-
 	public RunningGameInstance(IWorld_RO world)
 	{
 		World = world;
@@ -31,6 +24,19 @@ public class RunningGameInstance : IRunningGameInstance
 
 		Assert.IsFalse(EcsService.GameSystems_Enabled);
 	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// IRunningGameInstance_RO implementation
+
+
+	public IWorld_RO World { get; }
+
+	public GamePhase GamePhase { get; private set; }
+
+
+	//----------------------------------------------------------------------------------------------
+	// IRunningGameInstance implementation
 
 
 	public void Start()
