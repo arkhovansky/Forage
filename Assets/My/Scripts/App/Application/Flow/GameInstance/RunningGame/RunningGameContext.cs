@@ -63,7 +63,7 @@ public partial class RunningGameContext : Context
 	}
 
 
-	protected override void UpdateViewModel()
+	protected override void DoLateUpdate()
 	{
 		_uiVM.Update();
 	}

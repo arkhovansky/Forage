@@ -88,7 +88,7 @@ public class Bootstrap : MonoBehaviour
 		if (!_isStarted)
 			return;
 
-		_applicationContext.UpdateViewModels();
+		_applicationContext.LateUpdate();
 	}
 }
 

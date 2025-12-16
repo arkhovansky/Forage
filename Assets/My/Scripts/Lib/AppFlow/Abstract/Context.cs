@@ -57,10 +57,10 @@ public abstract class Context
 	}
 
 
-	public virtual void UpdateViewModels()
+	public virtual void LateUpdate()
 	{
-		UpdateViewModel();
-		Children.ForEach(c => c.UpdateViewModels());
+		DoLateUpdate();
+		Children.ForEach(c => c.LateUpdate());
 	}
 
 
@@ -127,7 +127,7 @@ public abstract class Context
 	}
 
 
-	protected virtual void UpdateViewModel() {}
+	protected virtual void DoLateUpdate() {}
 }
 
 

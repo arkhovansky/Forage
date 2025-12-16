@@ -22,7 +22,7 @@ public interface IContext
 
 	void Update();
 
-	void UpdateViewModels();
+	void LateUpdate();
 
 	void Destroy();
 }
