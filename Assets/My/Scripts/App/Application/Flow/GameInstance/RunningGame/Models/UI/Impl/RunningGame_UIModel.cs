@@ -5,12 +5,12 @@ using App.Application.Flow.GameInstance.RunningGame.Messages.PresentationEvents;
 
 
 
-namespace App.Application.Flow.GameInstance.RunningGame.Models.Presentation.Impl {
+namespace App.Application.Flow.GameInstance.RunningGame.Models.UI.Impl {
 
 
 
-public class RunningGame_PresentationModel
-	: IRunningGame_PresentationModel,
+public class RunningGame_UIModel
+	: IRunningGame_UIModel,
 	  ILoopComponent
 {
 	private readonly IPresentationEvent_Emitter _presentationEvent_Emitter;
@@ -20,14 +20,14 @@ public class RunningGame_PresentationModel
 	//----------------------------------------------------------------------------------------------
 
 
-	public RunningGame_PresentationModel(IPresentationEvent_Emitter presentationEvent_Emitter)
+	public RunningGame_UIModel(IPresentationEvent_Emitter presentationEvent_Emitter)
 	{
 		_presentationEvent_Emitter = presentationEvent_Emitter;
 	}
 
 
 	//----------------------------------------------------------------------------------------------
-	// IRunningGame_PresentationModel implementation
+	// IRunningGame_UIModel implementation
 
 
 	public AxialPosition? HighlightedTile {

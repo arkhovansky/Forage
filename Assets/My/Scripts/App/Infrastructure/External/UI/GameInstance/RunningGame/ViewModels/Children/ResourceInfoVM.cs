@@ -2,7 +2,7 @@
 
 using Lib.UICore.Gui;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 
@@ -33,18 +33,18 @@ public class ResourceInfoVM : IViewModel
 
 	private readonly IMap _map;
 
-	private readonly IRunningGame_PresentationModel_RO _presentationModel;
+	private readonly IRunningGame_UIModel_RO _uiModel;
 
 	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
 
 
 
 	public ResourceInfoVM(IMap map,
-	                      IRunningGame_PresentationModel_RO presentationModel,
+	                      IRunningGame_UIModel_RO uiModel,
 	                      IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		_map = map;
-		_presentationModel = presentationModel;
+		_uiModel = uiModel;
 		_resourceTypePresentationRepository = resourceTypePresentationRepository;
 
 		Name = string.Empty;
@@ -54,12 +54,12 @@ public class ResourceInfoVM : IViewModel
 
 	public void Update()
 	{
-		if (!_presentationModel.HighlightedTile.HasValue) {
+		if (!_uiModel.HighlightedTile.HasValue) {
 			IsVisible = false;
 			return;
 		}
 
-		var plantResource = _map.Get_PlantResource(_presentationModel.HighlightedTile.Value);
+		var plantResource = _map.Get_PlantResource(_uiModel.HighlightedTile.Value);
 		if (plantResource == null) {
 			IsVisible = false;
 			return;

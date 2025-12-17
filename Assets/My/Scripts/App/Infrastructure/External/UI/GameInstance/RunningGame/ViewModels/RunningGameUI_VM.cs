@@ -6,7 +6,7 @@ using Lib.UICore.Gui;
 
 using App.Application.Flow.GameInstance.RunningGame;
 using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI;
 using App.Game.Core;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
@@ -47,7 +47,7 @@ public partial class RunningGameUI_VM
 
 	private readonly IRunningGameInstance_RO _game;
 
-	private readonly IRunningGame_PresentationModel_RO _presentationModel;
+	private readonly IRunningGame_UIModel_RO _uiModel;
 
 	private readonly Dictionary<ModeId, IMode> _modes = new();
 
@@ -57,20 +57,20 @@ public partial class RunningGameUI_VM
 
 
 	public RunningGameUI_VM(IRunningGameInstance_RO runningGameInstance,
-	                        IRunningGame_PresentationModel_RO presentationModel,
+	                        IRunningGame_UIModel_RO uiModel,
 	                        ICommand_Emitter commandEmitter,
 	                        ITerrainTypePresentationRepository terrainTypePresentationRepository,
 	                        IResourceTypePresentationRepository resourceTypePresentationRepository,
 	                        IHumanTypePresentationRepository humanTypePresentationRepository)
 	{
 		_game = runningGameInstance;
-		_presentationModel = presentationModel;
+		_uiModel = uiModel;
 
 		GameTimeVM = new GameTimeVM(_game.World.Time);
 
 		BandMembersVM = new BandMembersVM(_game.World.Band, _game.World.Time, humanTypePresentationRepository);
 
-		TileInfoVM = new TileInfoVM(_game.World.Map, presentationModel,
+		TileInfoVM = new TileInfoVM(_game.World.Map, uiModel,
 		                            terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
@@ -120,7 +120,7 @@ public partial class RunningGameUI_VM
 	private void UpdateMode()
 	{
 		var gamePhase = _game.GamePhase;
-		bool isCampPlacing = _presentationModel.Is_CampPlacing_Mode;
+		bool isCampPlacing = _uiModel.Is_CampPlacing_Mode;
 
 		var modeId = gamePhase switch {
 			GamePhase.Arrival =>

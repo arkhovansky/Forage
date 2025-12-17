@@ -2,7 +2,7 @@
 
 using Lib.UICore.Gui;
 
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 
@@ -24,24 +24,24 @@ public class TileInfoVM : IViewModel
 
 	private readonly IMap _map;
 
-	private readonly IRunningGame_PresentationModel_RO _presentationModel;
+	private readonly IRunningGame_UIModel_RO _uiModel;
 
 	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
 
 
 
 	public TileInfoVM(IMap map,
-	                  IRunningGame_PresentationModel_RO presentationModel,
+	                  IRunningGame_UIModel_RO uiModel,
 	                  ITerrainTypePresentationRepository terrainTypePresentationRepository,
 	                  IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
 		_map = map;
-		_presentationModel = presentationModel;
+		_uiModel = uiModel;
 		_terrainTypePresentationRepository = terrainTypePresentationRepository;
 
 		TerrainType = string.Empty;
 
-		ResourceInfoVM = new ResourceInfoVM(map, presentationModel, resourceTypePresentationRepository);
+		ResourceInfoVM = new ResourceInfoVM(map, uiModel, resourceTypePresentationRepository);
 	}
 
 
@@ -54,12 +54,12 @@ public class TileInfoVM : IViewModel
 
 	private void UpdateSelf()
 	{
-		if (!_presentationModel.HighlightedTile.HasValue) {
+		if (!_uiModel.HighlightedTile.HasValue) {
 			TerrainType = string.Empty;
 			return;
 		}
 
-		var terrainTypeId = _map.Get_TerrainTypeId(_presentationModel.HighlightedTile.Value);
+		var terrainTypeId = _map.Get_TerrainTypeId(_uiModel.HighlightedTile.Value);
 		TerrainType = _terrainTypePresentationRepository.GetName(terrainTypeId);
 	}
 }

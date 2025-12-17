@@ -5,7 +5,7 @@ using Lib.AppFlow;
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
 using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI;
 using App.Game.Core;
 
 
@@ -31,7 +31,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private readonly IRunningGameInstance _runningGame;
 
-	private readonly IRunningGame_PresentationModel _presentationModel;
+	private readonly IRunningGame_UIModel _uiModel;
 
 	private readonly Dictionary<ModeId, IMode> _modes = new();
 
@@ -43,12 +43,12 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 
 	public RunningGameController(IRunningGameInstance runningGame,
-	                             IRunningGame_PresentationModel presentationModel,
+	                             IRunningGame_UIModel uiModel,
 	                             ICommand_Emitter commandEmitter)
 		: base(commandEmitter)
 	{
 		_runningGame = runningGame;
-		_presentationModel = presentationModel;
+		_uiModel = uiModel;
 
 		base.Add_Command_Handler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.Add_Command_Handler<PlaceCamp>(OnPlaceCamp);
@@ -88,7 +88,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private void OnEnterPlaceCampMode(EnterPlaceCampMode command)
 	{
-		_presentationModel.Is_CampPlacing_Mode = true;
+		_uiModel.Is_CampPlacing_Mode = true;
 		UpdateMode();
 	}
 
@@ -107,7 +107,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private void OnHoveredTileChanged(HoveredTileChanged evt)
 	{
-		_presentationModel.HighlightedTile = evt.Position;
+		_uiModel.HighlightedTile = evt.Position;
 	}
 
 	#endregion
@@ -116,7 +116,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	private void UpdateMode()
 	{
 		var gamePhase = _runningGame.GamePhase;
-		bool isCampPlacing = _presentationModel.Is_CampPlacing_Mode;
+		bool isCampPlacing = _uiModel.Is_CampPlacing_Mode;
 
 		var modeId = gamePhase switch {
 			GamePhase.Arrival =>

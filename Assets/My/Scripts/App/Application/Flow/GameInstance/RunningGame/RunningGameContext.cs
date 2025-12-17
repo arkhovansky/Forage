@@ -25,7 +25,7 @@ public partial class RunningGameContext : Context
 
 	private ILoopComponent _runningGame = null!;
 
-	private ILoopComponent _presentationModel = null!;
+	private ILoopComponent _uiModel = null!;
 
 	private ILoopComponent _sceneController = null!;
 
@@ -72,7 +72,7 @@ public partial class RunningGameContext : Context
 		AddView(sceneViewController);
 		AddView(scenePresentationView);
 
-		_presentationModel.Start();
+		_uiModel.Start();
 	}
 
 

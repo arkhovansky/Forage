@@ -6,7 +6,7 @@ using Lib.VisualGrid;
 using Lib.Math;
 
 using App.Application.Flow.GameInstance.RunningGame.Controller;
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation.Impl;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI.Impl;
 using App.Application.Services;
 using App.Game.Core;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
@@ -57,8 +57,8 @@ public partial class RunningGameContext
 		_runningGame = runningGame;
 		_runningGameInstance = runningGame;
 
-		var presentationModel = new RunningGame_PresentationModel(this);
-		_presentationModel = presentationModel;
+		var uiModel = new RunningGame_UIModel(this);
+		_uiModel = uiModel;
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
@@ -76,12 +76,12 @@ public partial class RunningGameContext
 		runningGameInitializer = Create_RunningGameInitializer(
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
-		controller = new RunningGameController(_runningGameInstance, presentationModel, this);
+		controller = new RunningGameController(_runningGameInstance, uiModel, this);
 
 		scenePresentationView = new ScenePresentationView();
 
 		var uiVM = new RunningGameUI_VM(
-			runningGame, presentationModel,
+			runningGame, uiModel,
 			this,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		_uiVM = uiVM;
