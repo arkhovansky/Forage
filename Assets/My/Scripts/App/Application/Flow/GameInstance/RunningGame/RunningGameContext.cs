@@ -56,7 +56,7 @@ public partial class RunningGameContext : Context
 		Compose(out var localeFactory,
 		        out var runningGameInitializer,
 		        out var controller,
-		        out var scenePresentationView);
+		        out var worldUI_View);
 
 		var locale = localeFactory.Create(_game.LocaleId);
 
@@ -70,7 +70,7 @@ public partial class RunningGameContext : Context
 		_sceneController = sceneViewController;
 
 		AddView(sceneViewController);
-		AddView(scenePresentationView);
+		AddView(worldUI_View);
 
 		_uiModel.Start();
 	}

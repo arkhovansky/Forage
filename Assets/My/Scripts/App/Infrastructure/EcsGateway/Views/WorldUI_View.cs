@@ -11,11 +11,11 @@ namespace App.Infrastructure.EcsGateway.Views {
 
 
 /// <summary>
-/// View displaying presentation-related effects on the scene (like highlighting)
+/// View for the world-space UI (like highlighting)
 /// </summary>
-public class ScenePresentationView : View
+public class WorldUI_View : View
 {
-	public ScenePresentationView()
+	public WorldUI_View()
 	{
 		base.Add_PresentationEvent_Handler<HighlightedTile_Changed>(On_HighlightedTile_Changed);
 	}

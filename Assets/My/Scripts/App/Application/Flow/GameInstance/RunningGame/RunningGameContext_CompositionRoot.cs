@@ -50,7 +50,7 @@ public partial class RunningGameContext
 		out ILocaleFactory localeFactory,
 		out IRunningGameInitializer runningGameInitializer,
 		out IController controller,
-		out IView scenePresentationView)
+		out IView worldUI_View)
 	{
 		var runningGame = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
@@ -78,7 +78,7 @@ public partial class RunningGameContext
 
 		controller = new RunningGameController(_runningGameInstance, uiModel, this);
 
-		scenePresentationView = new ScenePresentationView();
+		worldUI_View = new WorldUI_View();
 
 		var uiVM = new RunningGameUI_VM(
 			runningGame, uiModel,
