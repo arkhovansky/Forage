@@ -1,7 +1,7 @@
 ﻿using Lib.AppFlow;
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.PresentationEvents;
-using App.Game.ECS.UI.HoveredTile.Components;
+using App.Game.ECS.UI.HighlightedTile.Components;
 using App.Infrastructure.EcsGateway.Services;
 
 
@@ -27,7 +27,7 @@ public class ScenePresentationView : View
 
 	private void On_HighlightedTile_Changed(HighlightedTile_Changed evt)
 	{
-		EcsService.SendEcsCommand(new HoveredTileChanged_Event(evt.Position));
+		EcsService.SendEcsCommand(new HighlightedTile_Changed_Event(evt.Position));
 	}
 }
 
