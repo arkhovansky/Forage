@@ -96,7 +96,12 @@ public class MessageDispatcher : IMessageDispatcher
 
 	private void Dispatch(IPresentationEvent presentationEvent, IContext context)
 	{
-		throw new NotImplementedException();
+		var context_Internal = (IContext_Internal) context;
+
+		foreach (var view in context_Internal.Views) {
+			var handler = Find_PresentationEvent_Handler(presentationEvent.GetType(), view);
+			handler?.DynamicInvoke(presentationEvent);
+		}
 	}
 
 
@@ -134,6 +139,12 @@ public class MessageDispatcher : IMessageDispatcher
 			return handler;
 
 		return null;
+	}
+
+
+	private Delegate? Find_PresentationEvent_Handler(Type messageType, IView view)
+	{
+		return ((IView_Internal) view).PresentationEvent_Handlers.GetValueOrDefault(messageType);
 	}
 }
 

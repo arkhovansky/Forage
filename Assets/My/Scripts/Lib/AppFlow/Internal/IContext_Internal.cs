@@ -12,6 +12,8 @@ public interface IContext_Internal
 	IReadOnlyDictionary<Type, Delegate> Command_Handlers { get; }
 
 	IController? Controller { get; }
+
+	IReadOnlyList<IView> Views { get; }
 }
 
 

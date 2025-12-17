@@ -22,6 +22,8 @@ public abstract class Context
 
 	protected readonly Dictionary<Type, Delegate> Command_Handlers = new();
 
+	protected readonly List<IView> Views = new();
+
 	//----------------------------------------------------------------------------------------------
 
 
@@ -38,6 +40,8 @@ public abstract class Context
 	IReadOnlyDictionary<Type, Delegate> IContext_Internal.Command_Handlers => Command_Handlers;
 
 	public IController? Controller { get; protected set; }
+
+	IReadOnlyList<IView> IContext_Internal.Views => Views;
 
 
 	//----------------------------------------------------------------------------------------------
@@ -118,6 +122,12 @@ public abstract class Context
 	{
 		child.Parent = this;
 		Children.Add(child);
+	}
+
+
+	protected virtual void AddView(IView view)
+	{
+		Views.Add(view);
 	}
 
 
