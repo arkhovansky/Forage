@@ -54,12 +54,12 @@ public class TileInfoVM : IViewModel
 
 	private void UpdateSelf()
 	{
-		if (!_presentationModel.HoveredTile.HasValue) {
+		if (!_presentationModel.HighlightedTile.HasValue) {
 			TerrainType = string.Empty;
 			return;
 		}
 
-		var terrainTypeId = _map.Get_TerrainTypeId(_presentationModel.HoveredTile.Value);
+		var terrainTypeId = _map.Get_TerrainTypeId(_presentationModel.HighlightedTile.Value);
 		TerrainType = _terrainTypePresentationRepository.GetName(terrainTypeId);
 	}
 }

@@ -112,7 +112,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private void OnHoveredTileChanged(HoveredTileChanged evt)
 	{
-		_presentationModel.HoveredTile = evt.Position;
+		_presentationModel.HighlightedTile = evt.Position;
 	}
 
 	#endregion

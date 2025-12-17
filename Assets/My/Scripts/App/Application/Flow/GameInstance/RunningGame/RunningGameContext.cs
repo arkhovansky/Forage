@@ -28,7 +28,7 @@ public partial class RunningGameContext : Context
 	private ILoopComponent _sceneController = null!;
 
 	private ILoopComponent _uiVM = null!;
-	private IView _uiView = null!;
+	private Lib.UICore.Gui.IView _uiView = null!;
 
 	//----------------------------------------------------------------------------------------------
 
@@ -52,7 +52,8 @@ public partial class RunningGameContext : Context
 		// GameDatabase.Instance is available now
 
 		Compose(out var localeFactory,
-		        out var runningGameInitializer);
+		        out var runningGameInitializer,
+		        out var scenePresentationView);
 
 		var locale = localeFactory.Create(_game.LocaleId);
 
@@ -61,6 +62,8 @@ public partial class RunningGameContext : Context
 
 		Controller = Create_Controller(locale.Map);
 		Controller.Start();
+
+		AddView(scenePresentationView);
 	}
 
 

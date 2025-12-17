@@ -54,12 +54,12 @@ public class ResourceInfoVM : IViewModel
 
 	public void Update()
 	{
-		if (!_presentationModel.HoveredTile.HasValue) {
+		if (!_presentationModel.HighlightedTile.HasValue) {
 			IsVisible = false;
 			return;
 		}
 
-		var plantResource = _map.Get_PlantResource(_presentationModel.HoveredTile.Value);
+		var plantResource = _map.Get_PlantResource(_presentationModel.HighlightedTile.Value);
 		if (plantResource == null) {
 			IsVisible = false;
 			return;

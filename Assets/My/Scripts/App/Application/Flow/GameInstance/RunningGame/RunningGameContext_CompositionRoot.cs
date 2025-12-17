@@ -7,13 +7,14 @@ using Lib.Math;
 
 using App.Application.Flow.GameInstance.RunningGame.Controller;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
+using App.Application.Flow.GameInstance.RunningGame.Models.Presentation.Impl;
 using App.Application.Services;
 using App.Game.Core;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Models.Domain;
-using App.Infrastructure.EcsGateway.Models.Presentation;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
+using App.Infrastructure.EcsGateway.Views;
 using App.Infrastructure.External.Data.Database;
 using App.Infrastructure.External.Data.Database.Domain.Repositories;
 using App.Infrastructure.External.Data.Database.DomainSettings.Repositories;
@@ -50,14 +51,15 @@ public partial class RunningGameContext
 
 	private void Compose(
 		out ILocaleFactory localeFactory,
-		out IRunningGameInitializer runningGameInitializer)
+		out IRunningGameInitializer runningGameInitializer,
+		out IView scenePresentationView)
 	{
 		var runningGame = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
 		_runningGame = runningGame;
 		_runningGameInstance = runningGame;
 
-		_presentationModel = new RunningGame_PresentationModel();
+		_presentationModel = new RunningGame_PresentationModel(this);
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
@@ -74,6 +76,8 @@ public partial class RunningGameContext
 
 		runningGameInitializer = Create_RunningGameInitializer(
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
+
+		scenePresentationView = new ScenePresentationView();
 
 		var uiVM = new RunningGameUI_VM(
 			runningGame, _presentationModel,
