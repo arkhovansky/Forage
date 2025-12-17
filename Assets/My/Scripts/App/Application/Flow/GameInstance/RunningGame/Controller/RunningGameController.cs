@@ -67,6 +67,10 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	}
 
 
+	//----------------------------------------------------------------------------------------------
+	// ILoopComponent implementation overrides
+
+
 	public override void Start()
 	{
 		UpdateMode();
@@ -77,7 +81,6 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	public override void Update()
 	{
 		_mode.Update();
-		_sceneViewController.Update();
 	}
 
 

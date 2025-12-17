@@ -2,10 +2,7 @@
 
 
 
-public interface IViewModel
-{
-	void Update() { }
-}
+public interface IViewModel {}
 
 
 

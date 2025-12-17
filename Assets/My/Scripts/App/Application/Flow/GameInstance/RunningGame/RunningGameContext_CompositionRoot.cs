@@ -8,6 +8,7 @@ using Lib.Math;
 using App.Application.Flow.GameInstance.RunningGame.Controller;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Services;
+using App.Game.Core;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Models.Domain;
 using App.Infrastructure.EcsGateway.Models.Presentation;
@@ -33,6 +34,8 @@ public partial class RunningGameContext
 	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
 
 
+	private IRunningGameInstance _runningGameInstance = null!;
+
 	private IRunningGame_PresentationModel _presentationModel = null!;
 
 	private HexLayout3D _hexLayout;
@@ -49,8 +52,10 @@ public partial class RunningGameContext
 		out ILocaleFactory localeFactory,
 		out IRunningGameInitializer runningGameInitializer)
 	{
-		_runningGame = new RunningGameInstance(
+		var runningGame = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
+		_runningGame = runningGame;
+		_runningGameInstance = runningGame;
 
 		_presentationModel = new RunningGame_PresentationModel();
 
@@ -71,7 +76,7 @@ public partial class RunningGameContext
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		var uiVM = new RunningGameUI_VM(
-			_runningGame, _presentationModel,
+			runningGame, _presentationModel,
 			this,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		_uiVM = uiVM;
@@ -117,7 +122,9 @@ public partial class RunningGameContext
 	private IController Create_Controller(RectangularHexMap map)
 	{
 		var sceneViewController = Create_SceneViewController(map);
-		return new RunningGameController(_runningGame, _presentationModel, sceneViewController, this);
+		_sceneController = sceneViewController;
+
+		return new RunningGameController(_runningGameInstance, _presentationModel, sceneViewController, this);
 	}
 
 

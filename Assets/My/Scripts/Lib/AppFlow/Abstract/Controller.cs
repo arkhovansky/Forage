@@ -43,6 +43,8 @@ public abstract class Controller
 
 	public virtual void Update() {}
 
+	public virtual void LateUpdate() {}
+
 
 	//----------------------------------------------------------------------------------------------
 	// protected

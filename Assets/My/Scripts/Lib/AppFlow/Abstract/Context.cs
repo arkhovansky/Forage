@@ -52,7 +52,7 @@ public abstract class Context
 
 	public virtual void Update()
 	{
-		UpdateController();
+		DoUpdate();
 		Children.ForEach(c => c.Update());
 	}
 
@@ -118,6 +118,12 @@ public abstract class Context
 	{
 		child.Parent = this;
 		Children.Add(child);
+	}
+
+
+	protected virtual void DoUpdate()
+	{
+		UpdateController();
 	}
 
 

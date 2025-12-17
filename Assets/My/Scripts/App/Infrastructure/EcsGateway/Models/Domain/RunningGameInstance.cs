@@ -1,5 +1,6 @@
 ﻿using UnityEngine.Assertions;
 
+using Lib.AppFlow;
 using Lib.Grid;
 
 using App.Game.Core;
@@ -15,7 +16,9 @@ namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 
 
-public class RunningGameInstance : IRunningGameInstance
+public class RunningGameInstance
+	: IRunningGameInstance,
+	  ILoopComponent
 {
 	public RunningGameInstance(IWorld_RO world)
 	{
@@ -37,12 +40,6 @@ public class RunningGameInstance : IRunningGameInstance
 
 	//----------------------------------------------------------------------------------------------
 	// IRunningGameInstance implementation
-
-
-	public void Start()
-	{
-		EcsService.GameSystems_Enabled = true;
-	}
 
 
 	public void PlaceCamp(AxialPosition position)
@@ -67,6 +64,16 @@ public class RunningGameInstance : IRunningGameInstance
 			GamePhase = GamePhase.InterPeriod;
 
 		return yearPeriodChanged;
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// ILoopComponent implementation
+
+
+	void ILoopComponent.Start()
+	{
+		EcsService.GameSystems_Enabled = true;
 	}
 }
 

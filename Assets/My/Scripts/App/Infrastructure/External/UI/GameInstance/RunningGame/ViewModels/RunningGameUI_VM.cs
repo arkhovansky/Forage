@@ -18,7 +18,9 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels {
 
 
 
-public partial class RunningGameUI_VM : IViewModel
+public partial class RunningGameUI_VM
+	: IViewModel,
+	  ILoopComponent
 {
 	public GameTimeVM GameTimeVM { get; }
 
@@ -86,7 +88,11 @@ public partial class RunningGameUI_VM : IViewModel
 	}
 
 
-	public void Update()
+	//----------------------------------------------------------------------------------------------
+	// ILoopComponent implementation
+
+
+	public void LateUpdate()
 	{
 		UpdateMode();
 		_mode.Update();
@@ -94,8 +100,10 @@ public partial class RunningGameUI_VM : IViewModel
 		UpdatePresentationData();
 	}
 
+
 	//----------------------------------------------------------------------------------------------
 	// private
+
 
 	private void UpdateSimulationData()
 	{

@@ -13,8 +13,6 @@ namespace App.Game.Core {
 /// </summary>
 public interface IRunningGameInstance : IRunningGameInstance_RO
 {
-	void Start();
-
 	void PlaceCamp(AxialPosition position);
 
 	void RunYearPeriod();

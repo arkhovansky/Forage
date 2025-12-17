@@ -5,8 +5,6 @@
 public interface ISceneViewController
 {
 	void PositionCameraToOverview();
-
-	void Update();
 }
 
 

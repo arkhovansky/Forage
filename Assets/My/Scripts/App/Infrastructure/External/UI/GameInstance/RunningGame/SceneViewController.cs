@@ -19,7 +19,9 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame {
 /// Acts as both View and Controller for the scene. Encapsulates low-level details of reading user input, moving camera,
 /// and generates high-level hovering/selection events.
 /// </summary>
-public class SceneViewController : ISceneViewController
+public class SceneViewController
+	: ISceneViewController,
+	  ILoopComponent
 {
 	private const int MapOverviewVerticalMargin = 50;
 	private const float ZoomSpeed = 1.0f;
@@ -76,12 +78,20 @@ public class SceneViewController : ISceneViewController
 	}
 
 
+	//----------------------------------------------------------------------------------------------
+	// ISceneViewController implementation
+
+
 	public void PositionCameraToOverview()
 	{
 		var mapScreenRect = new RectInt(0, MapOverviewVerticalMargin,
 		                                _camera.pixelWidth, _camera.pixelHeight - 2 * MapOverviewVerticalMargin);
 		FitMapRectToScreenRect(_map.BoundingRect2D, mapScreenRect);
 	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// ILoopComponent implementation
 
 
 	public void Update()

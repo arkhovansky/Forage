@@ -5,7 +5,6 @@ using Lib.UICore.Gui;
 using Lib.UICore.Mvvm;
 
 using App.Application.Services;
-using App.Game.Core;
 using App.Game.Meta;
 
 
@@ -24,9 +23,11 @@ public partial class RunningGameContext : Context
 
 	private IInGameMode _inGameMode = null!;
 
-	private IRunningGameInstance _runningGame = null!;
+	private ILoopComponent _runningGame = null!;
 
-	private IViewModel _uiVM = null!;
+	private ILoopComponent _sceneController = null!;
+
+	private ILoopComponent _uiVM = null!;
 	private IView _uiView = null!;
 
 	//----------------------------------------------------------------------------------------------
@@ -63,9 +64,18 @@ public partial class RunningGameContext : Context
 	}
 
 
+	protected override void DoUpdate()
+	{
+		// Controller should be updated first to handle Model-originating state changes in previous frame's LateUpdate()
+		UpdateController();
+		_sceneController.Update();
+	}
+
+
+
 	protected override void DoLateUpdate()
 	{
-		_uiVM.Update();
+		_uiVM.LateUpdate();
 	}
 }
 
