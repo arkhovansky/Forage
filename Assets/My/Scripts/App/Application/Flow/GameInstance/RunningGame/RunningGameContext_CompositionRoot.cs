@@ -6,7 +6,6 @@ using Lib.VisualGrid;
 using Lib.Math;
 
 using App.Application.Flow.GameInstance.RunningGame.Controller;
-using App.Application.Flow.GameInstance.RunningGame.Models.Presentation;
 using App.Application.Flow.GameInstance.RunningGame.Models.Presentation.Impl;
 using App.Application.Services;
 using App.Game.Core;
@@ -37,8 +36,6 @@ public partial class RunningGameContext
 
 	private IRunningGameInstance _runningGameInstance = null!;
 
-	private IRunningGame_PresentationModel _presentationModel = null!;
-
 	private HexLayout3D _hexLayout;
 
 
@@ -52,6 +49,7 @@ public partial class RunningGameContext
 	private void Compose(
 		out ILocaleFactory localeFactory,
 		out IRunningGameInitializer runningGameInitializer,
+		out IController controller,
 		out IView scenePresentationView)
 	{
 		var runningGame = new RunningGameInstance(
@@ -59,7 +57,8 @@ public partial class RunningGameContext
 		_runningGame = runningGame;
 		_runningGameInstance = runningGame;
 
-		_presentationModel = new RunningGame_PresentationModel(this);
+		var presentationModel = new RunningGame_PresentationModel(this);
+		_presentationModel = presentationModel;
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
@@ -77,10 +76,12 @@ public partial class RunningGameContext
 		runningGameInitializer = Create_RunningGameInitializer(
 			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
+		controller = new RunningGameController(_runningGameInstance, presentationModel, this);
+
 		scenePresentationView = new ScenePresentationView();
 
 		var uiVM = new RunningGameUI_VM(
-			runningGame, _presentationModel,
+			runningGame, presentationModel,
 			this,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		_uiVM = uiVM;
@@ -120,15 +121,6 @@ public partial class RunningGameContext
 		return new RunningGameInitializer(
 			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
 			bandInitializer, systemParametersInitializer, hexLayout);
-	}
-
-
-	private IController Create_Controller(RectangularHexMap map)
-	{
-		var sceneViewController = Create_SceneViewController(map);
-		_sceneController = sceneViewController;
-
-		return new RunningGameController(_runningGameInstance, _presentationModel, sceneViewController, this);
 	}
 
 

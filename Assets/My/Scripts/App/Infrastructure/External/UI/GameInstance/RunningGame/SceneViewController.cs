@@ -6,8 +6,8 @@ using Lib.AppFlow;
 using Lib.Grid;
 using Lib.VisualGrid;
 
-using App.Application.Flow.GameInstance.RunningGame;
 using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
+using App.Application.Flow.GameInstance.RunningGame.Messages.PresentationEvents;
 
 
 
@@ -19,9 +19,7 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame {
 /// Acts as both View and Controller for the scene. Encapsulates low-level details of reading user input, moving camera,
 /// and generates high-level hovering/selection events.
 /// </summary>
-public class SceneViewController
-	: ISceneViewController,
-	  ILoopComponent
+public class SceneViewController : View
 {
 	private const int MapOverviewVerticalMargin = 50;
 	private const float ZoomSpeed = 1.0f;
@@ -75,26 +73,16 @@ public class SceneViewController
 		_clickAction = InputSystem.actions.FindAction("Click");
 		_rightClickAction = InputSystem.actions.FindAction("RightClick");
 		_zoomAction = InputSystem.actions.FindAction("ScrollWheel");
+
+		base.Add_PresentationEvent_Handler<PositionCameraToOverview_Request>(On_PositionCameraToOverview);
 	}
 
 
 	//----------------------------------------------------------------------------------------------
-	// ISceneViewController implementation
+	// ILoopComponent implementation overrides
 
 
-	public void PositionCameraToOverview()
-	{
-		var mapScreenRect = new RectInt(0, MapOverviewVerticalMargin,
-		                                _camera.pixelWidth, _camera.pixelHeight - 2 * MapOverviewVerticalMargin);
-		FitMapRectToScreenRect(_map.BoundingRect2D, mapScreenRect);
-	}
-
-
-	//----------------------------------------------------------------------------------------------
-	// ILoopComponent implementation
-
-
-	public void Update()
+	public override void Update()
 	{
 		var screenPoint = _pointAction.ReadValue<Vector2>();
 
@@ -123,7 +111,25 @@ public class SceneViewController
 
 
 	//----------------------------------------------------------------------------------------------
+	// Message handlers
+
+
+	private void On_PositionCameraToOverview(PositionCameraToOverview_Request _)
+	{
+		PositionCameraToOverview();
+	}
+
+
+	//----------------------------------------------------------------------------------------------
 	// private
+
+
+	private void PositionCameraToOverview()
+	{
+		var mapScreenRect = new RectInt(0, MapOverviewVerticalMargin,
+		                                _camera.pixelWidth, _camera.pixelHeight - 2 * MapOverviewVerticalMargin);
+		FitMapRectToScreenRect(_map.BoundingRect2D, mapScreenRect);
+	}
 
 
 	/// <summary>

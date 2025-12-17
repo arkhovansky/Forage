@@ -25,6 +25,8 @@ public partial class RunningGameContext : Context
 
 	private ILoopComponent _runningGame = null!;
 
+	private ILoopComponent _presentationModel = null!;
+
 	private ILoopComponent _sceneController = null!;
 
 	private ILoopComponent _uiVM = null!;
@@ -53,6 +55,7 @@ public partial class RunningGameContext : Context
 
 		Compose(out var localeFactory,
 		        out var runningGameInitializer,
+		        out var controller,
 		        out var scenePresentationView);
 
 		var locale = localeFactory.Create(_game.LocaleId);
@@ -60,10 +63,16 @@ public partial class RunningGameContext : Context
 		runningGameInitializer.Initialize(locale);
 		_runningGame.Start();
 
-		Controller = Create_Controller(locale.Map);
+		Controller = controller;
 		Controller.Start();
 
+		var sceneViewController = Create_SceneViewController(locale.Map);
+		_sceneController = sceneViewController;
+
+		AddView(sceneViewController);
 		AddView(scenePresentationView);
+
+		_presentationModel.Start();
 	}
 
 

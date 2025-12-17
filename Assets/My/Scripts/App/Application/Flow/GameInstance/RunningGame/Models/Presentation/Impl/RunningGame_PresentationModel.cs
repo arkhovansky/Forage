@@ -9,7 +9,9 @@ namespace App.Application.Flow.GameInstance.RunningGame.Models.Presentation.Impl
 
 
 
-public class RunningGame_PresentationModel : IRunningGame_PresentationModel
+public class RunningGame_PresentationModel
+	: IRunningGame_PresentationModel,
+	  ILoopComponent
 {
 	private readonly IPresentationEvent_Emitter _presentationEvent_Emitter;
 
@@ -42,6 +44,16 @@ public class RunningGame_PresentationModel : IRunningGame_PresentationModel
 
 
 	public bool Is_CampPlacing_Mode { get; set; } = false;
+
+
+	//----------------------------------------------------------------------------------------------
+	// ILoopComponent implementation
+
+
+	void ILoopComponent.Start()
+	{
+		_presentationEvent_Emitter.Emit(new PositionCameraToOverview_Request());
+	}
 }
 
 

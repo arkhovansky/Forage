@@ -33,8 +33,6 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private readonly IRunningGame_PresentationModel _presentationModel;
 
-	private readonly ISceneViewController _sceneViewController;
-
 	private readonly Dictionary<ModeId, IMode> _modes = new();
 
 
@@ -46,13 +44,11 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	public RunningGameController(IRunningGameInstance runningGame,
 	                             IRunningGame_PresentationModel presentationModel,
-	                             ISceneViewController sceneViewController,
 	                             ICommand_Emitter commandEmitter)
 		: base(commandEmitter)
 	{
 		_runningGame = runningGame;
 		_presentationModel = presentationModel;
-		_sceneViewController = sceneViewController;
 
 		base.Add_Command_Handler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.Add_Command_Handler<PlaceCamp>(OnPlaceCamp);
@@ -74,7 +70,6 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	public override void Start()
 	{
 		UpdateMode();
-		_sceneViewController.PositionCameraToOverview();
 	}
 
 
