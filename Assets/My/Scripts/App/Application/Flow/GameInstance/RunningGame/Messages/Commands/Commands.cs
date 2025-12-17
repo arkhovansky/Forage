@@ -21,8 +21,4 @@ public class RunYearPeriod : ICommand {}
 
 
 
-public class YearPeriodChanged : ICommand {}
-
-
-
 }

@@ -56,17 +56,6 @@ public class RunningGameInstance
 	}
 
 
-	public bool IsYearPeriodChanged()
-	{
-		bool yearPeriodChanged = EcsService.IsEventRaised<YearPeriodChanged>();
-
-		if (yearPeriodChanged)
-			GamePhase = GamePhase.InterPeriod;
-
-		return yearPeriodChanged;
-	}
-
-
 	//----------------------------------------------------------------------------------------------
 	// ILoopComponent implementation
 
@@ -74,6 +63,15 @@ public class RunningGameInstance
 	void ILoopComponent.Start()
 	{
 		EcsService.GameSystems_Enabled = true;
+	}
+
+
+	void ILoopComponent.LateUpdate()
+	{
+		if (GamePhase == GamePhase.PeriodRunning) {
+			if (EcsService.IsEventRaised<YearPeriodChanged>())
+				GamePhase = GamePhase.InterPeriod;
+		}
 	}
 }
 

@@ -26,6 +26,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private class Arrival_Mode : IMode {}
 	private class InterPeriod_Mode : IMode {}
+	private class PeriodRunning_Mode : IMode {}
 
 
 	private readonly IRunningGameInstance _runningGame;
@@ -56,14 +57,13 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 		base.Add_Command_Handler<EnterPlaceCampMode>(OnEnterPlaceCampMode);
 		base.Add_Command_Handler<PlaceCamp>(OnPlaceCamp);
 		base.Add_Command_Handler<RunYearPeriod>(OnRunYearPeriod);
-		base.Add_Command_Handler<YearPeriodChanged>(OnYearPeriodChanged);
 		base.Add_InputEvent_Handler<HoveredTileChanged>(OnHoveredTileChanged);
 
 		// Should come at the end since modes might use data members of this
 		_modes.Add(ModeId.Arrival, new Arrival_Mode());
 		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
 		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode());
-		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode(this));
+		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode());
 	}
 
 
@@ -80,6 +80,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	public override void Update()
 	{
+		UpdateMode();
 		_mode.Update();
 	}
 
@@ -100,20 +101,12 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	private void OnPlaceCamp(PlaceCamp command)
 	{
 		_runningGame.PlaceCamp(command.Position);
-		UpdateMode();
 	}
 
 
 	private void OnRunYearPeriod(RunYearPeriod command)
 	{
 		_runningGame.RunYearPeriod();
-		UpdateMode();
-	}
-
-
-	private void OnYearPeriodChanged(YearPeriodChanged evt)
-	{
-		UpdateMode();
 	}
 
 

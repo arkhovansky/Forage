@@ -16,8 +16,6 @@ public interface IRunningGameInstance : IRunningGameInstance_RO
 	void PlaceCamp(AxialPosition position);
 
 	void RunYearPeriod();
-
-	bool IsYearPeriodChanged();
 }
 
 

@@ -75,6 +75,8 @@ public partial class RunningGameContext : Context
 
 	protected override void DoLateUpdate()
 	{
+		// Update model first because it can change UI mode
+		_runningGame.LateUpdate();
 		_uiVM.LateUpdate();
 	}
 }
