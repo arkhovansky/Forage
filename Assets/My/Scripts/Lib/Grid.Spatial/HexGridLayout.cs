@@ -127,22 +127,6 @@ public struct HexGridLayout
 	//----------------------------------------------------------------------------------------------
 
 
-	private struct FractionalAxialPosition
-	{
-		public float Q, R;
-
-		public FractionalAxialPosition(float q, float r) {
-			Q = q; R = r;
-		}
-
-		public override string ToString()
-			=> $"({Q}, {R})";
-	}
-
-
-	//----------------------------------------------------------------------------------------------
-
-
 	/// <summary>
 	/// Constructor.
 	/// </summary>
@@ -204,7 +188,7 @@ public struct HexGridLayout
 		float q = _orientationData.B0 * pt.x + _orientationData.B1 * pt.y;
 		float r = _orientationData.B2 * pt.x + _orientationData.B3 * pt.y;
 
-		return Round(new FractionalAxialPosition(q, r));
+		return new Fractional_AxialPosition(q, r).Round();
 	}
 
 
@@ -233,7 +217,7 @@ public struct HexGridLayout
 	}
 
 
-	private readonly Vector2 GetPoint(FractionalAxialPosition position)
+	private readonly Vector2 GetPoint(Fractional_AxialPosition position)
 	{
 		float x = _orientationData.F0 * position.Q + _orientationData.F1 * position.R;
 		float y = _orientationData.F2 * position.Q + _orientationData.F3 * position.R;
@@ -246,7 +230,7 @@ public struct HexGridLayout
 	public readonly Vector2 GetLerpPoint(AxialPosition start, AxialPosition end, float t)
 	{
 		return GetPoint(
-			Lerp(start, end, t));
+			Fractional_AxialPosition.Lerp(start, end, t));
 	}
 
 
@@ -273,71 +257,11 @@ public struct HexGridLayout
 	}
 
 
-	public static uint Distance(AxialPosition start, AxialPosition end)
-	{
-		var vec = end - start;
-		return (uint) (System.Math.Abs(vec.Q) + System.Math.Abs(vec.Q + vec.R) + System.Math.Abs(vec.R)) / 2;
-	}
-
-
-	public static AxialPosition[] GetLinearPath(AxialPosition start, AxialPosition end)
-	{
-		var distance = Distance(start, end);
-		var path = new AxialPosition[distance];
-
-		if (distance == 0)
-			return path;
-
-		for (var i = 0; i < distance - 1; i++) {
-			path[i] = Round(Lerp(start, end, (float)(i+1) / distance));
-		}
-		path[distance - 1] = end;
-
-		return path;
-	}
-
-
 	public static float CellArea_From_InnerDiameter(float innerDiameter)
 	{
 		var outerDiameter = innerDiameter / InnerToOuterDiameterRatio;
 		return innerDiameter * (3f/4 * outerDiameter);
 	}
-
-
-
-	private static FractionalAxialPosition Lerp(AxialPosition start, AxialPosition end, float t)
-	{
-		return new FractionalAxialPosition(Lerp(start.Q, end.Q, t), Lerp(start.R, end.R, t));
-	}
-
-	private static float Lerp(int a, int b, float t)
-	{
-		return a + (b - a) * t;
-	}
-
-
-
-	private static AxialPosition Round(FractionalAxialPosition position)
-	{
-		float sFrac = - (position.Q + position.R);
-
-		int q = Mathf.RoundToInt(position.Q);
-		int r = Mathf.RoundToInt(position.R);
-		int s = Mathf.RoundToInt(sFrac);
-
-		float qDiff = Mathf.Abs(q - position.Q);
-		float rDiff = Mathf.Abs(r - position.R);
-		float sDiff = Mathf.Abs(s - sFrac);
-
-		if (qDiff > rDiff && qDiff > sDiff) {
-			q = -r - s;
-		} else if (rDiff > sDiff) {
-			r = -q - s;
-		}
-
-		return new AxialPosition(q, r);
-	}
-
 
 
 	public static Vector2 GetCellSize(HexOrientation orientation, Vector2 scaleFactor)

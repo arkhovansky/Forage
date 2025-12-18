@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 using Lib.Grid;
-using Lib.Grid.Spatial;
 
 using App.Game.ECS.BandMember.Movement.Rules;
 
@@ -23,7 +22,7 @@ public static class AI_Movement_Rules
 	public static PathInfo CalculatePath(AxialPosition start, AxialPosition end,
 	                                     Movement_Rules movementRules)
 	{
-		var path = HexGridLayout.GetLinearPath(start, end);
+		var path = HexGrid.GetLinearPath(start, end);
 
 		return new PathInfo(path, path.Length * movementRules.MovementCost);
 	}
