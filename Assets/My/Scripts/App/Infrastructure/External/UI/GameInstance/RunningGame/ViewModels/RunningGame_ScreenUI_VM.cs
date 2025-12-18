@@ -17,7 +17,7 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels {
 
 
 
-public partial class RunningGameUI_VM
+public partial class RunningGame_ScreenUI_VM
 	: IViewModel,
 	  ILoopComponent
 {
@@ -55,12 +55,12 @@ public partial class RunningGameUI_VM
 	//----------------------------------------------------------------------------------------------
 
 
-	public RunningGameUI_VM(IRunningGameInstance_RO runningGameInstance,
-	                        IRunningGame_UIModel_RO uiModel,
-	                        ICommand_Emitter commandEmitter,
-	                        ITerrainTypePresentationRepository terrainTypePresentationRepository,
-	                        IResourceTypePresentationRepository resourceTypePresentationRepository,
-	                        IHumanTypePresentationRepository humanTypePresentationRepository)
+	public RunningGame_ScreenUI_VM(IRunningGameInstance_RO runningGameInstance,
+	                               IRunningGame_UIModel_RO uiModel,
+	                               ICommand_Emitter commandEmitter,
+	                               ITerrainTypePresentationRepository terrainTypePresentationRepository,
+	                               IResourceTypePresentationRepository resourceTypePresentationRepository,
+	                               IHumanTypePresentationRepository humanTypePresentationRepository)
 	{
 		_game = runningGameInstance;
 		_uiModel = uiModel;

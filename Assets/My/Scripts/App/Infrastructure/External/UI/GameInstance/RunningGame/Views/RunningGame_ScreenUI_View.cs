@@ -7,7 +7,7 @@ namespace App.Infrastructure.External.UI.GameInstance.RunningGame.Views {
 
 
 
-public class RunningGameUI_View : IView
+public class RunningGame_ScreenUI_View : IView
 {
 	private readonly IViewModel _viewModel;
 
@@ -16,8 +16,8 @@ public class RunningGameUI_View : IView
 
 
 
-	public RunningGameUI_View(IViewModel viewModel,
-	                          IGui gui, IVvmBinder vvmBinder)
+	public RunningGame_ScreenUI_View(IViewModel viewModel,
+	                                 IGui gui, IVvmBinder vvmBinder)
 	{
 		_viewModel = viewModel;
 

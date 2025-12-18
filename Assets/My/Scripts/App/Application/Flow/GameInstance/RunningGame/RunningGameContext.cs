@@ -29,8 +29,8 @@ public partial class RunningGameContext : Context
 
 	private ILoopComponent _sceneController = null!;
 
-	private ILoopComponent _uiVM = null!;
-	private Lib.UICore.Gui.IView _uiView = null!;
+	private ILoopComponent _screenUI_VM = null!;
+	private Lib.UICore.Gui.IView _screenUI_View = null!;
 
 	//----------------------------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ public partial class RunningGameContext : Context
 	{
 		// Update model first because it can change UI mode
 		_runningGame.LateUpdate();
-		_uiVM.LateUpdate();
+		_screenUI_VM.LateUpdate();
 	}
 }
 

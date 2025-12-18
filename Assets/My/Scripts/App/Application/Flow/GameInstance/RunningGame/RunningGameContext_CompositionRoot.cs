@@ -80,14 +80,14 @@ public partial class RunningGameContext
 
 		worldUI_View = new WorldUI_View();
 
-		var uiVM = new RunningGameUI_VM(
+		var screenUI_VM = new RunningGame_ScreenUI_VM(
 			runningGame, uiModel,
 			this,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
-		_uiVM = uiVM;
-		_uiView = new RunningGameUI_View(uiVM,
-		                                 _gui, _vvmBinder);
-		_gui.AddView(_uiView);
+		_screenUI_VM = screenUI_VM;
+		_screenUI_View = new RunningGame_ScreenUI_View(screenUI_VM,
+		                                               _gui, _vvmBinder);
+		_gui.AddView(_screenUI_View);
 	}
 
 

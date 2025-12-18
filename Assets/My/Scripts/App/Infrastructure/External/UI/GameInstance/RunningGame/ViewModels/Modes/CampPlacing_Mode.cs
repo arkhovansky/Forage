@@ -2,15 +2,15 @@
 
 
 
-public partial class RunningGameUI_VM
+public partial class RunningGame_ScreenUI_VM
 {
 	private class CampPlacing_Mode : IMode
 	{
-		private readonly RunningGameUI_VM _context;
+		private readonly RunningGame_ScreenUI_VM _context;
 
 
 
-		public CampPlacing_Mode(RunningGameUI_VM context)
+		public CampPlacing_Mode(RunningGame_ScreenUI_VM context)
 		{
 			_context = context;
 		}
