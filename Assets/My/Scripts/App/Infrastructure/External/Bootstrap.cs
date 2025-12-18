@@ -16,7 +16,7 @@ using App.Infrastructure.External.Data.Settings;
 
 
 
-namespace App {
+namespace App.Infrastructure.External {
 
 
 
