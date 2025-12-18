@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Lib.AppFlow;
 using Lib.UICore.Gui;
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
 using App.Application.Flow.GameInstance.RunningGame.Models.UI;
-using App.Game.Core;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI.Impl;
 using App.Game.Core.Query;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.External.UI.GameInstance.RunningGame.ViewModels.Children;
@@ -118,21 +117,7 @@ public partial class RunningGame_ScreenUI_VM
 
 	private void UpdateMode()
 	{
-		var gamePhase = _game.GamePhase;
-		bool isCampPlacing = _uiModel.Is_CampPlacing_Mode;
-
-		var modeId = gamePhase switch {
-			GamePhase.Arrival =>
-				isCampPlacing
-					? UIModeId.CampPlacing
-					: UIModeId.Arrival,
-
-			GamePhase.InterPeriod => UIModeId.InterPeriod,
-			GamePhase.PeriodRunning => UIModeId.PeriodRunning,
-
-			_ => throw new ArgumentOutOfRangeException(nameof(gamePhase), gamePhase, null)
-		};
-
+		var modeId = UIMode_Utils.CalculateUIMode(_game.GamePhase, _uiModel.Is_CampPlacing_Mode);
 		SetMode(modeId);
 	}
 

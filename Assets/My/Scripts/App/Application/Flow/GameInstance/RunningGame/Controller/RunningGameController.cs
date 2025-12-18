@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Lib.AppFlow;
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
 using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
 using App.Application.Flow.GameInstance.RunningGame.Models.UI;
+using App.Application.Flow.GameInstance.RunningGame.Models.UI.Impl;
 using App.Game.Core;
 
 
@@ -115,21 +115,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private void UpdateMode()
 	{
-		var gamePhase = _runningGame.GamePhase;
-		bool isCampPlacing = _uiModel.Is_CampPlacing_Mode;
-
-		var modeId = gamePhase switch {
-			GamePhase.Arrival =>
-				isCampPlacing
-					? UIModeId.CampPlacing
-					: UIModeId.Arrival,
-
-			GamePhase.InterPeriod => UIModeId.InterPeriod,
-			GamePhase.PeriodRunning => UIModeId.PeriodRunning,
-
-			_ => throw new ArgumentOutOfRangeException(nameof(gamePhase), gamePhase, null)
-		};
-
+		var modeId = UIMode_Utils.CalculateUIMode(_runningGame.GamePhase, _uiModel.Is_CampPlacing_Mode);
 		SetMode(modeId);
 	}
 
