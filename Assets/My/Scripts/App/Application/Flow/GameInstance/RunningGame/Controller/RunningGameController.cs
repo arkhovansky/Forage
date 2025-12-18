@@ -33,7 +33,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private readonly IRunningGame_UIModel _uiModel;
 
-	private readonly Dictionary<ModeId, IMode> _modes = new();
+	private readonly Dictionary<UIModeId, IMode> _modes = new();
 
 
 	private IMode _mode = null!;
@@ -56,10 +56,10 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 		base.Add_InputEvent_Handler<HoveredTileChanged>(OnHoveredTileChanged);
 
 		// Should come at the end since modes might use data members of this
-		_modes.Add(ModeId.Arrival, new Arrival_Mode());
-		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
-		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode());
-		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode());
+		_modes.Add(UIModeId.Arrival, new Arrival_Mode());
+		_modes.Add(UIModeId.CampPlacing, new CampPlacing_Mode(this));
+		_modes.Add(UIModeId.InterPeriod, new InterPeriod_Mode());
+		_modes.Add(UIModeId.PeriodRunning, new PeriodRunning_Mode());
 	}
 
 
@@ -121,11 +121,11 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 		var modeId = gamePhase switch {
 			GamePhase.Arrival =>
 				isCampPlacing
-					? ModeId.CampPlacing
-					: ModeId.Arrival,
+					? UIModeId.CampPlacing
+					: UIModeId.Arrival,
 
-			GamePhase.InterPeriod => ModeId.InterPeriod,
-			GamePhase.PeriodRunning => ModeId.PeriodRunning,
+			GamePhase.InterPeriod => UIModeId.InterPeriod,
+			GamePhase.PeriodRunning => UIModeId.PeriodRunning,
 
 			_ => throw new ArgumentOutOfRangeException(nameof(gamePhase), gamePhase, null)
 		};
@@ -134,7 +134,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 	}
 
 
-	private void SetMode(ModeId modeId)
+	private void SetMode(UIModeId modeId)
 	{
 		SetMode(_modes[modeId]);
 	}

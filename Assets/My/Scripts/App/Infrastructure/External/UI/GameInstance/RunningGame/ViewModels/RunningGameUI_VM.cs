@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Lib.AppFlow;
 using Lib.UICore.Gui;
 
-using App.Application.Flow.GameInstance.RunningGame;
 using App.Application.Flow.GameInstance.RunningGame.Messages.Commands;
 using App.Application.Flow.GameInstance.RunningGame.Models.UI;
 using App.Game.Core;
@@ -49,7 +48,7 @@ public partial class RunningGameUI_VM
 
 	private readonly IRunningGame_UIModel_RO _uiModel;
 
-	private readonly Dictionary<ModeId, IMode> _modes = new();
+	private readonly Dictionary<UIModeId, IMode> _modes = new();
 
 	private IMode _mode = null!;
 
@@ -81,10 +80,10 @@ public partial class RunningGameUI_VM
 		SelectCampLocationHintVM = new SelectCampLocationHintVM();
 
 		// Should come at the end since modes might use data members of this
-		_modes.Add(ModeId.Arrival, new Arrival_Mode(this));
-		_modes.Add(ModeId.CampPlacing, new CampPlacing_Mode(this));
-		_modes.Add(ModeId.InterPeriod, new InterPeriod_Mode(this));
-		_modes.Add(ModeId.PeriodRunning, new PeriodRunning_Mode(this));
+		_modes.Add(UIModeId.Arrival, new Arrival_Mode(this));
+		_modes.Add(UIModeId.CampPlacing, new CampPlacing_Mode(this));
+		_modes.Add(UIModeId.InterPeriod, new InterPeriod_Mode(this));
+		_modes.Add(UIModeId.PeriodRunning, new PeriodRunning_Mode(this));
 	}
 
 
@@ -125,11 +124,11 @@ public partial class RunningGameUI_VM
 		var modeId = gamePhase switch {
 			GamePhase.Arrival =>
 				isCampPlacing
-					? ModeId.CampPlacing
-					: ModeId.Arrival,
+					? UIModeId.CampPlacing
+					: UIModeId.Arrival,
 
-			GamePhase.InterPeriod => ModeId.InterPeriod,
-			GamePhase.PeriodRunning => ModeId.PeriodRunning,
+			GamePhase.InterPeriod => UIModeId.InterPeriod,
+			GamePhase.PeriodRunning => UIModeId.PeriodRunning,
 
 			_ => throw new ArgumentOutOfRangeException(nameof(gamePhase), gamePhase, null)
 		};
@@ -138,7 +137,7 @@ public partial class RunningGameUI_VM
 	}
 
 
-	public void SetMode(ModeId modeId)
+	public void SetMode(UIModeId modeId)
 	{
 		SetMode(_modes[modeId]);
 	}
