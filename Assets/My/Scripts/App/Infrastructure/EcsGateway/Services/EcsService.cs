@@ -77,6 +77,20 @@ public static class EcsService
 	}
 
 
+	/// <summary>
+	/// Checks if a singleton component of the specified type exists anywhere,
+	/// i.e. not necessarily on the SingletonEntity
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	public static bool SingletonExistsAnywhere<T>()
+		where T : unmanaged, IComponentData
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		return entityManager.CreateEntityQuery(ComponentType.ReadOnly<T>()).HasSingleton<T>();
+	}
+
+
 	public static EcsMap GetEcsMap()
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;

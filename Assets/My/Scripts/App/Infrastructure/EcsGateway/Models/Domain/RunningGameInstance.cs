@@ -1,11 +1,10 @@
 ﻿using UnityEngine.Assertions;
 
 using Lib.AppFlow;
-using Lib.Grid;
 
 using App.Game.Core;
 using App.Game.Core.Query;
-using App.Game.ECS.Camp.Components.Commands;
+using App.Game.ECS.Camp.Components;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
 using App.Infrastructure.EcsGateway.Services;
@@ -20,7 +19,7 @@ public class RunningGameInstance
 	: IRunningGameInstance,
 	  ILoopComponent
 {
-	public RunningGameInstance(IWorld_RO world)
+	public RunningGameInstance(IWorld world)
 	{
 		World = world;
 		GamePhase = GamePhase.Arrival;
@@ -33,7 +32,7 @@ public class RunningGameInstance
 	// IRunningGameInstance_RO implementation
 
 
-	public IWorld_RO World { get; }
+	IWorld_RO IRunningGameInstance_RO.World => World;
 
 	public GamePhase GamePhase { get; private set; }
 
@@ -42,11 +41,7 @@ public class RunningGameInstance
 	// IRunningGameInstance implementation
 
 
-	public void PlaceCamp(AxialPosition position)
-	{
-		EcsService.SendEcsCommand(new PlaceCamp(position));
-		GamePhase = GamePhase.InterPeriod;
-	}
+	public IWorld World { get; }
 
 
 	public void RunYearPeriod()
@@ -68,10 +63,27 @@ public class RunningGameInstance
 
 	void ILoopComponent.LateUpdate()
 	{
-		if (GamePhase == GamePhase.PeriodRunning) {
-			if (EcsService.IsEventRaised<YearPeriodChanged>())
-				GamePhase = GamePhase.InterPeriod;
+		switch (GamePhase) {
+			case GamePhase.Arrival:
+				if (CampExists())
+					GamePhase = GamePhase.InterPeriod;
+				break;
+
+			case GamePhase.PeriodRunning:
+				if (EcsService.IsEventRaised<YearPeriodChanged>())
+					GamePhase = GamePhase.InterPeriod;
+				break;
 		}
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private bool CampExists()
+	{
+		return EcsService.SingletonExistsAnywhere<Camp>();
 	}
 }
 

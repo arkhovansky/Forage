@@ -1,6 +1,4 @@
-﻿using Lib.Grid;
-
-using App.Game.Core.Query;
+﻿using App.Game.Core.Query;
 
 
 
@@ -13,7 +11,7 @@ namespace App.Game.Core {
 /// </summary>
 public interface IRunningGameInstance : IRunningGameInstance_RO
 {
-	void PlaceCamp(AxialPosition position);
+	new IWorld World { get; }
 
 	void RunYearPeriod();
 }

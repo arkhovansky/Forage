@@ -95,7 +95,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 	private void OnPlaceCamp(PlaceCamp command)
 	{
-		_runningGame.PlaceCamp(command.Position);
+		_runningGame.World.Band.PlaceCamp(command.Position);
 	}
 
 

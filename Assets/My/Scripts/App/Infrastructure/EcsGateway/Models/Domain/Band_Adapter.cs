@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Unity.Collections;
 using Unity.Entities;
 
+using Lib.Grid;
+
+using App.Game.Core;
 using App.Game.Core.Query;
 using App.Game.ECS.BandMember.General.Components;
+using App.Game.ECS.Camp.Components;
+using App.Game.ECS.Camp.Components.Commands;
+using App.Infrastructure.EcsGateway.Services;
 
 
 
@@ -12,8 +19,12 @@ namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 
 
-public class Band_Adapter : IBand_RO
+public class Band_Adapter : IBand
 {
+	//----------------------------------------------------------------------------------------------
+	// IBand_RO implementation
+
+
 	public IReadOnlyList<IBandMember_RO> Get_Members()
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -32,6 +43,19 @@ public class Band_Adapter : IBand_RO
 			list.Add(new BandMember_Adapter(entities[i], bandMembers[i].Id, humans[i].TypeId));
 
 		return list;
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// IBand implementation
+
+
+	public void PlaceCamp(AxialPosition position)
+	{
+		if (EcsService.SingletonExistsAnywhere<Camp>())
+			throw new InvalidOperationException("Camp already exists");
+
+		EcsService.SendEcsCommand(new PlaceCamp(position));
 	}
 }
 
