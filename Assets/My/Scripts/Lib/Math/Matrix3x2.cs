@@ -16,6 +16,7 @@ namespace Lib.Math {
 /// <summary>
 /// Matrix 3x2 for projection from 2D to 3D and back.
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public struct Matrix3x2
 {
 	/// <summary>
@@ -68,26 +69,27 @@ public struct Matrix3x2
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	/// <param name="M11">The value to assign at row 1 column 1 of the matrix.</param>
-	/// <param name="M12">The value to assign at row 1 column 2 of the matrix.</param>
-	/// <param name="M21">The value to assign at row 2 column 1 of the matrix.</param>
-	/// <param name="M22">The value to assign at row 2 column 2 of the matrix.</param>
-	/// <param name="M31">The value to assign at row 3 column 1 of the matrix.</param>
-	/// <param name="M32">The value to assign at row 3 column 2 of the matrix.</param>
-	public Matrix3x2(float M11, float M12, float M21, float M22, float M31, float M32)
+	/// <param name="m11">The value to assign at row 1 column 1 of the matrix.</param>
+	/// <param name="m12">The value to assign at row 1 column 2 of the matrix.</param>
+	/// <param name="m21">The value to assign at row 2 column 1 of the matrix.</param>
+	/// <param name="m22">The value to assign at row 2 column 2 of the matrix.</param>
+	/// <param name="m31">The value to assign at row 3 column 1 of the matrix.</param>
+	/// <param name="m32">The value to assign at row 3 column 2 of the matrix.</param>
+	public Matrix3x2(float m11, float m12, float m21, float m22, float m31, float m32)
 	{
-		this.M11 = M11;
-		this.M12 = M12;
-		this.M21 = M21;
-		this.M22 = M22;
-		this.M31 = M31;
-		this.M32 = M32;
+		M11 = m11;
+		M12 = m12;
+		M21 = m21;
+		M22 = m22;
+		M31 = m31;
+		M32 = m32;
 	}
 
 
 	/// <summary>
 	/// Gets or sets the basis vector i (X axis) of 2D plane in 3D space.
 	/// </summary>
+	// ReSharper disable once InconsistentNaming
 	public Vector3 IBasisVector {
 		get => new(M11, M21, M31);
 		set {
@@ -308,10 +310,9 @@ public struct Matrix3x2
 	/// </returns>
 	public override bool Equals(object? value)
 	{
-		if (!(value is Matrix3x2))
+		if (!(value is Matrix3x2 strongValue))
 			return false;
 
-		var strongValue = (Matrix3x2) value;
 		return Equals(ref strongValue);
 	}
 }
