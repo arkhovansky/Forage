@@ -149,31 +149,31 @@ public class SceneViewController : View
 
 		// Consider projection to YZ plane.
 		// Border rays are rays from camera through top and bottom points (as on screen) of map rect.
-		// Consider camera frustum section named "d1s", distance to which = 1.
+		// Consider camera frustum section named "D1S", distance to which = 1.
 		// Indices 1 and 2 mean lower or upper (as on screen) relative to frustum normal.
 
 		float halfD1SHeight = Mathf.Tan(_camera.fieldOfView / 2f * Mathf.Deg2Rad);
 		float halfPixelHeight = _camera.pixelHeight / 2f;
 
 		// Segments on d1s between border rays and frustum normal
-		float l1_d1s = halfD1SHeight / halfPixelHeight * (screenRect.yMax - halfPixelHeight);
-		float l2_d1s = halfD1SHeight / halfPixelHeight * (halfPixelHeight - screenRect.yMin);
+		float l1_D1S = halfD1SHeight / halfPixelHeight * (screenRect.yMax - halfPixelHeight);
+		float l2_D1S = halfD1SHeight / halfPixelHeight * (halfPixelHeight - screenRect.yMin);
 
 		// Angle between frustum normal and map normal
 		float normalsAngle = (90 - _camera.transform.eulerAngles.x) * Mathf.Deg2Rad;
 
 		// Angles between border rays and map normal
-		float angle1 = Mathf.Atan(l1_d1s) - normalsAngle;
-		float angle2 = Mathf.Atan(l2_d1s) + normalsAngle;
+		float angle1 = Mathf.Atan(l1_D1S) - normalsAngle;
+		float angle2 = Mathf.Atan(l2_D1S) + normalsAngle;
 
-		float tan_angle1 = Mathf.Tan(angle1);
+		float tan_Angle1 = Mathf.Tan(angle1);
 
-		float cameraY = mapRect.height / (tan_angle1 + Mathf.Tan(angle2));
+		float cameraY = mapRect.height / (tan_Angle1 + Mathf.Tan(angle2));
 
 		// Segment on the map between lower border ray and map normal
-		float l1_map = cameraY * tan_angle1;
+		float l1_Map = cameraY * tan_Angle1;
 
-		float cameraZ = (mapRect.y - mapRect.height) + l1_map;
+		float cameraZ = (mapRect.y - mapRect.height) + l1_Map;
 
 		_camera.transform.position = new Vector3(mapRect.center.x, cameraY, cameraZ);
 	}
