@@ -29,8 +29,8 @@ public readonly struct HexOrientationData
 	public readonly float B0, B1, B2, B3;
 
 
-	public HexOrientationData(float f0, float f1, float f2, float f3,
-	                          float b0, float b1, float b2, float b3)
+	private HexOrientationData(float f0, float f1, float f2, float f3,
+	                           float b0, float b1, float b2, float b3)
 	{
 		F0 = f0; F1 = f1; F2 = f2; F3 = f3;
 		B0 = b0; B1 = b1; B2 = b2; B3 = b3;
@@ -68,7 +68,7 @@ public readonly struct HexOrientationData
 /// Cartesian coordinate system has positive / standard / right-handed orientation (X -> Y counter-clockwise),
 /// while grid's axial system is left-handed (Q -> R clockwise).
 /// </remarks>
-public struct HexGridLayout
+public readonly struct HexGridLayout
 {
 	/// <summary>
 	/// Cell orientation.
@@ -121,8 +121,6 @@ public struct HexGridLayout
 
 	private readonly HexOrientationData _orientationData;
 
-	private readonly Vector2 _cellHalfSize;
-
 
 	//----------------------------------------------------------------------------------------------
 
@@ -148,14 +146,14 @@ public struct HexGridLayout
 		CellSize = GetCellSize(orientation, ScaleFactor);
 		Origin = origin ?? GetLeftTopOrigin(CellSize);
 
-		_cellHalfSize = CellSize * 0.5f;
+		var cellHalfSize = CellSize * 0.5f;
 
 		switch (Orientation) {
 			case HexOrientation.FlatTop:
 				_orientationData = HexOrientationData.FlatTop;
 
-				InnerCellRadius = _cellHalfSize.y;
-				OuterCellRadius = _cellHalfSize.x;
+				InnerCellRadius = cellHalfSize.y;
+				OuterCellRadius = cellHalfSize.x;
 
 				HorizontalSpacing = 0.75f * CellSize.x;
 				VerticalSpacing = CellSize.y;
@@ -165,8 +163,8 @@ public struct HexGridLayout
 			case HexOrientation.PointyTop:
 				_orientationData = HexOrientationData.PointyTop;
 
-				InnerCellRadius = _cellHalfSize.x;
-				OuterCellRadius = _cellHalfSize.y;
+				InnerCellRadius = cellHalfSize.x;
+				OuterCellRadius = cellHalfSize.y;
 
 				HorizontalSpacing = CellSize.x;
 				VerticalSpacing = 0.75f * CellSize.y;
@@ -264,7 +262,11 @@ public struct HexGridLayout
 	}
 
 
-	public static Vector2 GetCellSize(HexOrientation orientation, Vector2 scaleFactor)
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private static Vector2 GetCellSize(HexOrientation orientation, Vector2 scaleFactor)
 	{
 		switch (orientation) {
 			case HexOrientation.FlatTop:
@@ -279,7 +281,7 @@ public struct HexGridLayout
 	}
 
 
-	public static Vector2 GetLeftTopOrigin(Vector2 cellSize)
+	private static Vector2 GetLeftTopOrigin(Vector2 cellSize)
 	{
 		return new Vector2(cellSize.x / 2, -(cellSize.y / 2));
 	}

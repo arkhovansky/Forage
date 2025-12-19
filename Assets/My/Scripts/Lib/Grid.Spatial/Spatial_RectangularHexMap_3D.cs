@@ -11,7 +11,7 @@ namespace Lib.Grid.Spatial {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout in 3D coordinate system.
 /// </summary>
-public struct Spatial_RectangularHexMap_3D
+public readonly struct Spatial_RectangularHexMap_3D
 {
 	public RectangularHexMap Map { get; }
 
@@ -60,7 +60,7 @@ public struct Spatial_RectangularHexMap_3D
 					y = Layout.Origin.y + Layout.CellSize.y / 2;
 					break;
 				default: throw new ArgumentOutOfRangeException();
-			};
+			}
 
 			return new Rect(x, y, GeometricWidth, GeometricHeight);
 		}

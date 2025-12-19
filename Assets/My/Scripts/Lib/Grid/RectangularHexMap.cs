@@ -15,7 +15,7 @@ public enum HexMapLineOffset
 
 
 
-public struct RectangularHexMap
+public readonly struct RectangularHexMap
 {
 	public uint Width { get; }
 	public uint Height { get; }

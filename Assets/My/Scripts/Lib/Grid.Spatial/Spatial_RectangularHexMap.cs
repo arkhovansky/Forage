@@ -11,7 +11,7 @@ namespace Lib.Grid.Spatial {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout.
 /// </summary>
-public struct Spatial_RectangularHexMap
+public readonly struct Spatial_RectangularHexMap
 {
 	public RectangularHexMap Map { get; }
 

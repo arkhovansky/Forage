@@ -15,7 +15,7 @@ namespace Lib.Grid.Spatial {
 /// <summary>
 /// Represents geometry of infinite hex grid in 3D coordinate system.
 /// </summary>
-public struct HexGridLayout_3D
+public readonly struct HexGridLayout_3D
 {
 	/// <summary>
 	/// Cell orientation.
