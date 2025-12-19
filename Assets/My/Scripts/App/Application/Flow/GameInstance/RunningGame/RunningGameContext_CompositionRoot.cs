@@ -96,7 +96,9 @@ public partial class RunningGameContext
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
 		IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
-		var terrainInitializer = new TerrainInitializer(gridLayout, terrainTypePresentationRepository);
+		var mapPresentationRepository = new MapPresentationRepository(GameDatabase.Instance.Presentation);
+		var terrainInitializer = new TerrainInitializer(
+			gridLayout, terrainTypePresentationRepository, mapPresentationRepository);
 
 		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(

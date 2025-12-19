@@ -23,7 +23,6 @@ using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
-using App.Infrastructure.External.Data.Database;
 
 
 
@@ -36,15 +35,18 @@ public class TerrainInitializer : ITerrainInitializer
 	private readonly HexGridLayout_3D _gridLayout;
 
 	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
+	private readonly IMapPresentationRepository _mapPresentationRepository;
 
 
 
 	public TerrainInitializer(
 		HexGridLayout_3D gridLayout,
-		ITerrainTypePresentationRepository terrainTypePresentationRepository)
+		ITerrainTypePresentationRepository terrainTypePresentationRepository,
+		IMapPresentationRepository mapPresentationRepository)
 	{
 		_gridLayout = gridLayout;
 		_terrainTypePresentationRepository = terrainTypePresentationRepository;
+		_mapPresentationRepository = mapPresentationRepository;
 	}
 
 
@@ -171,7 +173,7 @@ public class TerrainInitializer : ITerrainInitializer
 		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
 
 		var mesh = spatialMap.GetGridLinesMesh();
-		var material = GameDatabase.Instance.Presentation.TerrainGridMaterial;
+		var material = _mapPresentationRepository.Get_GridLinesMaterial();
 		var renderMeshArray = new RenderMeshArray(new [] { material }, new [] { mesh });
 
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
