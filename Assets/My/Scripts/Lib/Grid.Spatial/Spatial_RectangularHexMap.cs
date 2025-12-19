@@ -2,28 +2,26 @@
 
 using UnityEngine;
 
-using Lib.Grid;
 
 
-
-namespace Lib.VisualGrid {
+namespace Lib.Grid.Spatial {
 
 
 
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout.
 /// </summary>
-public struct VisualRectangularHexMap
+public struct Spatial_RectangularHexMap
 {
 	public RectangularHexMap Map { get; }
 
-	public HexLayout Layout { get; }
+	public HexGridLayout Layout { get; }
 
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public VisualRectangularHexMap(RectangularHexMap map, HexLayout layout)
+	public Spatial_RectangularHexMap(RectangularHexMap map, HexGridLayout layout)
 	{
 		if (layout.Orientation != map.Orientation)
 			throw new ArgumentException();

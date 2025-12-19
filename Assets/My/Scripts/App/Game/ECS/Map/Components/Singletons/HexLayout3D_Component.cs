@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 
 
@@ -10,10 +10,10 @@ namespace App.Game.ECS.Map.Components.Singletons {
 
 public struct HexLayout3D_Component : IComponentData
 {
-	public readonly HexLayout3D Layout;
+	public readonly HexGridLayout_3D Layout;
 
 
-	public HexLayout3D_Component(HexLayout3D layout)
+	public HexLayout3D_Component(HexGridLayout_3D layout)
 	{
 		Layout = layout;
 	}

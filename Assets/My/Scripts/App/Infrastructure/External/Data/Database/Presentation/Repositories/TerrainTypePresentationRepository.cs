@@ -2,7 +2,8 @@
 
 using UnityEngine;
 
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
+using Lib.Grid.Visual;
 
 using App.Game.Database;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
@@ -16,7 +17,7 @@ namespace App.Infrastructure.External.Data.Database.Presentation.Repositories {
 
 public class TerrainTypePresentationRepository : ITerrainTypePresentationRepository
 {
-	private readonly HexLayout3D _hexLayout;
+	private readonly HexGridLayout_3D _gridLayout;
 
 
 	private record TerrainType_Data(
@@ -29,9 +30,9 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 	//----------------------------------------------------------------------------------------------
 
 
-	public TerrainTypePresentationRepository(TerrainTypes_Presentation asset, HexLayout3D hexLayout)
+	public TerrainTypePresentationRepository(TerrainTypes_Presentation asset, HexGridLayout_3D gridLayout)
 	{
-		_hexLayout = hexLayout;
+		_gridLayout = gridLayout;
 
 		var flatMesh = CreateFlatTileMesh();
 
@@ -104,7 +105,7 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 
 	private Mesh CreateFlatTileMesh()
 	{
-		return _hexLayout.GetCellMesh();
+		return _gridLayout.GetCellMesh();
 	}
 
 
@@ -121,7 +122,7 @@ public class TerrainTypePresentationRepository : ITerrainTypePresentationReposit
 
 	private Mesh CreateElevationsMesh(float elevationHeight)
 	{
-		IReadOnlyList<Vector3> borderVertices = _hexLayout.GetCellBorderVertices();
+		IReadOnlyList<Vector3> borderVertices = _gridLayout.GetCellBorderVertices();
 		var center = Vector3.zero;
 
 		var vertices = new Vector3[6 * 3 * 3];

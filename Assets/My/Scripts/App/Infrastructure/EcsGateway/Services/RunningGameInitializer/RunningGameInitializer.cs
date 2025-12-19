@@ -1,5 +1,5 @@
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 using App.Application.Services;
 using App.Game.ECS.Map.Components.Singletons;
@@ -19,7 +19,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 	private readonly IGameTimeInitializer _gameTimeInitializer;
 	private readonly IBandInitializer _bandInitializer;
 	private readonly ISystemsInitializer _systemsInitializer;
-	private readonly HexLayout3D _grid;
+	private readonly HexGridLayout_3D _gridLayout;
 
 
 
@@ -30,7 +30,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 		IGameTimeInitializer gameTimeInitializer,
 		IBandInitializer bandInitializer,
 		ISystemsInitializer systemsInitializer,
-		HexLayout3D grid)
+		HexGridLayout_3D gridLayout)
 	{
 		_terrainInitializer = terrainInitializer;
 		_resourcesInitializer = resourcesInitializer;
@@ -38,7 +38,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 		_gameTimeInitializer = gameTimeInitializer;
 		_bandInitializer = bandInitializer;
 		_systemsInitializer = systemsInitializer;
-		_grid = grid;
+		_gridLayout = gridLayout;
 	}
 
 
@@ -60,7 +60,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 	private void InitMap(RectangularHexMap map)
 	{
 		EcsService.AddSingletonComponent(new Map(map));
-		EcsService.AddSingletonComponent(new HexLayout3D_Component(_grid));
+		EcsService.AddSingletonComponent(new HexLayout3D_Component(_gridLayout));
 	}
 }
 

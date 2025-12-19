@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 using App.Game.Database;
 using App.Game.ECS.Map.Components;
@@ -174,20 +174,20 @@ public partial class PlantResourcePresentation : SystemBase
 
 
 	private LocalTransform GetIconLocalTransform(AxialPosition tilePosition, uint iconIndexInResource,
-	                                             HexLayout3D hexLayout)
+	                                             HexGridLayout_3D gridLayout)
 	{
-		var inTilePosition = GetIconInTilePosition(iconIndexInResource, hexLayout);
-		return hexLayout.GetCellLocalTransform(tilePosition)
+		var inTilePosition = GetIconInTilePosition(iconIndexInResource, gridLayout);
+		return gridLayout.GetCellLocalTransform(tilePosition)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(hexLayout.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
+			.ApplyScale(gridLayout.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
 	}
 
 	// ReSharper disable once UnusedParameter.Local
 	private Vector2 GetIconInTilePosition(uint iconIndexInResource,
-	                                      HexLayout3D hexLayout)
+	                                      HexGridLayout_3D gridLayout)
 	{
-		var iconRadius = hexLayout.InnerCellRadius * RelativeIconSize;
-		var areaRadius = hexLayout.InnerCellRadius - iconRadius;
+		var iconRadius = gridLayout.InnerCellRadius * RelativeIconSize;
+		var areaRadius = gridLayout.InnerCellRadius - iconRadius;
 		return Random.insideUnitCircle * areaRadius;
 	}
 }

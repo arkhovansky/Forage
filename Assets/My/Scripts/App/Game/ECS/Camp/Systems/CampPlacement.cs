@@ -5,7 +5,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 using App.Game.ECS.Camp.Components.Commands;
 using App.Game.ECS.Map.Components;
@@ -77,7 +77,7 @@ public partial struct CampPlacement : ISystem
 	}
 
 
-	private Vector2 GetCampInTilePosition(in HexLayout3D hexLayout)
+	private Vector2 GetCampInTilePosition(in HexGridLayout_3D gridLayout)
 	{
 		return new Vector2(0, 0);
 	}

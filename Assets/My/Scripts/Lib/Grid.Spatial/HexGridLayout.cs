@@ -2,11 +2,9 @@
 
 using UnityEngine;
 
-using Lib.Grid;
 
 
-
-namespace Lib.VisualGrid {
+namespace Lib.Grid.Spatial {
 
 
 
@@ -70,7 +68,7 @@ public readonly struct HexOrientationData
 /// Cartesian coordinate system has positive / standard / right-handed orientation (X -> Y counter-clockwise),
 /// while grid's axial system is left-handed (Q -> R clockwise).
 /// </remarks>
-public struct HexLayout
+public struct HexGridLayout
 {
 	/// <summary>
 	/// Cell orientation.
@@ -154,7 +152,7 @@ public struct HexLayout
 	/// <param name="origin">Coordinates of the center of the origin cell.
 	/// If not specified, set so that the left top of the origin cell's bounding rectangle is at the Cartesian origin.
 	/// </param>
-	public HexLayout(
+	public HexGridLayout(
 		HexOrientation orientation,
 		Vector2? scaleFactor = null,
 		Vector2? origin = null

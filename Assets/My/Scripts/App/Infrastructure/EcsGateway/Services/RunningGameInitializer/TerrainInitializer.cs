@@ -13,8 +13,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 using Lib.Grid;
+using Lib.Grid.Spatial;
+using Lib.Grid.Visual;
 using Lib.Util;
-using Lib.VisualGrid;
 
 using App.Game.Database;
 using App.Game.ECS.Map.Components;
@@ -32,17 +33,17 @@ namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
 
 public class TerrainInitializer : ITerrainInitializer
 {
-	private readonly HexLayout3D _grid;
+	private readonly HexGridLayout_3D _gridLayout;
 
 	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
 
 
 
 	public TerrainInitializer(
-		HexLayout3D grid,
+		HexGridLayout_3D gridLayout,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository)
 	{
-		_grid = grid;
+		_gridLayout = gridLayout;
 		_terrainTypePresentationRepository = terrainTypePresentationRepository;
 	}
 
@@ -91,7 +92,7 @@ public class TerrainInitializer : ITerrainInitializer
 				entityManager.SetComponentData(entity, new TerrainTile(terrainTypeId));
 				entityManager.SetComponentData(entity, new MapPosition(axialPosition));
 				entityManager.SetComponentData(entity,
-					new LocalToWorld {Value = float4x4.Translate(_grid.GetPoint(axialPosition))});
+					new LocalToWorld {Value = float4x4.Translate(_gridLayout.GetPoint(axialPosition))});
 				entityManager.SetComponentData(entity, materialMeshInfo_By_TerrainType[terrainTypeId]);
 
 				entityManager.SetName(entity, $"Terrain {axialPosition}");
@@ -167,9 +168,9 @@ public class TerrainInitializer : ITerrainInitializer
 
 	private void CreateGridLines(RectangularHexMap map)
 	{
-		var visualMap = new VisualRectangularHexMap3D(map, _grid);
+		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
 
-		var mesh = visualMap.GetGridLinesMesh();
+		var mesh = spatialMap.GetGridLinesMesh();
 		var material = GameDatabase.Instance.Presentation.TerrainGridMaterial;
 		var renderMeshArray = new RenderMeshArray(new [] { material }, new [] { mesh });
 

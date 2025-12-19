@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using Unity.Transforms;
 using UnityEngine;
 
-using Lib.Grid;
 using Lib.Math;
 
 
 
-namespace Lib.VisualGrid {
+namespace Lib.Grid.Spatial {
 
 
 
 /// <summary>
 /// Represents geometry of infinite hex grid in 3D coordinate system.
 /// </summary>
-public struct HexLayout3D
+public struct HexGridLayout_3D
 {
 	/// <summary>
 	/// Cell orientation.
@@ -69,6 +68,9 @@ public struct HexLayout3D
 	public readonly float VerticalSpacing
 		=> _layout2D.VerticalSpacing;
 
+	public readonly HexGridLayout Layout_2D
+		=> _layout2D;
+
 	/// <summary>
 	/// Plane the grid lies in.
 	/// </summary>
@@ -83,13 +85,13 @@ public struct HexLayout3D
 	//----------------------------------------------------------------------------------------------
 
 
-	private readonly HexLayout _layout2D;
+	private readonly HexGridLayout _layout2D;
 
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public HexLayout3D(HexLayout layout2D, Matrix3x2 projectionMatrix)
+	public HexGridLayout_3D(HexGridLayout layout2D, Matrix3x2 projectionMatrix)
 	{
 		_layout2D = layout2D;
 		ProjectionMatrix = projectionMatrix;
@@ -116,61 +118,6 @@ public struct HexLayout3D
 	{
 		return ProjectionMatrix.ProjectPoint(
 			_layout2D.GetVertex(position, vertex));
-	}
-
-
-
-	/// <summary>
-	/// Get cell mesh.
-	/// </summary>
-	/// <remarks>
-	/// The mesh center is at the coordinate system origin.
-	/// </remarks>
-	/// <returns>The cell mesh.</returns>
-	/// <exception cref="NotImplementedException"></exception>
-	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public readonly Mesh GetCellMesh()
-	{
-		Vector2[] vertices2;
-
-		switch (Orientation) {
-			case HexOrientation.FlatTop:
-				vertices2 = new [] {
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Left),
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopLeft),
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.TopRight),
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.Right),
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomRight),
-					_layout2D.GetAbstractCellVertex(FlatTopHexVertex.BottomLeft),
-					new (0, 0)
-				};
-
-				break;
-
-			case HexOrientation.PointyTop:
-				throw new NotImplementedException();
-
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		var projectionMatrix = ProjectionMatrix;
-
-		var mesh = new Mesh {
-			vertices = Array.ConvertAll(vertices2, v => projectionMatrix.ProjectPoint(v)),
-			triangles = new[] {
-				0, 1, 6,
-				1, 2, 6,
-				2, 3, 6,
-				3, 4, 6,
-				4, 5, 6,
-				5, 0, 6
-			}
-		};
-
-		mesh.RecalculateNormals();
-
-		return mesh;
 	}
 
 

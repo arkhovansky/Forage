@@ -4,7 +4,7 @@ using Unity.Entities;
 using UnityEngine;
 
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 using App.Game.ECS.BandMember.Movement.Components;
 
@@ -99,7 +99,7 @@ public struct Movement_Rules : IComponentData
 	                                float tilePhysicalInnerDiameter,
 	                                float baseSpeed)
 	{
-		var pathTileCount = HexLayout.Distance(foragerPosition, resourcePosition);
+		var pathTileCount = HexGridLayout.Distance(foragerPosition, resourcePosition);
 		return GetMovementTime(pathTileCount * MinMovementCost, tilePhysicalInnerDiameter, baseSpeed);
 	}
 }

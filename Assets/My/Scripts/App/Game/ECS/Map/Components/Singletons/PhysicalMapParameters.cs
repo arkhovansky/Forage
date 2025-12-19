@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 
 
@@ -22,7 +22,7 @@ public readonly struct PhysicalMapParameters : IComponentData
 	public PhysicalMapParameters(float tileInnerDiameter)
 	{
 		TileInnerDiameter = tileInnerDiameter;
-		CellArea = HexLayout.CellArea_From_InnerDiameter(tileInnerDiameter);
+		CellArea = HexGridLayout.CellArea_From_InnerDiameter(tileInnerDiameter);
 	}
 }
 

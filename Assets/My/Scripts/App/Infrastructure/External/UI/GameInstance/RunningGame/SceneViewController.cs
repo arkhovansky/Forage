@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 using Lib.AppFlow;
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.InputEvents;
 using App.Application.Flow.GameInstance.RunningGame.Messages.PresentationEvents;
@@ -27,7 +27,7 @@ public class SceneViewController : View
 
 	private readonly Camera _camera;
 
-	private readonly VisualRectangularHexMap3D _map;
+	private readonly Spatial_RectangularHexMap_3D _map;
 
 	private readonly IInputEvent_Emitter _inputEvent_Emitter;
 
@@ -62,7 +62,7 @@ public class SceneViewController : View
 
 
 	public SceneViewController(Camera camera,
-	                           VisualRectangularHexMap3D map,
+	                           Spatial_RectangularHexMap_3D map,
 	                           IInputEvent_Emitter inputEvent_Emitter)
 	{
 		_camera = camera;

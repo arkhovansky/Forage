@@ -2,7 +2,7 @@
 
 using Lib.AppFlow;
 using Lib.Grid;
-using Lib.VisualGrid;
+using Lib.Grid.Spatial;
 using Lib.Math;
 
 using App.Application.Flow.GameInstance.RunningGame.Controller;
@@ -36,7 +36,7 @@ public partial class RunningGameContext
 
 	private IRunningGameInstance _runningGameInstance = null!;
 
-	private HexLayout3D _hexLayout;
+	private HexGridLayout_3D _gridLayout;
 
 
 
@@ -63,18 +63,18 @@ public partial class RunningGameContext
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
 
-		_hexLayout = new HexLayout3D(
-			new HexLayout(HexOrientation),
+		_gridLayout = new HexGridLayout_3D(
+			new HexGridLayout(HexOrientation),
 			new Matrix3x2(Vector3.right, Vector3.forward));
 
 		var terrainTypePresentationRepository =
-			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, _hexLayout);
+			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, _gridLayout);
 		var resourceTypePresentationRepository =
 			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
 		var humanTypePresentationRepository = new HumanTypePresentationRepository();
 
 		runningGameInitializer = Create_RunningGameInitializer(
-			_hexLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
+			_gridLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		controller = new RunningGameController(_runningGameInstance, uiModel, this);
 
@@ -92,11 +92,11 @@ public partial class RunningGameContext
 
 
 	private static IRunningGameInitializer Create_RunningGameInitializer(
-		HexLayout3D hexLayout,
+		HexGridLayout_3D gridLayout,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
 		IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
-		var terrainInitializer = new TerrainInitializer(hexLayout, terrainTypePresentationRepository);
+		var terrainInitializer = new TerrainInitializer(gridLayout, terrainTypePresentationRepository);
 
 		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
@@ -120,14 +120,14 @@ public partial class RunningGameContext
 
 		return new RunningGameInitializer(
 			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
-			bandInitializer, systemParametersInitializer, hexLayout);
+			bandInitializer, systemParametersInitializer, gridLayout);
 	}
 
 
 	private SceneViewController Create_SceneViewController(RectangularHexMap map)
 	{
-		var visualMap = new VisualRectangularHexMap3D(map, _hexLayout);
-		return new SceneViewController(Camera.main!, visualMap, this);
+		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
+		return new SceneViewController(Camera.main!, spatialMap, this);
 	}
 }
 
