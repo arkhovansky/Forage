@@ -49,6 +49,7 @@ public class Bootstrap : MonoBehaviour
 
 
 	// ReSharper disable once Unity.IncorrectMethodSignature
+	// ReSharper disable once UnusedMember.Local
 	private async UniTaskVoid Start()
 	{
 		EcsService.SetEcsSystemsEnabled(false);
