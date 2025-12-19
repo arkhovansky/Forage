@@ -11,7 +11,7 @@ namespace Lib.Grid.Visual {
 
 public static class Spatial_RectangularHexMap_3D_Extensions
 {
-	public static Mesh GetGridLinesMesh(this in Spatial_RectangularHexMap_3D self)
+	public static Mesh GetGridLinesMesh(this Spatial_RectangularHexMap_3D self)
 	{
 		var map = self.Map;
 

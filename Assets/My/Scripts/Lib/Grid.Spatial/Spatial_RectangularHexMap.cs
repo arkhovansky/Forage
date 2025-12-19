@@ -11,7 +11,7 @@ namespace Lib.Grid.Spatial {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout.
 /// </summary>
-public readonly struct Spatial_RectangularHexMap
+public class Spatial_RectangularHexMap
 {
 	public RectangularHexMap Map { get; }
 
@@ -31,7 +31,7 @@ public readonly struct Spatial_RectangularHexMap
 	}
 
 
-	public readonly AxialPosition? GetAxialPosition(Vector2 point)
+	public AxialPosition? GetAxialPosition(Vector2 point)
 	{
 		AxialPosition freePos = Layout.GetAxialPosition(point);
 		return Map.Contains(freePos) ? freePos : null;

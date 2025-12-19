@@ -11,14 +11,14 @@ namespace Lib.Grid.Spatial {
 /// <summary>
 /// Hex grid with specific dimensions and geometry layout in 3D coordinate system.
 /// </summary>
-public readonly struct Spatial_RectangularHexMap_3D
+public class Spatial_RectangularHexMap_3D
 {
 	public RectangularHexMap Map { get; }
 
 	public HexGridLayout_3D Layout { get; }
 
 
-	public readonly float GeometricWidth {
+	public float GeometricWidth {
 		get {
 			return Map.Orientation switch {
 				HexOrientation.FlatTop => Layout.HorizontalSpacing * (Map.Width - 1) + Layout.CellSize.x,
@@ -28,7 +28,7 @@ public readonly struct Spatial_RectangularHexMap_3D
 		}
 	}
 
-	public readonly float GeometricHeight {
+	public float GeometricHeight {
 		get {
 			return Map.Orientation switch {
 				HexOrientation.FlatTop => Layout.CellSize.y * (Map.Height + 0.5f),
@@ -38,7 +38,7 @@ public readonly struct Spatial_RectangularHexMap_3D
 		}
 	}
 
-	public readonly Rect BoundingRect2D {
+	public Rect BoundingRect2D {
 		get {
 			float x, y;
 
@@ -66,7 +66,7 @@ public readonly struct Spatial_RectangularHexMap_3D
 		}
 	}
 
-	public readonly Vector3 GeometricCenter
+	public Vector3 GeometricCenter
 		=> Layout.ProjectionMatrix.ProjectPoint(BoundingRect2D.center);
 
 
@@ -83,7 +83,7 @@ public readonly struct Spatial_RectangularHexMap_3D
 	}
 
 
-	public readonly AxialPosition? GetAxialPosition(Ray ray)
+	public AxialPosition? GetAxialPosition(Ray ray)
 	{
 		if (! Layout.GetAxialPosition(ray, out var freePos))
 			return null;
@@ -91,7 +91,7 @@ public readonly struct Spatial_RectangularHexMap_3D
 	}
 
 
-	public readonly Vector3 GetVertex(OffsetPosition offset, FlatTopHexVertex vertex)
+	public Vector3 GetVertex(OffsetPosition offset, FlatTopHexVertex vertex)
 	{
 		return Layout.GetVertex(Map.AxialPositionFrom(offset), vertex);
 	}
