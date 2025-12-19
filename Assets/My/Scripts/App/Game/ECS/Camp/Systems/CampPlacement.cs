@@ -55,8 +55,7 @@ public partial struct CampPlacement : ISystem
 		var gridLayout = SystemAPI.GetSingleton<HexGridLayout_3D_Component>().Layout;
 		var inTilePosition = GetCampInTilePosition(in gridLayout);
 		var localTransform = gridLayout.GetCellLocalTransform(position)
-			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(0.25f);
+			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y));
 		state.EntityManager.SetComponentData(campEntity, localTransform);
 	}
 
