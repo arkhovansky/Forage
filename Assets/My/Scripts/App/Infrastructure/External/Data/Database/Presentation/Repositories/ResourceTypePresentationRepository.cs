@@ -56,25 +56,25 @@ public class ResourceTypePresentationRepository : IResourceTypePresentationRepos
 	private Mesh CreateQuadMesh()
 	{
 		return new Mesh {
-			vertices = new Vector3[4] {
+			vertices = new Vector3[] {
 				new (-0.5f, 0, -0.5f),
 				new (0.5f, 0, -0.5f),
 				new (-0.5f, 0, 0.5f),
 				new (0.5f, 0, 0.5f)
 			},
-			triangles = new int[6] {
+			triangles = new[] {
 				// lower left triangle
 				0, 2, 1,
 				// upper right triangle
 				2, 3, 1
 			},
-			normals = new Vector3[4] {
+			normals = new[] {
 				Vector3.up,
 				Vector3.up,
 				Vector3.up,
 				Vector3.up
 			},
-			uv = new Vector2[4] {
+			uv = new Vector2[] {
 				new (0, 0),
 				new (1, 0),
 				new (0, 1),
