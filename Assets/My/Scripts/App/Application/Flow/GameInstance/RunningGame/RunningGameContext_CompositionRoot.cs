@@ -96,6 +96,8 @@ public partial class RunningGameContext
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
 		IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
+		var mapDataInitializer = new MapDataInitializer(gridLayout);
+
 		var mapPresentationRepository = new MapPresentationRepository(GameDatabase.Instance.Presentation);
 		var terrainInitializer = new TerrainInitializer(
 			gridLayout, terrainTypePresentationRepository, mapPresentationRepository);
@@ -121,8 +123,8 @@ public partial class RunningGameContext
 			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
 
 		return new RunningGameInitializer(
-			terrainInitializer, resourcesInitializer, resourcePresentationInitializer, gameTimeInitializer,
-			bandInitializer, systemParametersInitializer, gridLayout);
+			mapDataInitializer, terrainInitializer, resourcesInitializer, resourcePresentationInitializer,
+			gameTimeInitializer, bandInitializer, systemParametersInitializer);
 	}
 
 
