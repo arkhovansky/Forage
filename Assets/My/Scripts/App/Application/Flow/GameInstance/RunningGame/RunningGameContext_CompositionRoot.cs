@@ -10,6 +10,7 @@ using App.Application.Flow.GameInstance.RunningGame.Models.UI.Impl;
 using App.Application.Services;
 using App.Game.Core;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 using App.Infrastructure.EcsGateway.Models.Domain;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
@@ -41,9 +42,9 @@ public partial class RunningGameContext
 
 
 
-	private static IInGameMode Create_InGameMode()
+	private IInGameMode Create_InGameMode()
 	{
-		return new InGameMode();
+		return new InGameMode(_ecsSystems_Service);
 	}
 
 
@@ -53,8 +54,11 @@ public partial class RunningGameContext
 		out IController controller,
 		out IView worldUI_View)
 	{
+		var ecsHelper = new EcsHelper();
+
 		var runningGame = new RunningGameInstance(
-			new World_Adapter(new Time_Adapter(), new Map_Adapter(), new Band_Adapter()));
+			new World_Adapter(new Time_Adapter(ecsHelper), new Map_Adapter(ecsHelper), new Band_Adapter(ecsHelper)),
+			_ecsSystems_Service, ecsHelper);
 		_runningGame = runningGame;
 		_runningGameInstance = runningGame;
 
@@ -75,11 +79,11 @@ public partial class RunningGameContext
 		var humanTypePresentationRepository = new HumanTypePresentationRepository();
 
 		runningGameInitializer = Create_RunningGameInitializer(
-			_gridLayout, terrainTypePresentationRepository, resourceTypePresentationRepository);
+			_gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 		controller = new RunningGameController(_runningGameInstance, uiModel, this);
 
-		worldUI_View = new WorldUI_View();
+		worldUI_View = new WorldUI_View(ecsHelper);
 
 		var screenUI_VM = new RunningGame_ScreenUI_VM(
 			runningGame, uiModel,
@@ -94,14 +98,15 @@ public partial class RunningGameContext
 
 	private static IRunningGameInitializer Create_RunningGameInitializer(
 		HexGridLayout_3D gridLayout,
+		IEcsHelper ecsHelper,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
 		IResourceTypePresentationRepository resourceTypePresentationRepository)
 	{
-		var mapDataInitializer = new MapDataInitializer(gridLayout);
+		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
 
 		var mapPresentationRepository = new MapPresentationRepository(GameDatabase.Instance.Presentation);
 		var terrainInitializer = new TerrainInitializer(
-			gridLayout, terrainTypePresentationRepository, mapPresentationRepository);
+			gridLayout, terrainTypePresentationRepository, mapPresentationRepository, ecsHelper);
 
 		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
@@ -111,9 +116,10 @@ public partial class RunningGameContext
 #endif
 		);
 
-		var resourcePresentationInitializer = new ResourcePresentationInitializer(resourceTypePresentationRepository);
+		var resourcePresentationInitializer =
+			new ResourcePresentationInitializer(resourceTypePresentationRepository, ecsHelper);
 
-		var gameTimeInitializer = new GameTimeInitializer();
+		var gameTimeInitializer = new GameTimeInitializer(ecsHelper);
 
 		var humanTypeRepository = new HumanTypeRepository();
 		var bandInitializer = new BandInitializer(humanTypeRepository);

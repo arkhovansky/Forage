@@ -11,6 +11,7 @@ using Lib.UICore.Unity.Gui;
 using Lib.UICore.Unity.Mvvm;
 
 using App.Application.Flow;
+using App.Infrastructure.Common.Contracts.Services;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.External.Data.Settings;
 
@@ -27,6 +28,8 @@ public class Bootstrap : MonoBehaviour
 
 	private ApplicationSettings _applicationSettings = null!;
 
+	private IEcsSystems_Service _ecsSystems_Service = null!;
+
 	private IGui _gui = null!;
 	private IVvmBinder _vvmBinder = null!;
 	private IMessageDispatcher _messageDispatcher = null!;
@@ -41,6 +44,8 @@ public class Bootstrap : MonoBehaviour
 	{
 		_applicationSettings = new ApplicationSettings(ApplicationSettings);
 
+		_ecsSystems_Service = new EcsSystems_Service();
+
 		_gui = new Gui();
 		_vvmBinder = new VvmBinder();
 		_messageDispatcher = new MessageDispatcher();
@@ -52,10 +57,11 @@ public class Bootstrap : MonoBehaviour
 	// ReSharper disable once UnusedMember.Local
 	private async UniTaskVoid Start()
 	{
-		EcsService.SetEcsSystemsEnabled(false);
+		_ecsSystems_Service.SetEcsSystemsEnabled(false);
 
 		_applicationContext = new ApplicationContext(
 			_applicationSettings,
+			_ecsSystems_Service,
 			_gui, _vvmBinder, _messageDispatcher);
 		await _applicationContext.Start();
 

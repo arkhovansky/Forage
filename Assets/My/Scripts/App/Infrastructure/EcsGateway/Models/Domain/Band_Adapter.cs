@@ -11,7 +11,7 @@ using App.Game.Core.Query;
 using App.Game.ECS.BandMember.General.Components;
 using App.Game.ECS.Camp.Components;
 using App.Game.ECS.Camp.Components.Commands;
-using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -21,6 +21,17 @@ namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 public class Band_Adapter : IBand
 {
+	private readonly IEcsHelper _ecsHelper;
+
+	//----------------------------------------------------------------------------------------------
+
+
+	public Band_Adapter(IEcsHelper ecsHelper)
+	{
+		_ecsHelper = ecsHelper;
+	}
+
+
 	//----------------------------------------------------------------------------------------------
 	// IBand_RO implementation
 
@@ -52,10 +63,10 @@ public class Band_Adapter : IBand
 
 	public void PlaceCamp(AxialPosition position)
 	{
-		if (EcsService.SingletonExistsAnywhere<Camp>())
+		if (_ecsHelper.SingletonExistsAnywhere<Camp>())
 			throw new InvalidOperationException("Camp already exists");
 
-		EcsService.SendEcsCommand(new PlaceCamp(position));
+		_ecsHelper.SendEcsCommand(new PlaceCamp(position));
 	}
 }
 

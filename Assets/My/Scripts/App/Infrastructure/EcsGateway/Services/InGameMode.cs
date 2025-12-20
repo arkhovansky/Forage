@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 
 using App.Application.Services;
 using App.Game.ECS.Prefabs.Components;
+using App.Infrastructure.Common.Contracts.Services;
 
 
 
@@ -18,11 +19,25 @@ public class InGameMode : IInGameMode
 	private const string GameSceneName = "Game";
 
 
+	private readonly IEcsSystems_Service _ecsSystems_Service;
+
+	//----------------------------------------------------------------------------------------------
+
+
+	public InGameMode(IEcsSystems_Service ecsSystems_Service)
+	{
+		_ecsSystems_Service = ecsSystems_Service;
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// IInGameMode implementation
+
 
 	public async UniTask Enter()
 	{
-		EcsService.GameSystems_Enabled = false;
-		EcsService.SetEcsSystemsEnabled(true);
+		_ecsSystems_Service.GameSystems_Enabled = false;
+		_ecsSystems_Service.SetEcsSystemsEnabled(true);
 		await LoadGameScene_Async();
 	}
 

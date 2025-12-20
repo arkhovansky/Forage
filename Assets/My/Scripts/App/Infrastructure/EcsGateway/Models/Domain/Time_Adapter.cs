@@ -3,7 +3,7 @@
 using App.Game.Core.Query;
 using App.Game.ECS.GameTime.Components;
 using App.Game.ECS.GameTime.Components.Events;
-using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -16,9 +16,19 @@ public class Time_Adapter : ITime
 	private EntityManager _entityManager
 		= World.DefaultGameObjectInjectionWorld.EntityManager;
 
-	private readonly Entity _singletonEntity
-		= EcsService.GetSingletonEntity();
+	private readonly Entity _singletonEntity;
 
+	//----------------------------------------------------------------------------------------------
+
+
+	public Time_Adapter(IEcsHelper ecsHelper)
+	{
+		_singletonEntity = ecsHelper.GetSingletonEntity();
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// ITime implementation
 
 
 	public GameTime Get_Time()

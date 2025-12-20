@@ -11,6 +11,7 @@ using Lib.Util;
 using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -22,17 +23,22 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 {
 	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
 
+	private readonly IEcsHelper _ecsHelper;
 
-	public ResourcePresentationInitializer(IResourceTypePresentationRepository resourceTypePresentationRepository)
+
+
+	public ResourcePresentationInitializer(IResourceTypePresentationRepository resourceTypePresentationRepository,
+	                                       IEcsHelper ecsHelper)
 	{
 		_resourceTypePresentationRepository = resourceTypePresentationRepository;
+		_ecsHelper = ecsHelper;
 	}
 
 
 	public void Init(ISet<ResourceTypeId> resourceTypeIds)
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = EcsService.GetSingletonEntity();
+		var singletonEntity = _ecsHelper.GetSingletonEntity();
 
 		var maxResourceTypeId = resourceTypeIds.Max();
 

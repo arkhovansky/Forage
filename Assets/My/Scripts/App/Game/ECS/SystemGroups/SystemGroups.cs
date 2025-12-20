@@ -9,7 +9,7 @@ namespace App.Game.ECS.SystemGroups {
 
 /***************************************************************************************************
 * NB!
-* All root custom groups must be also present in EcsService in EcsGateway layer
+* All root custom groups must be also present in EcsSystems_Service in EcsGateway layer
 ***************************************************************************************************/
 
 

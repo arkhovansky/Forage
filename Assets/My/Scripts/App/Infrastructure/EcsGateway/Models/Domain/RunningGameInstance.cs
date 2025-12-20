@@ -7,7 +7,8 @@ using App.Game.Core.Query;
 using App.Game.ECS.Camp.Components;
 using App.Game.ECS.GameTime.Components.Commands;
 using App.Game.ECS.GameTime.Components.Events;
-using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.Common.Contracts.Services;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -19,12 +20,23 @@ public class RunningGameInstance
 	: IRunningGameInstance,
 	  ILoopComponent
 {
-	public RunningGameInstance(IWorld world)
+	private readonly IEcsSystems_Service _ecsSystems_Service;
+	private readonly IEcsHelper _ecsHelper;
+
+	//----------------------------------------------------------------------------------------------
+
+
+	public RunningGameInstance(IWorld world,
+	                           IEcsSystems_Service ecsSystems_Service,
+	                           IEcsHelper ecsHelper)
 	{
 		World = world;
 		GamePhase = GamePhase.Arrival;
 
-		Assert.IsFalse(EcsService.GameSystems_Enabled);
+		_ecsSystems_Service = ecsSystems_Service;
+		_ecsHelper = ecsHelper;
+
+		Assert.IsFalse(_ecsSystems_Service.GameSystems_Enabled);
 	}
 
 
@@ -46,7 +58,7 @@ public class RunningGameInstance
 
 	public void RunYearPeriod()
 	{
-		EcsService.SendEcsCommand(new RunYearPeriod());
+		_ecsHelper.SendEcsCommand(new RunYearPeriod());
 		GamePhase = GamePhase.PeriodRunning;
 	}
 
@@ -57,7 +69,7 @@ public class RunningGameInstance
 
 	void ILoopComponent.Start()
 	{
-		EcsService.GameSystems_Enabled = true;
+		_ecsSystems_Service.GameSystems_Enabled = true;
 	}
 
 
@@ -70,7 +82,7 @@ public class RunningGameInstance
 				break;
 
 			case GamePhase.PeriodRunning:
-				if (EcsService.IsEventRaised<YearPeriodChanged>())
+				if (_ecsHelper.IsEventRaised<YearPeriodChanged>())
 					GamePhase = GamePhase.InterPeriod;
 				break;
 		}
@@ -83,7 +95,7 @@ public class RunningGameInstance
 
 	private bool CampExists()
 	{
-		return EcsService.SingletonExistsAnywhere<Camp>();
+		return _ecsHelper.SingletonExistsAnywhere<Camp>();
 	}
 }
 

@@ -2,7 +2,7 @@
 
 using App.Application.Flow.GameInstance.RunningGame.Messages.PresentationEvents;
 using App.Game.ECS.UI.HighlightedTile.Components;
-using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -15,8 +15,15 @@ namespace App.Infrastructure.EcsGateway.Views {
 /// </summary>
 public class WorldUI_View : View
 {
-	public WorldUI_View()
+	private readonly IEcsHelper _ecsHelper;
+
+	//----------------------------------------------------------------------------------------------
+
+
+	public WorldUI_View(IEcsHelper ecsHelper)
 	{
+		_ecsHelper = ecsHelper;
+
 		base.Add_PresentationEvent_Handler<HighlightedTile_Changed>(On_HighlightedTile_Changed);
 	}
 
@@ -27,7 +34,7 @@ public class WorldUI_View : View
 
 	private void On_HighlightedTile_Changed(HighlightedTile_Changed evt)
 	{
-		EcsService.SendEcsCommand(new HighlightedTile_Changed_Event(evt.Position));
+		_ecsHelper.SendEcsCommand(new HighlightedTile_Changed_Event(evt.Position));
 	}
 }
 

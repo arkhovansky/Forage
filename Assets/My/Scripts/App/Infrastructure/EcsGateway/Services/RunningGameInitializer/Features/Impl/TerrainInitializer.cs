@@ -23,6 +23,7 @@ using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -37,16 +38,20 @@ public class TerrainInitializer : ITerrainInitializer
 	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
 	private readonly IMapPresentationRepository _mapPresentationRepository;
 
+	private readonly IEcsHelper _ecsHelper;
+
 
 
 	public TerrainInitializer(
 		HexGridLayout_3D gridLayout,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
-		IMapPresentationRepository mapPresentationRepository)
+		IMapPresentationRepository mapPresentationRepository,
+		IEcsHelper ecsHelper)
 	{
 		_gridLayout = gridLayout;
 		_terrainTypePresentationRepository = terrainTypePresentationRepository;
 		_mapPresentationRepository = mapPresentationRepository;
+		_ecsHelper = ecsHelper;
 	}
 
 
@@ -146,13 +151,13 @@ public class TerrainInitializer : ITerrainInitializer
 	}
 
 
-	private static void CreateMapBuffer(NativeArray<Entity> tileEntities, RectangularHexMap map)
+	private void CreateMapBuffer(NativeArray<Entity> tileEntities, RectangularHexMap map)
 	{
 		Assert.IsTrue(tileEntities.Length == map.CellCount);
 
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var mapBuffer = em.AddBuffer<MapTileEntity>(EcsService.GetSingletonEntity());
+		var mapBuffer = em.AddBuffer<MapTileEntity>(_ecsHelper.GetSingletonEntity());
 		mapBuffer.EnsureCapacity((int)map.CellCount);
 		foreach (var entity in tileEntities)
 			mapBuffer.Add(new MapTileEntity(entity));
@@ -163,7 +168,7 @@ public class TerrainInitializer : ITerrainInitializer
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		em.AddComponentData(EcsService.GetSingletonEntity(),
+		em.AddComponentData(_ecsHelper.GetSingletonEntity(),
 		                    new PhysicalMapParameters(tilePhysicalInnerDiameter));
 	}
 

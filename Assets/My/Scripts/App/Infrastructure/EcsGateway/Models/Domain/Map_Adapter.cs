@@ -6,7 +6,7 @@ using App.Game.Core.Query;
 using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
-using App.Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -16,14 +16,27 @@ namespace App.Infrastructure.EcsGateway.Models.Domain {
 
 public class Map_Adapter : IMap
 {
+	private readonly IEcsHelper _ecsHelper;
+
 	private EntityManager _entityManager
 		= World.DefaultGameObjectInjectionWorld.EntityManager;
 
+	//----------------------------------------------------------------------------------------------
+
+
+	public Map_Adapter(IEcsHelper ecsHelper)
+	{
+		_ecsHelper = ecsHelper;
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// IMap implementation
 
 
 	public TerrainTypeId Get_TerrainTypeId(AxialPosition tile)
 	{
-		var ecsMap = EcsService.GetEcsMap();
+		var ecsMap = _ecsHelper.GetEcsMap();
 		var tileEntity = ecsMap.GetTileEntity(tile);
 
 		var terrainTileComponent = _entityManager.GetComponentData<TerrainTile>(tileEntity);
@@ -33,7 +46,7 @@ public class Map_Adapter : IMap
 
 	public IPlantResource? Get_PlantResource(AxialPosition tile)
 	{
-		var ecsMap = EcsService.GetEcsMap();
+		var ecsMap = _ecsHelper.GetEcsMap();
 		var tileEntity = ecsMap.GetTileEntity(tile);
 
 		if (!_entityManager.HasComponent<TilePlantResource>(tileEntity))

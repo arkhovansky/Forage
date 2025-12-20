@@ -6,6 +6,7 @@ using Lib.UICore.Mvvm;
 
 using App.Application.Services;
 using App.Game.Meta;
+using App.Infrastructure.Common.Contracts.Services;
 
 
 
@@ -16,6 +17,8 @@ namespace App.Application.Flow.GameInstance.RunningGame {
 public partial class RunningGameContext : Context
 {
 	private readonly IGameInstance _game;
+
+	private readonly IEcsSystems_Service _ecsSystems_Service;
 
 	private readonly IGui _gui;
 	private readonly IVvmBinder _vvmBinder;
@@ -36,10 +39,13 @@ public partial class RunningGameContext : Context
 
 
 	public RunningGameContext(IGameInstance game,
+	                          IEcsSystems_Service ecsSystems_Service,
 	                          IGui gui, IVvmBinder vvmBinder, IMessageDispatcher messageDispatcher)
 		: base(messageDispatcher)
 	{
 		_game = game;
+
+		_ecsSystems_Service = ecsSystems_Service;
 
 		_gui = gui;
 		_vvmBinder = vvmBinder;
