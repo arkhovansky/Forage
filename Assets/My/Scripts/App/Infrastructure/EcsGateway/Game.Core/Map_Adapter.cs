@@ -10,7 +10,7 @@ using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models.Domain {
+namespace App.Infrastructure.EcsGateway.Game.Core {
 
 
 

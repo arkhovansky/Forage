@@ -3,7 +3,7 @@ using App.Game.Core.Query;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models.Domain {
+namespace App.Infrastructure.EcsGateway.Game.Core {
 
 
 

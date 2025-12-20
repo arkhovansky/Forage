@@ -5,7 +5,7 @@ using App.Game.ECS.Resource.Plant.Components;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models.Domain {
+namespace App.Infrastructure.EcsGateway.Game.Core {
 
 
 

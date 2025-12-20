@@ -10,7 +10,7 @@ using App.Game.ECS.BandMember.Statistics.Components;
 
 
 
-namespace App.Infrastructure.EcsGateway.Models.Domain {
+namespace App.Infrastructure.EcsGateway.Game.Core {
 
 
 

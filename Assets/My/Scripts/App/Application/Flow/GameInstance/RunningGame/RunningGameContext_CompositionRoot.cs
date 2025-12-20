@@ -11,7 +11,7 @@ using App.Application.Services;
 using App.Game.Core;
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Contracts.Services;
-using App.Infrastructure.EcsGateway.Models.Domain;
+using App.Infrastructure.EcsGateway.Game.Core;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl;
