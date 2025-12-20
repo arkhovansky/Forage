@@ -13,6 +13,7 @@ using App.Infrastructure.Common.Contracts.Database.Presentation;
 using App.Infrastructure.EcsGateway.Models.Domain;
 using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.EcsGateway.Services.RunningGameInitializer;
+using App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl;
 using App.Infrastructure.EcsGateway.Views;
 using App.Infrastructure.External.Data.Database;
 using App.Infrastructure.External.Data.Database.Domain.Repositories;

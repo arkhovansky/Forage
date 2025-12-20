@@ -3,7 +3,7 @@ using App.Game.ECS.GameTime.Components.Commands;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl {
 
 
 

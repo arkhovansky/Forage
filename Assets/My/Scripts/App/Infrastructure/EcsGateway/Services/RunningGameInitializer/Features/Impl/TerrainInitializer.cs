@@ -26,7 +26,7 @@ using App.Infrastructure.Common.Contracts.Database.Presentation;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl {
 
 
 

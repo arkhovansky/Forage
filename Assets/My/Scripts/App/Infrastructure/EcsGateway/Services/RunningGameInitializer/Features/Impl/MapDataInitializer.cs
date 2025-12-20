@@ -5,7 +5,7 @@ using App.Game.ECS.Map.Components.Singletons;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl {
 
 
 

@@ -11,7 +11,7 @@ using App.Infrastructure.EcsGateway.Database.Domain;
 
 
 
-namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer {
+namespace App.Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl {
 
 
 
