@@ -2,7 +2,7 @@
 
 
 
-namespace App.Infrastructure.EcsGateway.Database.DomainSettings {
+namespace App.Infrastructure.EcsGateway.Contracts.Database.DomainSettings {
 
 
 

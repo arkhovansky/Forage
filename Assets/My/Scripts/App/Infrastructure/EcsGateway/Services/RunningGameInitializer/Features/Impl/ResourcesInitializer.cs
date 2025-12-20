@@ -15,7 +15,7 @@ using App.Game.ECS.Resource.Plant.Presentation.Components;
 #if !DOTS_DISABLE_DEBUG_NAMES
 using App.Infrastructure.Common.Contracts.Database.Presentation;
 #endif
-using App.Infrastructure.EcsGateway.Database.Domain;
+using App.Infrastructure.EcsGateway.Contracts.Database.Domain;
 
 
 

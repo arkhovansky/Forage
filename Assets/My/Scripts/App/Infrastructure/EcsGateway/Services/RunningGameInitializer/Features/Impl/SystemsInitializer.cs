@@ -3,8 +3,8 @@
 using App.Game.ECS.BandMember.Gathering.Systems;
 using App.Game.ECS.BandMember.Movement.Systems;
 using App.Game.ECS.GameTime.Systems;
-using App.Infrastructure.EcsGateway.Database.Domain;
-using App.Infrastructure.EcsGateway.Database.DomainSettings;
+using App.Infrastructure.EcsGateway.Contracts.Database.Domain;
+using App.Infrastructure.EcsGateway.Contracts.Database.DomainSettings;
 
 
 

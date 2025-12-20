@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using App.Game.Database;
-using App.Infrastructure.EcsGateway.Database.Domain;
+using App.Infrastructure.EcsGateway.Contracts.Database.Domain;
 using App.Infrastructure.External.Data.Database.Domain.ScriptableObjects;
 
 

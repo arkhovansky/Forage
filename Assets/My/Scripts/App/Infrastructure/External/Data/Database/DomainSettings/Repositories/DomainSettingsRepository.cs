@@ -1,5 +1,5 @@
 ﻿using App.Game.ECS.GameTime.Settings;
-using App.Infrastructure.EcsGateway.Database.DomainSettings;
+using App.Infrastructure.EcsGateway.Contracts.Database.DomainSettings;
 
 
 

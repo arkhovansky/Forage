@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using App.Game.Database;
-using App.Infrastructure.EcsGateway.Database.Domain;
+using App.Infrastructure.EcsGateway.Contracts.Database.Domain;
 
 
 

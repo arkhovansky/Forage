@@ -4,7 +4,7 @@ using App.Game.ECS.GameTime.Rules;
 
 
 
-namespace App.Infrastructure.EcsGateway.Database.Domain {
+namespace App.Infrastructure.EcsGateway.Contracts.Database.Domain {
 
 
 
