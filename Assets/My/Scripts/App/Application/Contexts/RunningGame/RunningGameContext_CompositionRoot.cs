@@ -1,0 +1,147 @@
+﻿using UnityEngine;
+
+using Lib.AppFlow;
+using Lib.Grid;
+using Lib.Grid.Spatial;
+using Lib.Math;
+
+using App.Application.Contexts.RunningGame._Infrastructure.Data.Database;
+using App.Application.Contexts.RunningGame._Infrastructure.Data.Database.Domain.Repositories;
+using App.Application.Contexts.RunningGame._Infrastructure.Data.Database.DomainSettings.Repositories;
+using App.Application.Contexts.RunningGame._Infrastructure.Data.Database.Presentation.Repositories;
+using App.Application.Contexts.RunningGame._Infrastructure.Data.Locale;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Contracts.Services;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Game.Core;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services.RunningGameInitializer;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl;
+using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Views;
+using App.Application.Contexts.RunningGame._Infrastructure.Shared.Contracts.Database.Presentation;
+using App.Application.Contexts.RunningGame._Infrastructure.UI;
+using App.Application.Contexts.RunningGame._Infrastructure.UI.ViewModels;
+using App.Application.Contexts.RunningGame._Infrastructure.UI.Views;
+using App.Application.Contexts.RunningGame.Controller;
+using App.Application.Contexts.RunningGame.Models.UI.Impl;
+using App.Application.Contexts.RunningGame.Services;
+using App.Game.Core;
+
+
+
+namespace App.Application.Contexts.RunningGame {
+
+
+
+public partial class RunningGameContext
+{
+	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
+
+
+	private IRunningGameInstance _runningGameInstance = null!;
+
+	private HexGridLayout_3D _gridLayout;
+
+
+
+	private IInGameMode Create_InGameMode()
+	{
+		return new InGameMode(_ecsSystems_Service);
+	}
+
+
+	private void Compose(
+		out ILocaleFactory localeFactory,
+		out IRunningGameInitializer runningGameInitializer,
+		out IController controller,
+		out IView worldUI_View)
+	{
+		var ecsHelper = new EcsHelper();
+
+		var runningGame = new RunningGameInstance(
+			new World_Adapter(new Time_Adapter(ecsHelper), new Map_Adapter(ecsHelper), new Band_Adapter(ecsHelper)),
+			_ecsSystems_Service, ecsHelper);
+		_runningGame = runningGame;
+		_runningGameInstance = runningGame;
+
+		var uiModel = new RunningGame_UIModel(this);
+		_uiModel = uiModel;
+
+		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
+		localeFactory = new LocaleFactory(localeRepository);
+
+		_gridLayout = new HexGridLayout_3D(
+			new HexGridLayout(HexOrientation),
+			new Matrix3x2(Vector3.right, Vector3.forward));
+
+		var terrainTypePresentationRepository =
+			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, _gridLayout);
+		var resourceTypePresentationRepository =
+			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
+		var humanTypePresentationRepository = new HumanTypePresentationRepository();
+
+		runningGameInitializer = Create_RunningGameInitializer(
+			_gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
+
+		controller = new RunningGameController(_runningGameInstance, uiModel, this);
+
+		worldUI_View = new WorldUI_View(ecsHelper);
+
+		var screenUI_VM = new RunningGame_ScreenUI_VM(
+			runningGame, uiModel,
+			this,
+			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
+		_screenUI_VM = screenUI_VM;
+		_screenUI_View = new RunningGame_ScreenUI_View(screenUI_VM,
+		                                               _gui, _vvmBinder);
+		_gui.AddView(_screenUI_View);
+	}
+
+
+	private static IRunningGameInitializer Create_RunningGameInitializer(
+		HexGridLayout_3D gridLayout,
+		IEcsHelper ecsHelper,
+		ITerrainTypePresentationRepository terrainTypePresentationRepository,
+		IResourceTypePresentationRepository resourceTypePresentationRepository)
+	{
+		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
+
+		var mapPresentationRepository = new MapPresentationRepository(GameDatabase.Instance.Presentation);
+		var terrainInitializer = new TerrainInitializer(
+			gridLayout, terrainTypePresentationRepository, mapPresentationRepository, ecsHelper);
+
+		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
+		var resourcesInitializer = new ResourcesInitializer(
+			resourceTypeRepository
+#if !DOTS_DISABLE_DEBUG_NAMES
+			, resourceTypePresentationRepository
+#endif
+		);
+
+		var resourcePresentationInitializer =
+			new ResourcePresentationInitializer(resourceTypePresentationRepository, ecsHelper);
+
+		var gameTimeInitializer = new GameTimeInitializer(ecsHelper);
+
+		var humanTypeRepository = new HumanTypeRepository();
+		var bandInitializer = new BandInitializer(humanTypeRepository);
+
+		var systemParametersRepository = new SystemParametersRepository(GameDatabase.Instance.Domain.SystemParameters);
+		var domainSettingsRepository = new DomainSettingsRepository(GameDatabase.Instance.DomainSettings);
+		var systemParametersInitializer =
+			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
+
+		return new RunningGameInitializer(
+			mapDataInitializer, terrainInitializer, resourcesInitializer, resourcePresentationInitializer,
+			gameTimeInitializer, bandInitializer, systemParametersInitializer);
+	}
+
+
+	private SceneViewController Create_SceneViewController(RectangularHexMap map)
+	{
+		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
+		return new SceneViewController(Camera.main!, spatialMap, this);
+	}
+}
+
+
+
+}
