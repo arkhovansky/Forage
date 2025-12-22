@@ -5,13 +5,14 @@ using Cysharp.Threading.Tasks;
 
 using Lib.AppFlow;
 using Lib.AppFlow.Impl;
+using Lib.AppFlow.Resolution.Impl;
+using Lib.AppFlow.Resolution.Internal;
 using Lib.UICore.Gui;
-using Lib.UICore.Mvvm;
 using Lib.UICore.Unity.Gui;
 using Lib.UICore.Unity.Mvvm;
 
-using App.Application.Contexts.Application;
 using App.Application.Contexts.Application._Infrastructure.Settings;
+using App.Application.Contexts.Application.Settings;
 using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services;
 using App.Infrastructure.Shared.Contracts.Services;
 
@@ -25,32 +26,44 @@ public class Bootstrap : MonoBehaviour
 {
 	[SerializeField] private ApplicationSettings_Asset ApplicationSettings = null!;
 
-
-	private ApplicationSettings _applicationSettings = null!;
+	//----------------------------------------------------------------------------------------------
 
 	private IEcsSystems_Service _ecsSystems_Service = null!;
 
-	private IGui _gui = null!;
-	private IVvmBinder _vvmBinder = null!;
-	private IMessageDispatcher _messageDispatcher = null!;
+	private IContextHost_Internal _contextHost = null!;
 
-	private ApplicationContext _applicationContext = null!;
+	private IMessageDispatcher _messageDispatcher = null!;
+	private IGui _gui = null!;
+
+	private HostServices _hostServices = null!;
+
+	private IApplicationSettings _applicationSettings = null!;
+
+	private IContext _applicationContext = null!;
 
 	private bool _isStarted;
 
+	//----------------------------------------------------------------------------------------------
 
 
 	private void Awake()
 	{
-		_applicationSettings = new ApplicationSettings(ApplicationSettings);
-
 		_ecsSystems_Service = new EcsSystems_Service();
 
-		_gui = new Gui();
-		_vvmBinder = new VvmBinder();
-		_messageDispatcher = new MessageDispatcher();
-	}
+		_contextHost = new ContextHost(
+			new ContextDescriptorMatcher());
 
+		_messageDispatcher = new MessageDispatcher();
+		_gui = new Gui();
+		var vvmBinder = new VvmBinder();
+
+		_hostServices = new HostServices(_contextHost, _messageDispatcher, _gui, vvmBinder, _ecsSystems_Service);
+		_contextHost.HostServices = _hostServices;
+
+		_applicationSettings = new ApplicationSettings(ApplicationSettings);
+
+		RegisterContexts();
+	}
 
 
 	// ReSharper disable once Unity.IncorrectMethodSignature
@@ -59,15 +72,15 @@ public class Bootstrap : MonoBehaviour
 	{
 		_ecsSystems_Service.SetEcsSystemsEnabled(false);
 
-		_applicationContext = new ApplicationContext(
-			_applicationSettings,
-			_ecsSystems_Service,
-			_gui, _vvmBinder, _messageDispatcher);
+		var contextRequest = _contextHost.New_ContextRequest()
+			.Subject("Application")
+			.Argument(_applicationSettings)
+			.Build();
+		_applicationContext = _contextHost.CreateContext(contextRequest);
 		await _applicationContext.Start();
 
 		_isStarted = true;
 	}
-
 
 
 	private void OnEnable()
@@ -96,6 +109,17 @@ public class Bootstrap : MonoBehaviour
 			return;
 
 		_applicationContext.LateUpdate();
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private void RegisterContexts()
+	{
+		_contextHost.RegisterContext(Application.Contexts.Application.EntryPoint.Instance);
+		_contextHost.RegisterContext(Application.Contexts.RunningGame.EntryPoint.Instance);
 	}
 }
 

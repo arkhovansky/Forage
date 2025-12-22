@@ -4,6 +4,8 @@ using Lib.AppFlow;
 using Lib.Grid;
 using Lib.Grid.Spatial;
 using Lib.Math;
+using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
 
 using App.Application.Contexts.RunningGame._Infrastructure.Data.Database;
 using App.Application.Contexts.RunningGame._Infrastructure.Data.Database.Domain.Repositories;
@@ -23,47 +25,64 @@ using App.Application.Contexts.RunningGame._Infrastructure.UI.Views;
 using App.Application.Contexts.RunningGame.Controller;
 using App.Application.Contexts.RunningGame.Models.UI.Impl;
 using App.Application.Contexts.RunningGame.Services;
-using App.Game.Core;
+using App.Infrastructure.Shared.Contracts.Services;
+
+using IView = Lib.AppFlow.IView;
 
 
 
-namespace App.Application.Contexts.RunningGame {
+namespace App.Application.Contexts.RunningGame.Composition.Impl {
 
 
 
-public partial class RunningGameContext
+public class LoadedContextComposer : ILoadedContextComposer
 {
 	private const HexOrientation HexOrientation = Lib.Grid.HexOrientation.FlatTop;
 
 
-	private IRunningGameInstance _runningGameInstance = null!;
+	private readonly IEcsSystems_Service _ecsSystems_Service;
+	private readonly IGui _gui;
+	private readonly IVvmBinder _vvmBinder;
 
 	private HexGridLayout_3D _gridLayout;
 
+	//----------------------------------------------------------------------------------------------
 
 
-	private IInGameMode Create_InGameMode()
+	public LoadedContextComposer(IEcsSystems_Service ecsSystems_Service,
+	                             IGui gui,
+	                             IVvmBinder vvmBinder)
 	{
-		return new InGameMode(_ecsSystems_Service);
+		_ecsSystems_Service = ecsSystems_Service;
+		_gui = gui;
+		_vvmBinder = vvmBinder;
 	}
 
 
-	private void Compose(
+	//----------------------------------------------------------------------------------------------
+	// ILoadedContextComposer
+
+
+	public void Compose(
+		RunningGameContext context,
 		out ILocaleFactory localeFactory,
 		out IRunningGameInitializer runningGameInitializer,
+		out ILoopComponent runningGame,
+		out ILoopComponent uiModel,
 		out IController controller,
-		out IView worldUI_View)
+		out IView worldUI_View,
+		out ILoopComponent screenUI_VM,
+		out Lib.UICore.Gui.IView screenUI_View)
 	{
 		var ecsHelper = new EcsHelper();
 
-		var runningGame = new RunningGameInstance(
+		var runningGameInstance = new RunningGameInstance(
 			new World_Adapter(new Time_Adapter(ecsHelper), new Map_Adapter(ecsHelper), new Band_Adapter(ecsHelper)),
 			_ecsSystems_Service, ecsHelper);
-		_runningGame = runningGame;
-		_runningGameInstance = runningGame;
+		runningGame = runningGameInstance;
 
-		var uiModel = new RunningGame_UIModel(this);
-		_uiModel = uiModel;
+		var runningGame_UIModel = new RunningGame_UIModel(context);
+		uiModel = runningGame_UIModel;
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
@@ -81,19 +100,31 @@ public partial class RunningGameContext
 		runningGameInitializer = Create_RunningGameInitializer(
 			_gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
-		controller = new RunningGameController(_runningGameInstance, uiModel, this);
+		controller = new RunningGameController(runningGameInstance, runningGame_UIModel, context);
 
 		worldUI_View = new WorldUI_View(ecsHelper);
 
-		var screenUI_VM = new RunningGame_ScreenUI_VM(
-			runningGame, uiModel,
-			this,
+		var runningGame_ScreenUI_VM = new RunningGame_ScreenUI_VM(
+			runningGameInstance, runningGame_UIModel,
+			context,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
-		_screenUI_VM = screenUI_VM;
-		_screenUI_View = new RunningGame_ScreenUI_View(screenUI_VM,
-		                                               _gui, _vvmBinder);
-		_gui.AddView(_screenUI_View);
+		screenUI_VM = runningGame_ScreenUI_VM;
+		screenUI_View = new RunningGame_ScreenUI_View(runningGame_ScreenUI_VM,
+		                                              _gui, _vvmBinder);
+		_gui.AddView(screenUI_View);
 	}
+
+
+	public IView Create_SceneViewController(RectangularHexMap map,
+	                                        RunningGameContext context)
+	{
+		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
+		return new SceneViewController(Camera.main!, spatialMap, context);
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
 
 
 	private static IRunningGameInitializer Create_RunningGameInitializer(
@@ -132,13 +163,6 @@ public partial class RunningGameContext
 		return new RunningGameInitializer(
 			mapDataInitializer, terrainInitializer, resourcesInitializer, resourcePresentationInitializer,
 			gameTimeInitializer, bandInitializer, systemParametersInitializer);
-	}
-
-
-	private SceneViewController Create_SceneViewController(RectangularHexMap map)
-	{
-		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
-		return new SceneViewController(Camera.main!, spatialMap, this);
 	}
 }
 
