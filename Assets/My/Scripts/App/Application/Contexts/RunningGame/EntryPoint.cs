@@ -1,10 +1,12 @@
 ﻿using Lib.AppFlow;
 using Lib.AppFlow.Resolution;
+using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
 
 using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services;
 using App.Application.Contexts.RunningGame.Composition.Impl;
 using App.Game.Meta;
-using App.Infrastructure;
+using App.Infrastructure.Shared.Contracts.Services;
 
 
 
@@ -35,11 +37,11 @@ public class EntryPoint : IContextEntryPoint
 	}
 
 
-	public IContext Create(IContextRequest request, IHostServices hostServices)
+	public IContext Create(IContextRequest request, IContextData contextData)
 	{
 		var gameInstance = request.GetSubject<IGameInstance>();
 
-		return Create(gameInstance, (HostServices) hostServices);
+		return Create(gameInstance, contextData);
 	}
 
 
@@ -47,15 +49,15 @@ public class EntryPoint : IContextEntryPoint
 	// private
 
 
-	private IContext Create(IGameInstance gameInstance, HostServices hostServices)
+	private IContext Create(IGameInstance gameInstance, IContextData contextData)
 	{
-		var inGameMode = new InGameMode(hostServices.EcsSystems_Service);
+		var inGameMode = new InGameMode(contextData.Get<IEcsSystems_Service>());
 
 		var loadedContextComposer = new LoadedContextComposer(
-			hostServices.EcsSystems_Service, hostServices.Gui, hostServices.VvmBinder);
+			contextData.Get<IEcsSystems_Service>(), contextData.Get<IGui>(), contextData.Get<IVvmBinder>());
 
 		return new RunningGameContext(gameInstance,
-		                              hostServices.MessageDispatcher,
+		                              contextData.Get<IMessageDispatcher>(),
 		                              inGameMode,
 		                              loadedContextComposer);
 	}

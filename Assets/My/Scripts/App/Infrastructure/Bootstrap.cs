@@ -5,9 +5,11 @@ using Cysharp.Threading.Tasks;
 
 using Lib.AppFlow;
 using Lib.AppFlow.Impl;
+using Lib.AppFlow.Resolution;
 using Lib.AppFlow.Resolution.Impl;
 using Lib.AppFlow.Resolution.Internal;
 using Lib.UICore.Gui;
+using Lib.UICore.Mvvm;
 using Lib.UICore.Unity.Gui;
 using Lib.UICore.Unity.Mvvm;
 
@@ -35,7 +37,7 @@ public class Bootstrap : MonoBehaviour
 	private IMessageDispatcher _messageDispatcher = null!;
 	private IGui _gui = null!;
 
-	private HostServices _hostServices = null!;
+	private IContextData _contextData = null!;
 
 	private IApplicationSettings _applicationSettings = null!;
 
@@ -57,8 +59,12 @@ public class Bootstrap : MonoBehaviour
 		_gui = new Gui();
 		var vvmBinder = new VvmBinder();
 
-		_hostServices = new HostServices(_contextHost, _messageDispatcher, _gui, vvmBinder, _ecsSystems_Service);
-		_contextHost.HostServices = _hostServices;
+		_contextData = new ContextData();
+		_contextData.Add<IContextHost>(_contextHost);
+		_contextData.Add<IMessageDispatcher>(_messageDispatcher);
+		_contextData.Add<IGui>(_gui);
+		_contextData.Add<IVvmBinder>(vvmBinder);
+		_contextData.Add<IEcsSystems_Service>(_ecsSystems_Service);
 
 		_applicationSettings = new ApplicationSettings(ApplicationSettings);
 
@@ -76,7 +82,7 @@ public class Bootstrap : MonoBehaviour
 			.Subject("Application")
 			.Argument(_applicationSettings)
 			.Build();
-		_applicationContext = _contextHost.CreateContext(contextRequest);
+		_applicationContext = _contextHost.CreateRootContext(contextRequest, _contextData);
 		await _applicationContext.Start();
 
 		_isStarted = true;

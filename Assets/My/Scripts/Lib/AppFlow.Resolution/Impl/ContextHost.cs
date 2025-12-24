@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Lib.AppFlow.Impl;
+using Lib.AppFlow.Internal;
 using Lib.AppFlow.Resolution.Internal;
 
 
@@ -28,12 +30,15 @@ public class ContextHost : IContextHost_Internal
 	// IContextHost_Internal
 
 
-	public IHostServices HostServices { get; set; } = null!;
-
-
 	public void RegisterContext(IContextEntryPoint entryPoint)
 	{
 		_contextEntryPoints.Add(entryPoint);
+	}
+
+
+	public IContext CreateRootContext(IContextRequest request, IContextData contextData)
+	{
+		return CreateContext(request, contextData);
 	}
 
 
@@ -48,10 +53,10 @@ public class ContextHost : IContextHost_Internal
 		=> new ContextRequest();
 
 
-	public IContext CreateContext(IContextRequest request)
+	public IContext CreateContext(IContextRequest request, IContext parent)
 	{
-		var entryPoint = Resolve_ContextRequest(request);
-		return entryPoint.Create(request, HostServices);
+		var contextData = new ContextData(((IContext_Internal)parent).ContextData);
+		return CreateContext(request, contextData);
 	}
 
 
@@ -68,6 +73,15 @@ public class ContextHost : IContextHost_Internal
 		}
 
 		throw new Exception("Context not found");
+	}
+
+
+	private IContext CreateContext(IContextRequest request, IContextData contextData)
+	{
+		var entryPoint = Resolve_ContextRequest(request);
+		var context = entryPoint.Create(request, contextData);
+		((IContext_Internal)context).ContextData = contextData;
+		return context;
 	}
 }
 

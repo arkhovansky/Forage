@@ -43,7 +43,7 @@ public class ApplicationContext : ApplicationContext_Base
 			.Subject(_gameInstance)
 			.Field("intent", "Play")
 			.Build();
-		var child = _contextHost.CreateContext(childRequest);
+		var child = _contextHost.CreateContext(childRequest, this);
 		AddChildContext(child);
 		await child.Start();
 	}

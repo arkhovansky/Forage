@@ -4,9 +4,9 @@
 
 public interface IContextHost_Internal : IContextHost
 {
-	IHostServices HostServices { get; set; }
-
 	void RegisterContext(IContextEntryPoint entryPoint);
+
+	IContext CreateRootContext(IContextRequest request, IContextData contextData);
 }
 
 

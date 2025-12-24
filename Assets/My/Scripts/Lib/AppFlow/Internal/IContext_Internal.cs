@@ -14,6 +14,8 @@ public interface IContext_Internal
 	IController? Controller { get; }
 
 	IReadOnlyList<IView> Views { get; }
+
+	IContextData ContextData { get; set; }
 }
 
 

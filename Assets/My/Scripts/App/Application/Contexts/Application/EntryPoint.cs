@@ -2,7 +2,6 @@
 using Lib.AppFlow.Resolution;
 
 using App.Application.Contexts.Application.Settings;
-using App.Infrastructure;
 
 
 
@@ -33,14 +32,14 @@ public class EntryPoint : IContextEntryPoint
 	}
 
 
-	public IContext Create(IContextRequest request, IHostServices hostServices)
+	public IContext Create(IContextRequest request, IContextData contextData)
 	{
 		var applicationSettings = request.GetArgument<IApplicationSettings>();
-		var hostServices_ = (HostServices) hostServices;
 
-		return new ApplicationContext(applicationSettings,
-		                              hostServices_.MessageDispatcher,
-		                              hostServices_.ContextHost);
+		return new ApplicationContext(
+			applicationSettings,
+			contextData.Get<IMessageDispatcher>(),
+			contextData.Get<IContextHost>());
 	}
 }
 

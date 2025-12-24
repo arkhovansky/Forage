@@ -43,6 +43,8 @@ public abstract class Context
 
 	IReadOnlyList<IView> IContext_Internal.Views => Views;
 
+	IContextData IContext_Internal.ContextData { get; set; } = null!;
+
 
 	//----------------------------------------------------------------------------------------------
 	// IContext implementation

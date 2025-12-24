@@ -9,7 +9,7 @@ public interface IContextHost
 	IContextRequest_Builder New_ContextRequest();
 
 
-	IContext CreateContext(IContextRequest request);
+	IContext CreateContext(IContextRequest request, IContext parent);
 }
 
 
