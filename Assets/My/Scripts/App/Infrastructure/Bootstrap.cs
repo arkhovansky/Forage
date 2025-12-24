@@ -15,7 +15,7 @@ using Lib.UICore.Unity.Mvvm;
 
 using App.Application.Contexts.Application._Infrastructure.Settings;
 using App.Application.Contexts.Application.Settings;
-using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Services;
+using App.Infrastructure.EcsGateway.Services;
 using App.Infrastructure.Shared.Contracts.Services;
 
 
@@ -125,7 +125,8 @@ public class Bootstrap : MonoBehaviour
 	private void RegisterContexts()
 	{
 		_contextHost.RegisterContext(Application.Contexts.Application.EntryPoint.Instance);
-		_contextHost.RegisterContext(Application.Contexts.RunningGame.EntryPoint.Instance);
+		_contextHost.RegisterContext(Application.Contexts.RunningGame_Boundary.EntryPoint.Instance);
+		_contextHost.RegisterContext(Application.Contexts.RunningGame_Gameplay.EntryPoint.Instance);
 	}
 }
 
