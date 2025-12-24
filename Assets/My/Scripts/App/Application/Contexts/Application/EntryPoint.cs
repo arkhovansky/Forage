@@ -36,10 +36,7 @@ public class EntryPoint : IContextEntryPoint
 	{
 		var applicationSettings = request.GetArgument<IApplicationSettings>();
 
-		return new ApplicationContext(
-			applicationSettings,
-			contextData.Get<IMessageDispatcher>(),
-			contextData.Get<IContextHost>());
+		return new ApplicationContext(applicationSettings);
 	}
 }
 

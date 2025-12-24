@@ -89,8 +89,7 @@ public class EntryPoint : IContextEntryPoint
 			sceneViewController,
 			worldUI_View,
 			screenUI_VM,
-			screenUI_View,
-			contextData.Get<IMessageDispatcher>());
+			screenUI_View);
 
 		uiModel.Init_PresentationEvent_Emitter(context);
 		controller.Init_Command_Emitter(context);

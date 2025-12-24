@@ -56,9 +56,7 @@ public class EntryPoint : IContextEntryPoint
 		return new RunningGame_Boundary_Context(
 			gameInstance,
 			inGameMode,
-			loadedContextComposer,
-			contextData.Get<IContextHost>(),
-			contextData.Get<IMessageDispatcher>());
+			loadedContextComposer);
 	}
 }
 

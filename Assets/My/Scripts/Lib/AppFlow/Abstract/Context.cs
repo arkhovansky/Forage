@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
 using Lib.AppFlow.Internal;
+using Lib.AppFlow.Resolution;
 
 
 
@@ -18,23 +19,31 @@ public abstract class Context
 {
 	protected readonly List<IContext> Children = new();
 
-	protected readonly IMessageDispatcher MessageDispatcher;
-
 	protected readonly Dictionary<Type, Delegate> Command_Handlers = new();
 
 	protected readonly List<IView> Views = new();
 
-	//----------------------------------------------------------------------------------------------
+
+	protected IMessageDispatcher MessageDispatcher { get; private set; } = null!;
+
+	protected IContextHost ContextHost { get; private set; } = null!;
 
 
-	protected Context(IMessageDispatcher messageDispatcher)
-	{
-		MessageDispatcher = messageDispatcher;
-	}
+	private IContextData _contextData = null!;
 
 
 	//----------------------------------------------------------------------------------------------
 	// IContext_Internal implementation
+
+
+	void IContext_Internal.Init(IMessageDispatcher messageDispatcher,
+	                            IContextData contextData,
+	                            IContextHost contextHost)
+	{
+		MessageDispatcher = messageDispatcher;
+		_contextData = contextData;
+		ContextHost = contextHost;
+	}
 
 
 	IReadOnlyDictionary<Type, Delegate> IContext_Internal.Command_Handlers => Command_Handlers;
@@ -43,7 +52,7 @@ public abstract class Context
 
 	IReadOnlyList<IView> IContext_Internal.Views => Views;
 
-	IContextData IContext_Internal.ContextData { get; set; } = null!;
+	IContextData IContext_Internal.ContextData => _contextData;
 
 
 	//----------------------------------------------------------------------------------------------

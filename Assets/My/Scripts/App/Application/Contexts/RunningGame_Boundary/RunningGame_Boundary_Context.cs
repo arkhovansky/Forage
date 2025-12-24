@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
 using Lib.AppFlow;
-using Lib.AppFlow.Resolution;
 
 using App.Application.Contexts.RunningGame_Boundary.Composition;
 using App.Application.Contexts.RunningGame_Boundary.Services;
@@ -22,22 +21,17 @@ public class RunningGame_Boundary_Context : Context
 
 	private readonly IInGameMode _inGameMode;
 	private readonly ILoadedContextComposer _loadedContextComposer;
-	private readonly IContextHost _contextHost;
 
 	//----------------------------------------------------------------------------------------------
 
 
 	public RunningGame_Boundary_Context(IGameInstance game,
 	                                    IInGameMode inGameMode,
-	                                    ILoadedContextComposer loadedContextComposer,
-	                                    IContextHost contextHost,
-	                                    IMessageDispatcher messageDispatcher)
-		: base(messageDispatcher)
+	                                    ILoadedContextComposer loadedContextComposer)
 	{
 		_game = game;
 		_inGameMode = inGameMode;
 		_loadedContextComposer = loadedContextComposer;
-		_contextHost = contextHost;
 	}
 
 
@@ -55,10 +49,10 @@ public class RunningGame_Boundary_Context : Context
 
 		runningGameInitializer.Initialize(locale);
 
-		var childRequest = _contextHost.New_ContextRequest()
+		var childRequest = ContextHost.New_ContextRequest()
 			.Subject(runningGame)
 			.Build();
-		var child = _contextHost.CreateContext(childRequest, this);
+		var child = ContextHost.CreateContext(childRequest, this);
 		AddChildContext(child);
 		await child.Start();
 	}

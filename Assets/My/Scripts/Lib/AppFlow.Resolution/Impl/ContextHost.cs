@@ -80,7 +80,9 @@ public class ContextHost : IContextHost_Internal
 	{
 		var entryPoint = Resolve_ContextRequest(request);
 		var context = entryPoint.Create(request, contextData);
-		((IContext_Internal)context).ContextData = contextData;
+		((IContext_Internal)context).Init(contextData.Get<IMessageDispatcher>(),
+		                                  contextData,
+		                                  this);
 		return context;
 	}
 }

@@ -8,10 +8,7 @@ namespace Lib.AppFlow.Unity {
 
 public abstract class ApplicationContext_Base : Context
 {
-	protected ApplicationContext_Base(
-		IMessageDispatcher messageDispatcher
-	)
-		: base(messageDispatcher)
+	protected ApplicationContext_Base()
 	{
 		base.Add_Command_Handler<ExitApplicationCommand>(OnQuitCommand);
 

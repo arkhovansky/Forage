@@ -32,9 +32,7 @@ public class RunningGame_Gameplay_Context : Context
 	                                    IView camera_View,
 	                                    IView worldUI_View,
 	                                    ILoopComponent screenUI_VM,
-	                                    Lib.UICore.Gui.IView screenUI_View,
-	                                    IMessageDispatcher messageDispatcher)
-		: base(messageDispatcher)
+	                                    Lib.UICore.Gui.IView screenUI_View)
 	{
 		_runningGame = runningGame;
 		_uiModel = uiModel;
