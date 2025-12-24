@@ -34,6 +34,14 @@ public class EcsHelper : IEcsHelper
 	}
 
 
+	public T GetSingletonComponent<T>()
+		where T : unmanaged, IComponentData
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		return entityManager.GetComponentData<T>(GetSingletonEntity());
+	}
+
+
 	public void SendEcsCommand<T>(T command)
 		where T : unmanaged, IComponentData
 	{

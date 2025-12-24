@@ -18,6 +18,9 @@ public interface IEcsHelper
 	void AddSingletonComponent<T>(T componentData)
 		where T : unmanaged, IComponentData;
 
+	T GetSingletonComponent<T>()
+		where T : unmanaged, IComponentData;
+
 	void SendEcsCommand<T>(T command)
 		where T : unmanaged, IComponentData;
 
