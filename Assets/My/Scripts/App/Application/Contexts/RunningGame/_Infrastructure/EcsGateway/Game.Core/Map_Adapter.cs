@@ -5,6 +5,7 @@ using Lib.Grid;
 using App.Application.Contexts.RunningGame._Infrastructure.EcsGateway.Contracts.Services;
 using App.Game.Core.Query;
 using App.Game.Database;
+using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 
@@ -32,6 +33,12 @@ public class Map_Adapter : IMap
 
 	//----------------------------------------------------------------------------------------------
 	// IMap implementation
+
+
+	public RectangularHexMap Get_GridMap()
+	{
+		return _ecsHelper.GetSingletonComponent<Map>().Value;
+	}
 
 
 	public TerrainTypeId Get_TerrainTypeId(AxialPosition tile)
