@@ -13,7 +13,7 @@ public abstract class Controller
 	: IController,
 	  IController_Internal
 {
-	protected readonly ICommand_Emitter CommandEmitter;
+	protected ICommand_Emitter CommandEmitter = null!;
 
 	protected readonly Dictionary<Type, Delegate> InputEvent_Handlers = new();
 	protected readonly Dictionary<Type, Delegate> Command_Handlers = new();
@@ -21,7 +21,7 @@ public abstract class Controller
 	//----------------------------------------------------------------------------------------------
 
 
-	protected Controller(ICommand_Emitter commandEmitter)
+	public void Init_Command_Emitter(ICommand_Emitter commandEmitter)
 	{
 		CommandEmitter = commandEmitter;
 	}

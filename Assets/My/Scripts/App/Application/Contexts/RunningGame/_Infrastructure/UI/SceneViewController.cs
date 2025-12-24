@@ -29,7 +29,7 @@ public class SceneViewController : View
 
 	private readonly Spatial_RectangularHexMap_3D _map;
 
-	private readonly IInputEvent_Emitter _inputEvent_Emitter;
+	private IInputEvent_Emitter _inputEvent_Emitter = null!;
 
 	private readonly InputAction _pointAction;
 	private readonly InputAction _clickAction;
@@ -62,12 +62,10 @@ public class SceneViewController : View
 
 
 	public SceneViewController(Camera camera,
-	                           Spatial_RectangularHexMap_3D map,
-	                           IInputEvent_Emitter inputEvent_Emitter)
+	                           Spatial_RectangularHexMap_3D map)
 	{
 		_camera = camera;
 		_map = map;
-		_inputEvent_Emitter = inputEvent_Emitter;
 
 		_pointAction = InputSystem.actions.FindAction("Point");
 		_clickAction = InputSystem.actions.FindAction("Click");
@@ -75,6 +73,12 @@ public class SceneViewController : View
 		_zoomAction = InputSystem.actions.FindAction("ScrollWheel");
 
 		base.Add_PresentationEvent_Handler<PositionCameraToOverview_Request>(On_PositionCameraToOverview);
+	}
+
+
+	public void Init_InputEvent_Emitter(IInputEvent_Emitter inputEvent_Emitter)
+	{
+		_inputEvent_Emitter = inputEvent_Emitter;
 	}
 
 

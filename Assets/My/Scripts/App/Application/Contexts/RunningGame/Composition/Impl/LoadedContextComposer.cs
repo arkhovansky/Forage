@@ -81,7 +81,7 @@ public class LoadedContextComposer : ILoadedContextComposer
 			_ecsSystems_Service, ecsHelper);
 		runningGame = runningGameInstance;
 
-		var runningGame_UIModel = new RunningGame_UIModel(context);
+		var runningGame_UIModel = new RunningGame_UIModel();
 		uiModel = runningGame_UIModel;
 
 		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
@@ -100,17 +100,22 @@ public class LoadedContextComposer : ILoadedContextComposer
 		runningGameInitializer = Create_RunningGameInitializer(
 			_gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
-		controller = new RunningGameController(runningGameInstance, runningGame_UIModel, context);
+		var runningGameController = new RunningGameController(runningGameInstance, runningGame_UIModel);
+		controller = runningGameController;
 
 		worldUI_View = new WorldUI_View(ecsHelper);
 
 		var runningGame_ScreenUI_VM = new RunningGame_ScreenUI_VM(
 			runningGameInstance, runningGame_UIModel,
-			context,
 			terrainTypePresentationRepository, resourceTypePresentationRepository, humanTypePresentationRepository);
 		screenUI_VM = runningGame_ScreenUI_VM;
 		screenUI_View = new RunningGame_ScreenUI_View(runningGame_ScreenUI_VM,
 		                                              _gui, _vvmBinder);
+
+		runningGame_UIModel.Init_PresentationEvent_Emitter(context);
+		runningGameController.Init_Command_Emitter(context);
+		runningGame_ScreenUI_VM.Init_Command_Emitter(context);
+
 		_gui.AddView(screenUI_View);
 	}
 
@@ -119,7 +124,9 @@ public class LoadedContextComposer : ILoadedContextComposer
 	                                        RunningGameContext context)
 	{
 		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
-		return new SceneViewController(Camera.main!, spatialMap, context);
+		var sceneViewController = new SceneViewController(Camera.main!, spatialMap);
+		sceneViewController.Init_InputEvent_Emitter(context);
+		return sceneViewController;
 	}
 
 

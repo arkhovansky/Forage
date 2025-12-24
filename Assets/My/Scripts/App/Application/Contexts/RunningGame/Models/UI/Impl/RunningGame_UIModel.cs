@@ -13,14 +13,14 @@ public class RunningGame_UIModel
 	: IRunningGame_UIModel,
 	  ILoopComponent
 {
-	private readonly IPresentationEvent_Emitter _presentationEvent_Emitter;
+	private IPresentationEvent_Emitter _presentationEvent_Emitter = null!;
 
 	private AxialPosition? _highlightedTile;
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public RunningGame_UIModel(IPresentationEvent_Emitter presentationEvent_Emitter)
+	public void Init_PresentationEvent_Emitter(IPresentationEvent_Emitter presentationEvent_Emitter)
 	{
 		_presentationEvent_Emitter = presentationEvent_Emitter;
 	}

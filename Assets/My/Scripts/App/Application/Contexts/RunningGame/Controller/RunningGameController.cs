@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Lib.AppFlow;
-
 using App.Application.Contexts.RunningGame.Messages.Commands;
 using App.Application.Contexts.RunningGame.Messages.InputEvents;
 using App.Application.Contexts.RunningGame.Models.UI;
@@ -43,9 +41,7 @@ public partial class RunningGameController : Lib.AppFlow.Controller
 
 
 	public RunningGameController(IRunningGameInstance runningGame,
-	                             IRunningGame_UIModel uiModel,
-	                             ICommand_Emitter commandEmitter)
-		: base(commandEmitter)
+	                             IRunningGame_UIModel uiModel)
 	{
 		_runningGame = runningGame;
 		_uiModel = uiModel;

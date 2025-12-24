@@ -26,8 +26,8 @@ public partial class RunningGame_ScreenUI_VM
 
 	public TileInfoVM TileInfoVM { get; }
 
-	public EnterPlaceCampMode_CommandVM EnterPlaceCampModeCommand { get; }
-	public RunYearPeriod_CommandVM RunYearPeriodCommand { get; }
+	public EnterPlaceCampMode_CommandVM EnterPlaceCampModeCommand { get; private set; } = null!;
+	public RunYearPeriod_CommandVM RunYearPeriodCommand { get; private set; } = null!;
 
 	public SelectCampLocationHintVM SelectCampLocationHintVM { get; }
 
@@ -56,7 +56,6 @@ public partial class RunningGame_ScreenUI_VM
 
 	public RunningGame_ScreenUI_VM(IRunningGameInstance_RO runningGameInstance,
 	                               IRunningGame_UIModel_RO uiModel,
-	                               ICommand_Emitter commandEmitter,
 	                               ITerrainTypePresentationRepository terrainTypePresentationRepository,
 	                               IResourceTypePresentationRepository resourceTypePresentationRepository,
 	                               IHumanTypePresentationRepository humanTypePresentationRepository)
@@ -71,14 +70,23 @@ public partial class RunningGame_ScreenUI_VM
 		TileInfoVM = new TileInfoVM(_game.World.Map, uiModel,
 		                            terrainTypePresentationRepository, resourceTypePresentationRepository);
 
+		SelectCampLocationHintVM = new SelectCampLocationHintVM();
+	}
+
+
+	public void Init_Command_Emitter(ICommand_Emitter commandEmitter)
+	{
 		EnterPlaceCampModeCommand = new EnterPlaceCampMode_CommandVM(
 			() => commandEmitter.Emit(new EnterPlaceCampMode()));
 		RunYearPeriodCommand = new RunYearPeriod_CommandVM(
 			() => commandEmitter.Emit(new RunYearPeriod()));
 
-		SelectCampLocationHintVM = new SelectCampLocationHintVM();
+		FinishInitialization();
+	}
 
-		// Should come at the end since modes might use data members of this
+
+	private void FinishInitialization() {
+		// Should come at the end of initialization, since modes might use data members of this
 		_modes.Add(UIModeId.Arrival, new Arrival_Mode(this));
 		_modes.Add(UIModeId.CampPlacing, new CampPlacing_Mode(this));
 		_modes.Add(UIModeId.InterPeriod, new InterPeriod_Mode(this));
