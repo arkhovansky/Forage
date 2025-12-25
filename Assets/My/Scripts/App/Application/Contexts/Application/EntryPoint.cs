@@ -1,6 +1,7 @@
 ﻿using Lib.AppFlow;
 using Lib.AppFlow.Resolution;
 
+using App.Application.Contexts.Application._Infrastructure.Services;
 using App.Application.Contexts.Application.Settings;
 
 
@@ -36,7 +37,11 @@ public class EntryPoint : IContextEntryPoint
 	{
 		var applicationSettings = request.GetArgument<IApplicationSettings>();
 
-		return new ApplicationContext(applicationSettings);
+		var gameInstance_Factory = new GameInstance_Factory();
+
+		return new ApplicationContext(
+			applicationSettings,
+			gameInstance_Factory);
 	}
 }
 
