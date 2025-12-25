@@ -4,12 +4,13 @@
 
 public class GameInstance : IGameInstance
 {
-	public LocaleId LocaleId { get; }
+	public IGameInstance_Setup Setup { get; }
 
 
-	public GameInstance(LocaleId localeId)
+
+	public GameInstance(IGameInstance_Setup setup)
 	{
-		LocaleId = localeId;
+		Setup = setup;
 	}
 }
 

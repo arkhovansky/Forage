@@ -4,7 +4,7 @@
 
 public interface IGameInstance
 {
-	LocaleId LocaleId { get; }
+	IGameInstance_Setup Setup { get; }
 }
 
 

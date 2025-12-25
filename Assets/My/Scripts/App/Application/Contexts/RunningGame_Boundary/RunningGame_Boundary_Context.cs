@@ -47,7 +47,7 @@ public class RunningGame_Boundary_Context : Context
 			out var runningGameInitializer,
 			out var runningGame);
 
-		var locale = localeFactory.Create(_game.LocaleId);
+		var locale = localeFactory.Create(_game.Setup.LocaleId);
 
 		runningGameInitializer.Initialize(locale);
 

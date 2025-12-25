@@ -28,8 +28,9 @@ public class ApplicationContext : ApplicationContext_Base
 
 	public override async UniTask Start()
 	{
-		var localeId = _settings.DefaultLocale;
-		_gameInstance = new GameInstance(localeId);
+		var gameInstance_Setup = new GameInstance_Setup();
+		gameInstance_Setup.LocaleId = _settings.DefaultLocale;
+		_gameInstance = new GameInstance(gameInstance_Setup);
 
 		var childRequest = ContextHost.New_ContextRequest()
 			.Subject(_gameInstance)
