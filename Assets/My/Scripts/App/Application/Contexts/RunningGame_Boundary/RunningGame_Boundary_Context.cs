@@ -2,6 +2,7 @@
 
 using Lib.AppFlow;
 
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database;
 using App.Application.Contexts.RunningGame_Boundary.Composition;
 using App.Application.Contexts.RunningGame_Boundary.Services;
 using App.Game.Meta;
@@ -41,6 +42,7 @@ public class RunningGame_Boundary_Context : Context
 		// GameDatabase.Instance is available now
 
 		_loadedContextComposer.Compose(
+			GameDatabase.Instance,
 			out var localeFactory,
 			out var runningGameInitializer,
 			out var runningGame);

@@ -47,6 +47,7 @@ public class LoadedContextComposer : ILoadedContextComposer
 
 
 	public void Compose(
+		GameDatabase database,
 		out ILocaleFactory localeFactory,
 		out IRunningGameInitializer runningGameInitializer,
 		out IRunningGameInstance runningGame)
@@ -58,7 +59,7 @@ public class LoadedContextComposer : ILoadedContextComposer
 			_contextData.Get<IEcsSystems_Service>(), ecsHelper);
 		runningGame = runningGameInstance;
 
-		var localeRepository = new LocaleAssetRepository(GameDatabase.Instance.Domain.Locales);
+		var localeRepository = new LocaleAssetRepository(database.Domain.Locales);
 		localeFactory = new LocaleFactory(localeRepository);
 
 		var gridLayout = new HexGridLayout_3D(
@@ -66,13 +67,13 @@ public class LoadedContextComposer : ILoadedContextComposer
 			new Matrix3x2(Vector3.right, Vector3.forward));
 
 		var terrainTypePresentationRepository =
-			new TerrainTypePresentationRepository(GameDatabase.Instance.Presentation.TerrainTypes, gridLayout);
+			new TerrainTypePresentationRepository(database.Presentation.TerrainTypes, gridLayout);
 		var resourceTypePresentationRepository =
-			new ResourceTypePresentationRepository(GameDatabase.Instance.Presentation.ResourceTypes);
+			new ResourceTypePresentationRepository(database.Presentation.ResourceTypes);
 		var humanTypePresentationRepository = new HumanTypePresentationRepository();
 
 		runningGameInitializer = Create_RunningGameInitializer(
-			gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
+			database, gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
 
 
 		_contextData.Add<IEcsHelper>(ecsHelper);
@@ -88,6 +89,7 @@ public class LoadedContextComposer : ILoadedContextComposer
 
 
 	private static IRunningGameInitializer Create_RunningGameInitializer(
+		GameDatabase database,
 		HexGridLayout_3D gridLayout,
 		IEcsHelper ecsHelper,
 		ITerrainTypePresentationRepository terrainTypePresentationRepository,
@@ -95,11 +97,11 @@ public class LoadedContextComposer : ILoadedContextComposer
 	{
 		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
 
-		var mapPresentationRepository = new MapPresentationRepository(GameDatabase.Instance.Presentation);
+		var mapPresentationRepository = new MapPresentationRepository(database.Presentation);
 		var terrainInitializer = new TerrainInitializer(
 			gridLayout, terrainTypePresentationRepository, mapPresentationRepository, ecsHelper);
 
-		var resourceTypeRepository = new ResourceTypeRepository(GameDatabase.Instance.Domain.PlantResourceTypes);
+		var resourceTypeRepository = new ResourceTypeRepository(database.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
 			resourceTypeRepository
 #if !DOTS_DISABLE_DEBUG_NAMES
@@ -115,8 +117,8 @@ public class LoadedContextComposer : ILoadedContextComposer
 		var humanTypeRepository = new HumanTypeRepository();
 		var bandInitializer = new BandInitializer(humanTypeRepository);
 
-		var systemParametersRepository = new SystemParametersRepository(GameDatabase.Instance.Domain.SystemParameters);
-		var domainSettingsRepository = new DomainSettingsRepository(GameDatabase.Instance.DomainSettings);
+		var systemParametersRepository = new SystemParametersRepository(database.Domain.SystemParameters);
+		var domainSettingsRepository = new DomainSettingsRepository(database.DomainSettings);
 		var systemParametersInitializer =
 			new SystemsInitializer(systemParametersRepository, domainSettingsRepository);
 
