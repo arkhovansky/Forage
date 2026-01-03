@@ -47,7 +47,7 @@ public class BandInitializer : IBandInitializer
 				_ => throw new ArgumentOutOfRangeException()
 			};
 
-			var clonedEntities = new NativeArray<Entity>((int)countOfType, Allocator.Temp);
+			using var clonedEntities = new NativeArray<Entity>((int)countOfType, Allocator.Temp);
 			entityManager.Instantiate(prefabEntity, clonedEntities);
 
 			for (int i = 0; i < countOfType; i++) {
@@ -55,8 +55,6 @@ public class BandInitializer : IBandInitializer
 
 				entityManager.SetComponentData(entity, new BandMember {Id = iBandMember++});
 			}
-
-			clonedEntities.Dispose();
 		}
 	}
 }
