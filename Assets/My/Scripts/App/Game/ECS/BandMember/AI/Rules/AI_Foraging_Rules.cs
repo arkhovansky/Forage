@@ -23,7 +23,7 @@ public static class AI_Foraging_Rules
 		float moveTime = movementRules.GetMovementTime(
 			pathInfo.TotalMovementCost, physicalMapParams.TileInnerDiameter, walker.BaseSpeed_KmPerH);
 		float gatherTime = gatheringRules.GetGatheringTime(
-			foodConsumer.EnergyNeededPerDay,
+			foodConsumer.EnergyRequiredDaily,
 			ripeBiomass.Value, physicalMapParams.CellArea, gatherer.GatheringSpeed);
 
 		return GetForagingTime(moveTime, gatherTime);
@@ -38,7 +38,7 @@ public static class AI_Foraging_Rules
 		float moveTime = movementRules.GetMinMovementTime(
 			foragerPosition, resourcePosition, physicalMapParams.TileInnerDiameter, walker.BaseSpeed_KmPerH);
 		float gatherTime = gatheringRules.GetMinGatheringTime(
-			foodConsumer.EnergyNeededPerDay, gatherer.GatheringSpeed);
+			foodConsumer.EnergyRequiredDaily, gatherer.GatheringSpeed);
 
 		return GetForagingTime(moveTime, gatherTime);
 	}

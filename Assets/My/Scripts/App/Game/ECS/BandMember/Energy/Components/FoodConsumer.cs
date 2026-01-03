@@ -9,7 +9,7 @@ namespace App.Game.ECS.BandMember.Energy.Components {
 
 public struct FoodConsumer : IComponentData
 {
-	public readonly uint EnergyNeededPerDay;
+	public readonly uint EnergyRequiredDaily;
 
 	[SerializeField] private float _energyConsumedToday;
 
@@ -20,16 +20,16 @@ public struct FoodConsumer : IComponentData
 	}
 
 	public readonly float EnergyStillNeeded
-		=> EnergyConsumedToday < EnergyNeededPerDay ? EnergyNeededPerDay - EnergyConsumedToday : 0f;
+		=> EnergyConsumedToday < EnergyRequiredDaily ? EnergyRequiredDaily - EnergyConsumedToday : 0f;
 
 	public readonly bool IsSatiated
-		=> EnergyConsumedToday >= EnergyNeededPerDay;
+		=> EnergyConsumedToday >= EnergyRequiredDaily;
 
 
 
-	public FoodConsumer(uint energyNeededPerDay)
+	public FoodConsumer(uint energyRequiredDaily)
 	{
-		EnergyNeededPerDay = energyNeededPerDay;
+		EnergyRequiredDaily = energyRequiredDaily;
 		_energyConsumedToday = 0f;
 	}
 
@@ -38,8 +38,8 @@ public struct FoodConsumer : IComponentData
 	{
 		EnergyConsumedToday += energy;
 
-		if (Mathf.Approximately(EnergyConsumedToday, EnergyNeededPerDay))
-			EnergyConsumedToday = EnergyNeededPerDay;
+		if (Mathf.Approximately(EnergyConsumedToday, EnergyRequiredDaily))
+			EnergyConsumedToday = EnergyRequiredDaily;
 	}
 
 
