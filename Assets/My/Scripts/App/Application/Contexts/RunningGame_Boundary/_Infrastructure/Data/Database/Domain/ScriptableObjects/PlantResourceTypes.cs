@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-using App.Game.Database;
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Domain;
 using App.Infrastructure.Data;
 
 

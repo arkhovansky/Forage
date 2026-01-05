@@ -1,10 +1,11 @@
 ﻿using System;
 
+using App.Game.Database;
 using App.Game.ECS.GameTime.Components;
 
 
 
-namespace App.Game.Database {
+namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Domain {
 
 
 
