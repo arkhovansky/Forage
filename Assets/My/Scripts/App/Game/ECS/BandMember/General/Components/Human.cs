@@ -8,9 +8,15 @@ namespace App.Game.ECS.BandMember.General.Components {
 
 
 
-public struct Human : IComponentData
+public readonly struct Human : IComponentData
 {
-	public HumanTypeId TypeId;
+	public readonly HumanTypeId TypeId;
+
+
+	public Human(HumanTypeId humanTypeId)
+	{
+		TypeId = humanTypeId;
+	}
 }
 
 

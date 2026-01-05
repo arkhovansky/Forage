@@ -12,18 +12,10 @@ PrefabInstance:
       propertyPath: TypeId
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 61056054557385157, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
-      propertyPath: GatheringSpeed
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 2634078648440320970, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: a5676dd8a8a14c543b6b9cb9f7f5903c, type: 2}
-    - target: {fileID: 3695774897606592770, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
-      propertyPath: BaseSpeed_KmPerH
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4928380680374904040, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
       propertyPath: m_Name
       value: Woman
@@ -67,10 +59,6 @@ PrefabInstance:
     - target: {fileID: 7262914225152026163, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9143118567500116657, guid: 661f3377dbf00094d826fcbbbff0b032, type: 3}
-      propertyPath: NeededEnergyPerDay
-      value: 2500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

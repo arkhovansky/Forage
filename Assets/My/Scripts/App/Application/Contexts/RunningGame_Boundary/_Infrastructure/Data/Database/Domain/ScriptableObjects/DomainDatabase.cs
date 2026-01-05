@@ -17,6 +17,8 @@ public class DomainDatabase : ScriptableObject
 
 	public PlantResourceTypes PlantResourceTypes = null!;
 
+	public HumanTypes HumanTypes = null!;
+
 	public SystemParameters SystemParameters = null!;
 
 	public Locales Locales = null!;

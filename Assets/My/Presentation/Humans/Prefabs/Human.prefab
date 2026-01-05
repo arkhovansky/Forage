@@ -100,9 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7262914225152026163}
   - component: {fileID: -4976634790518226552}
-  - component: {fileID: 61056054557385157}
-  - component: {fileID: 9143118567500116657}
-  - component: {fileID: 3695774897606592770}
   m_Layer: 0
   m_Name: Human
   m_TagString: Untagged
@@ -136,45 +133,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7c92a312f0442bb8b4607c1158ac01a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   TypeId: 0
---- !u!114 &61056054557385157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928380680374904040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03579029bd474f598726a42c58f15ff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GatheringSpeed: 0
---- !u!114 &9143118567500116657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928380680374904040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4541b0b64eb84e0abb37a210c3a1dc45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NeededEnergyPerDay: 0
---- !u!114 &3695774897606592770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928380680374904040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f168bb084ae45ab8d6b0e4ba5ace475, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BaseSpeed_KmPerH: 0

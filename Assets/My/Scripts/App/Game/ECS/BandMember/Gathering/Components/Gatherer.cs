@@ -5,9 +5,16 @@
 namespace App.Game.ECS.BandMember.Gathering.Components {
 
 
-public struct Gatherer : IComponentData
+
+public readonly struct Gatherer : IComponentData
 {
-	public float GatheringSpeed;
+	public readonly float GatheringSpeed;
+
+
+	public Gatherer(float gatheringSpeed)
+	{
+		GatheringSpeed = gatheringSpeed;
+	}
 }
 
 
