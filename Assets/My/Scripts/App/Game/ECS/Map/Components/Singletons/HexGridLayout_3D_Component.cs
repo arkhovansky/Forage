@@ -8,12 +8,12 @@ namespace App.Game.ECS.Map.Components.Singletons {
 
 
 
-public struct HexLayout3D_Component : IComponentData
+public struct HexGridLayout_3D_Component : IComponentData
 {
 	public readonly HexGridLayout_3D Layout;
 
 
-	public HexLayout3D_Component(HexGridLayout_3D layout)
+	public HexGridLayout_3D_Component(HexGridLayout_3D layout)
 	{
 		Layout = layout;
 	}

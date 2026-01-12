@@ -28,7 +28,7 @@ public partial struct BandMemberPresentation : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+		var gridLayout = SystemAPI.GetSingleton<HexGridLayout_3D_Component>().Layout;
 
 		foreach (var (position, intraCellMovement, path,
 			         localTransform)

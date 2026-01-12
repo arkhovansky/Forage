@@ -60,7 +60,7 @@ public class RunningGameInitializer : IRunningGameInitializer
 	private void InitMap(RectangularHexMap map)
 	{
 		EcsService.AddSingletonComponent(new Map(map));
-		EcsService.AddSingletonComponent(new HexLayout3D_Component(_gridLayout));
+		EcsService.AddSingletonComponent(new HexGridLayout_3D_Component(_gridLayout));
 	}
 }
 

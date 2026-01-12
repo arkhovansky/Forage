@@ -116,7 +116,7 @@ public partial class PlantResourcePresentation : SystemBase
 	private void CreateIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
 	{
 		var renderMeshArray = SystemAPI.ManagedAPI.GetSingleton<ResourceIcons_RenderMeshArray>().Value;
-		var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+		var gridLayout = SystemAPI.GetSingleton<HexGridLayout_3D_Component>().Layout;
 
 		var prototype = EntityManager.CreateEntity(typeof(LocalTransform));
 		RenderMeshUtility.AddComponents(prototype,
