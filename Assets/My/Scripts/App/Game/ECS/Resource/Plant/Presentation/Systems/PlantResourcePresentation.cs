@@ -116,7 +116,7 @@ public partial class PlantResourcePresentation : SystemBase
 	private void CreateIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
 	{
 		var renderMeshArray = SystemAPI.ManagedAPI.GetSingleton<ResourceIcons_RenderMeshArray>().Value;
-		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+		var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 
 		var prototype = EntityManager.CreateEntity(typeof(LocalTransform));
 		RenderMeshUtility.AddComponents(prototype,
@@ -143,7 +143,7 @@ public partial class PlantResourcePresentation : SystemBase
 				uint iconIndexInResource = (uint) resourceIconsBuffer.Length;
 
 				EntityManager.SetComponentData(entity,
-					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, hexLayout));
+					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, gridLayout));
 
 				EntityManager.SetName(entity,
 					"Resource icon: " +

@@ -28,7 +28,7 @@ public partial struct BandMemberPresentation : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
-		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+		var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
 
 		foreach (var (position, intraCellMovement, path,
 			         localTransform)
@@ -41,15 +41,15 @@ public partial struct BandMemberPresentation : ISystem
 			Vector3 point;
 
 			if (intraCellMovement.ValueRO.IsBeforeCenter) {
-				point = hexLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, position,
-				                               intraCellMovement.ValueRO.PositionLerpParameter);
+				point = gridLayout.GetLerpPoint(intraCellMovement.ValueRO.PreviousPosition, position,
+				                                intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else if (intraCellMovement.ValueRO.IsAfterCenter) {
-				point = hexLayout.GetLerpPoint(position, path[0].Position,
-				                               intraCellMovement.ValueRO.PositionLerpParameter);
+				point = gridLayout.GetLerpPoint(position, path[0].Position,
+				                                intraCellMovement.ValueRO.PositionLerpParameter);
 			}
 			else {
-				point = hexLayout.GetPoint(position);
+				point = gridLayout.GetPoint(position);
 			}
 
 			localTransform.ValueRW = LocalTransform.FromPosition(point);
@@ -64,7 +64,7 @@ public partial struct BandMemberPresentation : ISystem
 			         .WithDisabled<MovementActivity>())
 		{
 			localTransform.ValueRW = LocalTransform.FromPosition(
-				hexLayout.GetPoint(position));
+				gridLayout.GetPoint(position));
 		}
 	}
 }

@@ -52,9 +52,9 @@ public partial struct CampPlacement : ISystem
 
 		state.EntityManager.SetComponentData(campEntity, new MapPosition(position));
 
-		var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
-		var inTilePosition = GetCampInTilePosition(in hexLayout);
-		var localTransform = hexLayout.GetCellLocalTransform(position)
+		var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+		var inTilePosition = GetCampInTilePosition(in gridLayout);
+		var localTransform = gridLayout.GetCellLocalTransform(position)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
 			.ApplyScale(0.25f);
 		state.EntityManager.SetComponentData(campEntity, localTransform);
@@ -69,9 +69,9 @@ public partial struct CampPlacement : ISystem
 		{
 			position.ValueRW.Value = campPosition;
 
-			var hexLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
-			var inTilePosition = GetCampInTilePosition(in hexLayout);
-			localTransform.ValueRW = hexLayout.GetCellLocalTransform(campPosition)
+			var gridLayout = SystemAPI.GetSingleton<HexLayout3D_Component>().Layout;
+			var inTilePosition = GetCampInTilePosition(in gridLayout);
+			localTransform.ValueRW = gridLayout.GetCellLocalTransform(campPosition)
 				.Translate(new float3(inTilePosition.x, 0.005f, inTilePosition.y));
 		}
 	}
