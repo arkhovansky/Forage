@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
+﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Entities.Graphics;
 using Unity.Mathematics;
-using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 using Lib.Grid;
 using Lib.Grid.Spatial;
@@ -29,7 +24,7 @@ namespace App.Game.ECS.Resource.Plant.Presentation.Systems {
 
 
 [UpdateInGroup(typeof(LocalTransformPresentation))]
-public partial class PlantResourcePresentation : SystemBase
+public partial struct PlantResourcePresentation : ISystem
 {
 	private struct ResourceIconsCreationData
 	{
@@ -39,7 +34,7 @@ public partial class PlantResourcePresentation : SystemBase
 		public Entity ResourceEntity;
 	}
 
-
+	//----------------------------------------------------------------------------------------------
 
 	/// <summary>
 	/// Icon side length relative to inner cell diameter.
@@ -47,24 +42,24 @@ public partial class PlantResourcePresentation : SystemBase
 	private const float RelativeIconSize = 0.2f;
 
 
-	private RenderMeshDescription _renderMeshDescription;
+	private NativeList<ResourceIconsCreationData> _creationData;
+
+	private NativeList<Entity> _entitiesToDestroy;
+
+	//----------------------------------------------------------------------------------------------
 
 
-
-	protected override void OnCreate()
+	[BurstCompile]
+	public void OnCreate(ref SystemState state)
 	{
-		base.OnCreate();
-
-		_renderMeshDescription = CreateRenderMeshDescription();
+		_creationData = new NativeList<ResourceIconsCreationData>(Allocator.Persistent);
+		_entitiesToDestroy = new NativeList<Entity>(Allocator.Persistent);
 	}
 
 
-
-	protected override void OnUpdate()
+	[BurstCompile]
+	public void OnUpdate(ref SystemState state)
 	{
-		var creationData = new List<ResourceIconsCreationData>();
-		var entitiesToDestroy = new NativeList<Entity>(Allocator.Temp);
-
 		foreach (var (resource, position, ripeBiomass, icons, entity)
 		         in SystemAPI.Query<
 			         RefRO<PlantResource>, MapPosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
@@ -77,7 +72,7 @@ public partial class PlantResourcePresentation : SystemBase
 				continue;
 
 			if (icons.Length < neededIconCount) {
-				creationData.Add(new ResourceIconsCreationData {
+				_creationData.Add(new ResourceIconsCreationData {
 					ResourceType = resource.ValueRO.TypeId,
 					MapPosition = position,
 					IconCountToCreate = neededIconCount - icons.Length,
@@ -86,90 +81,86 @@ public partial class PlantResourcePresentation : SystemBase
 			}
 			else {
 				for (var i = neededIconCount; i < icons.Length; i++)
-					entitiesToDestroy.Add(icons[i].Entity);
+					_entitiesToDestroy.Add(icons[i].Entity);
 
 				var icons_ = icons;
 				icons_.Length = neededIconCount;
 			}
 		}
 
-		CreateIcons(creationData);
-		DestroyIcons(entitiesToDestroy);
+		CreateIcons(_creationData,
+		            ref state);
+		DestroyIcons(_entitiesToDestroy,
+		             ref state);
+
+		_creationData.Clear();
+		_entitiesToDestroy.Clear();
 	}
 
 
-
-	private RenderMeshDescription CreateRenderMeshDescription()
+	[BurstCompile]
+	public void OnDestroy(ref SystemState state)
 	{
-		var filterSettings = RenderFilterSettings.Default;
-		filterSettings.ShadowCastingMode = ShadowCastingMode.Off;
-		filterSettings.ReceiveShadows = false;
-
-		return new RenderMeshDescription {
-			FilterSettings = filterSettings,
-			LightProbeUsage = LightProbeUsage.Off
-		};
+		_creationData.Dispose();
+		_entitiesToDestroy.Dispose();
 	}
 
 
+	//----------------------------------------------------------------------------------------------
+	// private
 
-	private void CreateIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
+
+	private void CreateIcons(NativeList<ResourceIconsCreationData> creationData,
+	                         ref SystemState state)
 	{
-		var renderMeshArray = SystemAPI.ManagedAPI.GetSingleton<ResourceIcons_RenderMeshArray>().Value;
+		var prototype = SystemAPI.GetComponent<ResourceIcon_Prototype>(state.SystemHandle).Entity;
+		var mmiBuffer = SystemAPI.GetSingletonBuffer<ResourceIcon_MaterialMeshInfo>(true);
 		var gridLayout = SystemAPI.GetSingleton<HexGridLayout_3D_Component>().Layout;
 
-		var prototype = EntityManager.CreateEntity(typeof(LocalTransform));
-		RenderMeshUtility.AddComponents(prototype,
-		                                EntityManager, _renderMeshDescription, renderMeshArray,
-		                                MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
+		var totalCount = CountIcons(creationData);
 
-		// Placed after prototype creation, or the buffer is invalidated by structural change (why?)
-		var mmiBuffer = SystemAPI.GetSingletonBuffer<ResourceIcon_MaterialMeshInfo>(true);
+		using var clonedEntities = new NativeArray<Entity>(totalCount, Allocator.Temp);
+		state.EntityManager.Instantiate(prototype, clonedEntities);
 
-		uint totalCount = CountIcons(creationData);
-
-		var clonedEntities = new NativeArray<Entity>((int)totalCount, Allocator.Temp);
-		EntityManager.Instantiate(prototype, clonedEntities);
-
-		for (int iResource = 0, iIcon = 0; iResource < creationData.Count; iResource++) {
+		for (int iResource = 0, iIcon = 0; iResource < creationData.Length; iResource++) {
 			var resourceData = creationData[iResource];
 
 			var materialMeshInfo = mmiBuffer[(int)resourceData.ResourceType].Value;
 
-			var resourceIconsBuffer = EntityManager.GetBuffer<ResourceIcon>(resourceData.ResourceEntity);
+			var resourceIconsBuffer = state.EntityManager.GetBuffer<ResourceIcon>(resourceData.ResourceEntity);
 
 			for (var iResourceIcon = 0; iResourceIcon < resourceData.IconCountToCreate; iResourceIcon++) {
 				var entity = clonedEntities[iIcon++];
 				uint iconIndexInResource = (uint) resourceIconsBuffer.Length;
 
-				EntityManager.SetComponentData(entity,
+				state.EntityManager.SetComponentData(entity,
 					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, gridLayout));
 
-				EntityManager.SetName(entity,
-					"Resource icon: " +
-					$"type {resourceData.ResourceType} {resourceData.MapPosition} - {iconIndexInResource}");
+				state.EntityManager.SetComponentData(entity, materialMeshInfo);
 
-				EntityManager.SetComponentData(entity, materialMeshInfo);
+#if !DOTS_DISABLE_DEBUG_NAMES
+				SetIconName(entity, in resourceData, iconIndexInResource, ref state);
+#endif
 
 				resourceIconsBuffer.Add(new ResourceIcon(entity));
 			}
 		}
-
-		clonedEntities.Dispose();
-
-		EntityManager.DestroyEntity(prototype);
 	}
 
 
-	private void DestroyIcons(NativeList<Entity> iconEntities)
+	private void DestroyIcons(NativeList<Entity> iconEntities,
+	                          ref SystemState state)
 	{
-		EntityManager.DestroyEntity(iconEntities.AsArray());
+		state.EntityManager.DestroyEntity(iconEntities.AsArray());
 	}
 
 
-	private uint CountIcons(IReadOnlyList<ResourceIconsCreationData> creationData)
+	private int CountIcons(NativeList<ResourceIconsCreationData> creationData)
 	{
-		return (uint) creationData.Sum(d => d.IconCountToCreate);
+		int count = 0;
+		foreach (var data in creationData)
+			count += data.IconCountToCreate;
+		return count;
 	}
 
 
@@ -190,6 +181,30 @@ public partial class PlantResourcePresentation : SystemBase
 		var areaRadius = gridLayout.InnerCellRadius - iconRadius;
 		return Random.insideUnitCircle * areaRadius;
 	}
+
+
+#if !DOTS_DISABLE_DEBUG_NAMES
+	private void SetIconName(
+		Entity entity,
+		in ResourceIconsCreationData resourceData,
+		uint iconIndexInResource,
+		ref SystemState state)
+	{
+		FixedString64Bytes name = "Resource icon: type ";
+		name.Append((int) resourceData.ResourceType);
+
+		name.Append((FixedString32Bytes) " (");
+		name.Append(resourceData.MapPosition.Q);
+		name.Append((FixedString32Bytes) ", ");
+		name.Append(resourceData.MapPosition.R);
+		name.Append(')');
+
+		name.Append((FixedString32Bytes) " - ");
+		name.Append(iconIndexInResource);
+
+		state.EntityManager.SetName(entity, name);
+	}
+#endif
 }
 
 
