@@ -45,7 +45,7 @@ public class BandMemberVM
 
 	public BandMemberVM(IBandMember_RO bandMember,
 	                    ITime time,
-	                    IHumanTypePresentationRepository humanTypePresentationRepository)
+	                    IHumanType_TextualPresentation_Repository humanTypePresentationRepository)
 	{
 		_bandMember = bandMember;
 		_time = time;

@@ -28,7 +28,7 @@ public class ResourcesInitializer : IResourcesInitializer
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 
 #if !DOTS_DISABLE_DEBUG_NAMES
-	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
+	private readonly IResourceType_TextualPresentation_Repository _resourceTypePresentationRepository;
 #endif
 
 
@@ -36,7 +36,7 @@ public class ResourcesInitializer : IResourcesInitializer
 	public ResourcesInitializer(
 		IResourceTypeRepository resourceTypeRepository
 #if !DOTS_DISABLE_DEBUG_NAMES
-		, IResourceTypePresentationRepository resourceTypePresentationRepository
+		, IResourceType_TextualPresentation_Repository resourceTypePresentationRepository
 #endif
 	)
 	{

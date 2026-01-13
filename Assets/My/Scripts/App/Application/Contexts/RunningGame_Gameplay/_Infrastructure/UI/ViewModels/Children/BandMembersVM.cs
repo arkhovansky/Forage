@@ -21,7 +21,7 @@ public class BandMembersVM : IViewModel
 
 	private readonly ITime _time;
 
-	private readonly IHumanTypePresentationRepository _humanTypePresentationRepository;
+	private readonly IHumanType_TextualPresentation_Repository _humanTypePresentationRepository;
 
 	private IReadOnlyList<IBandMember_RO>? _bandMembers;
 
@@ -29,7 +29,7 @@ public class BandMembersVM : IViewModel
 
 	public BandMembersVM(IBand_RO band,
 	                     ITime time,
-	                     IHumanTypePresentationRepository humanTypePresentationRepository)
+	                     IHumanType_TextualPresentation_Repository humanTypePresentationRepository)
 	{
 		_band = band;
 		_time = time;

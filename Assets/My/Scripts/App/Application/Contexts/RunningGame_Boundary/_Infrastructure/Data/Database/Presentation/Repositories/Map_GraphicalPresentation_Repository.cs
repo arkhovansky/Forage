@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database.Presentation.ScriptableObjects;
-using App.Infrastructure.Shared.Contracts.Database.Presentation;
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 
 
 
@@ -9,13 +9,13 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Dat
 
 
 
-public class MapPresentationRepository : IMapPresentationRepository
+public class Map_GraphicalPresentation_Repository : IMap_GraphicalPresentation_Repository
 {
 	private readonly PresentationDatabase _database;
 
 
 
-	public MapPresentationRepository(PresentationDatabase database)
+	public Map_GraphicalPresentation_Repository(PresentationDatabase database)
 	{
 		_database = database;
 	}

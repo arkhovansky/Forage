@@ -4,7 +4,7 @@ using App.Game.Database;
 
 
 
-namespace App.Infrastructure.Shared.Contracts.Database.Presentation {
+namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation {
 
 
 
@@ -23,10 +23,8 @@ public struct TerrainTypePresentation
 
 
 
-public interface ITerrainTypePresentationRepository
+public interface ITerrainType_GraphicalPresentation_Repository
 {
-	string GetName(TerrainTypeId typeId);
-
 	TerrainTypePresentation Get(TerrainTypeId typeId);
 }
 

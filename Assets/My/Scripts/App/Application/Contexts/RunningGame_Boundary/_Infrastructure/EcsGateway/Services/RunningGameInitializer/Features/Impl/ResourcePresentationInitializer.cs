@@ -11,11 +11,11 @@ using UnityEngine.Rendering;
 
 using Lib.Util;
 
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Systems;
 using App.Infrastructure.EcsGateway.Contracts.Services;
-using App.Infrastructure.Shared.Contracts.Database.Presentation;
 
 
 
@@ -25,15 +25,16 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGatew
 
 public class ResourcePresentationInitializer : IResourcePresentationInitializer
 {
-	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
+	private readonly IResourceType_GraphicalPresentation_Repository _resourceTypePresentationRepository;
 
 	private readonly IEcsHelper _ecsHelper;
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public ResourcePresentationInitializer(IResourceTypePresentationRepository resourceTypePresentationRepository,
-	                                       IEcsHelper ecsHelper)
+	public ResourcePresentationInitializer(
+		IResourceType_GraphicalPresentation_Repository resourceTypePresentationRepository,
+		IEcsHelper ecsHelper)
 	{
 		_resourceTypePresentationRepository = resourceTypePresentationRepository;
 		_ecsHelper = ecsHelper;

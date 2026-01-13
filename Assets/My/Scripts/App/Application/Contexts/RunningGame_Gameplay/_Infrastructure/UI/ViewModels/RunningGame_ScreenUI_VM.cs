@@ -56,9 +56,9 @@ public partial class RunningGame_ScreenUI_VM
 
 	public RunningGame_ScreenUI_VM(IRunningGameInstance_RO runningGameInstance,
 	                               IRunningGame_UIModel_RO uiModel,
-	                               ITerrainTypePresentationRepository terrainTypePresentationRepository,
-	                               IResourceTypePresentationRepository resourceTypePresentationRepository,
-	                               IHumanTypePresentationRepository humanTypePresentationRepository)
+	                               ITerrainType_TextualPresentation_Repository terrainTypePresentationRepository,
+	                               IResourceType_TextualPresentation_Repository resourceTypePresentationRepository,
+	                               IHumanType_TextualPresentation_Repository humanTypePresentationRepository)
 	{
 		_game = runningGameInstance;
 		_uiModel = uiModel;

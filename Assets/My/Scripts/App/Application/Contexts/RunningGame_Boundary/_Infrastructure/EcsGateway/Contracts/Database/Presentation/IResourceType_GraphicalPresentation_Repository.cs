@@ -4,7 +4,7 @@ using App.Game.Database;
 
 
 
-namespace App.Infrastructure.Shared.Contracts.Database.Presentation {
+namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation {
 
 
 
@@ -23,10 +23,8 @@ public struct ResourceTypePresentation
 
 
 
-public interface IResourceTypePresentationRepository
+public interface IResourceType_GraphicalPresentation_Repository
 {
-	string GetName(ResourceTypeId typeId);
-
 	ResourceTypePresentation Get(ResourceTypeId typeId);
 }
 

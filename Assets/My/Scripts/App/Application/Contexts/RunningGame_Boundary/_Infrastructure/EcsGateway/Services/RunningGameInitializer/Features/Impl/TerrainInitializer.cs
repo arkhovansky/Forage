@@ -16,13 +16,13 @@ using Lib.Grid.Spatial;
 using Lib.Grid.Visual;
 using Lib.Util;
 
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 using App.Game.Database;
 using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Terrain.Components;
 using App.Infrastructure.EcsGateway.Contracts.Services;
-using App.Infrastructure.Shared.Contracts.Database.Presentation;
 
 
 
@@ -34,8 +34,8 @@ public class TerrainInitializer : ITerrainInitializer
 {
 	private readonly HexGridLayout_3D _gridLayout;
 
-	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
-	private readonly IMapPresentationRepository _mapPresentationRepository;
+	private readonly ITerrainType_GraphicalPresentation_Repository _terrainTypePresentationRepository;
+	private readonly IMap_GraphicalPresentation_Repository _mapPresentationRepository;
 
 	private readonly IEcsHelper _ecsHelper;
 
@@ -43,8 +43,8 @@ public class TerrainInitializer : ITerrainInitializer
 
 	public TerrainInitializer(
 		HexGridLayout_3D gridLayout,
-		ITerrainTypePresentationRepository terrainTypePresentationRepository,
-		IMapPresentationRepository mapPresentationRepository,
+		ITerrainType_GraphicalPresentation_Repository terrainTypePresentationRepository,
+		IMap_GraphicalPresentation_Repository mapPresentationRepository,
 		IEcsHelper ecsHelper)
 	{
 		_gridLayout = gridLayout;

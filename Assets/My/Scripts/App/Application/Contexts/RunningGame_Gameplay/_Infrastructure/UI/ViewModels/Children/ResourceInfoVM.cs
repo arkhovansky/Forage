@@ -35,13 +35,13 @@ public class ResourceInfoVM : IViewModel
 
 	private readonly IRunningGame_UIModel_RO _uiModel;
 
-	private readonly IResourceTypePresentationRepository _resourceTypePresentationRepository;
+	private readonly IResourceType_TextualPresentation_Repository _resourceTypePresentationRepository;
 
 
 
 	public ResourceInfoVM(IMap map,
 	                      IRunningGame_UIModel_RO uiModel,
-	                      IResourceTypePresentationRepository resourceTypePresentationRepository)
+	                      IResourceType_TextualPresentation_Repository resourceTypePresentationRepository)
 	{
 		_map = map;
 		_uiModel = uiModel;

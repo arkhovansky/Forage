@@ -74,9 +74,9 @@ public class EntryPoint : IContextEntryPoint
 		var screenUI_VM = new RunningGame_ScreenUI_VM(
 			runningGameInstance,
 			uiModel,
-			contextData.Get<ITerrainTypePresentationRepository>(),
-			contextData.Get<IResourceTypePresentationRepository>(),
-			contextData.Get<IHumanTypePresentationRepository>());
+			contextData.Get<ITerrainType_TextualPresentation_Repository>(),
+			contextData.Get<IResourceType_TextualPresentation_Repository>(),
+			contextData.Get<IHumanType_TextualPresentation_Repository>());
 		var screenUI_View = new RunningGame_ScreenUI_View(
 			screenUI_VM,
 			gui, contextData.Get<IVvmBinder>());

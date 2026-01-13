@@ -7,7 +7,7 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Dat
 
 
 
-public class HumanTypePresentationRepository : IHumanTypePresentationRepository
+public class HumanType_TextualPresentation_Repository : IHumanType_TextualPresentation_Repository
 {
 	public string GetName(HumanTypeId typeId)
 	{

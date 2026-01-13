@@ -6,9 +6,9 @@ namespace App.Infrastructure.Shared.Contracts.Database.Presentation {
 
 
 
-public interface IHumanTypePresentationRepository
+public interface IResourceType_TextualPresentation_Repository
 {
-	string GetName(HumanTypeId typeId);
+	string GetName(ResourceTypeId typeId);
 }
 
 

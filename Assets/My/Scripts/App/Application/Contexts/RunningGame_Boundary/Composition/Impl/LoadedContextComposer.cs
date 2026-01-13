@@ -66,21 +66,21 @@ public class LoadedContextComposer : ILoadedContextComposer
 			new HexGridLayout(HexOrientation),
 			new Matrix3x2(Vector3.right, Vector3.forward));
 
-		var terrainTypePresentationRepository =
-			new TerrainTypePresentationRepository(database.Presentation.TerrainTypes, gridLayout);
-		var resourceTypePresentationRepository =
-			new ResourceTypePresentationRepository(database.Presentation.ResourceTypes);
-		var humanTypePresentationRepository = new HumanTypePresentationRepository();
+		var terrainType_TextualPresentation_Repository =
+			new TerrainType_TextualPresentation_Repository(database.Presentation.TerrainTypes);
+		var resourceType_TextualPresentation_Repository =
+			new ResourceType_TextualPresentation_Repository(database.Presentation.ResourceTypes);
+		var humanType_TextualPresentation_Repository = new HumanType_TextualPresentation_Repository();
 
 		runningGameInitializer = Create_RunningGameInitializer(
-			database, gridLayout, ecsHelper, terrainTypePresentationRepository, resourceTypePresentationRepository);
+			database, gridLayout, ecsHelper, resourceType_TextualPresentation_Repository);
 
 
 		_contextData.Add<IEcsHelper>(ecsHelper);
 		_contextData.Add(gridLayout);
-		_contextData.Add<ITerrainTypePresentationRepository>(terrainTypePresentationRepository);
-		_contextData.Add<IResourceTypePresentationRepository>(resourceTypePresentationRepository);
-		_contextData.Add<IHumanTypePresentationRepository>(humanTypePresentationRepository);
+		_contextData.Add<ITerrainType_TextualPresentation_Repository>(terrainType_TextualPresentation_Repository);
+		_contextData.Add<IResourceType_TextualPresentation_Repository>(resourceType_TextualPresentation_Repository);
+		_contextData.Add<IHumanType_TextualPresentation_Repository>(humanType_TextualPresentation_Repository);
 	}
 
 
@@ -92,25 +92,28 @@ public class LoadedContextComposer : ILoadedContextComposer
 		GameDatabase database,
 		HexGridLayout_3D gridLayout,
 		IEcsHelper ecsHelper,
-		ITerrainTypePresentationRepository terrainTypePresentationRepository,
-		IResourceTypePresentationRepository resourceTypePresentationRepository)
+		IResourceType_TextualPresentation_Repository resourceType_TextualPresentation_Repository)
 	{
 		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
 
-		var mapPresentationRepository = new MapPresentationRepository(database.Presentation);
+		var terrainType_GraphicalPresentation_Repository =
+			new TerrainType_GraphicalPresentation_Repository(database.Presentation.TerrainTypes, gridLayout);
+		var mapPresentationRepository = new Map_GraphicalPresentation_Repository(database.Presentation);
 		var terrainInitializer = new TerrainInitializer(
-			gridLayout, terrainTypePresentationRepository, mapPresentationRepository, ecsHelper);
+			gridLayout, terrainType_GraphicalPresentation_Repository, mapPresentationRepository, ecsHelper);
 
 		var resourceTypeRepository = new ResourceTypeRepository(database.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
 			resourceTypeRepository
 #if !DOTS_DISABLE_DEBUG_NAMES
-			, resourceTypePresentationRepository
+			, resourceType_TextualPresentation_Repository
 #endif
 		);
 
+		var resourceType_GraphicalPresentation_Repository =
+			new ResourceType_GraphicalPresentation_Repository(database.Presentation.ResourceTypes);
 		var resourcePresentationInitializer =
-			new ResourcePresentationInitializer(resourceTypePresentationRepository, ecsHelper);
+			new ResourcePresentationInitializer(resourceType_GraphicalPresentation_Repository, ecsHelper);
 
 		var gameTimeInitializer = new GameTimeInitializer(ecsHelper);
 

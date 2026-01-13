@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database.Presentation.ScriptableObjects;
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 using App.Game.Database;
-using App.Infrastructure.Shared.Contracts.Database.Presentation;
 
 
 
@@ -13,40 +13,31 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Dat
 
 
 
-public class ResourceTypePresentationRepository : IResourceTypePresentationRepository
+public class ResourceType_GraphicalPresentation_Repository : IResourceType_GraphicalPresentation_Repository
 {
-	private record ResourceType_Data(
-		string Name,
-		ResourceTypePresentation GraphicalData);
-
-	private readonly Dictionary<ResourceTypeId, ResourceType_Data> _resourceTypes = new();
-
+	private readonly Dictionary<ResourceTypeId, ResourceTypePresentation> _resourceTypes = new();
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public ResourceTypePresentationRepository(ResourceTypes_Presentation asset)
+	public ResourceType_GraphicalPresentation_Repository(ResourceTypes_Presentation asset)
 	{
 		var quadMesh = CreateQuadMesh();
 
 		foreach (ResourceTypeId typeId in Enum.GetValues(typeof(ResourceTypeId))) {
 			var dbData = asset.GetResourceTypeData(typeId);
-			_resourceTypes[typeId] = new ResourceType_Data(
-				dbData.Name,
-				new ResourceTypePresentation(quadMesh, dbData.Material));
+			_resourceTypes[typeId] = new ResourceTypePresentation(quadMesh, dbData.Material);
 		}
 	}
 
 
-	public string GetName(ResourceTypeId typeId)
-	{
-		return _resourceTypes[typeId].Name;
-	}
+	//----------------------------------------------------------------------------------------------
+	// IResourceType_GraphicalPresentation_Repository
 
 
 	public ResourceTypePresentation Get(ResourceTypeId typeId)
 	{
-		return _resourceTypes[typeId].GraphicalData;
+		return _resourceTypes[typeId];
 	}
 
 

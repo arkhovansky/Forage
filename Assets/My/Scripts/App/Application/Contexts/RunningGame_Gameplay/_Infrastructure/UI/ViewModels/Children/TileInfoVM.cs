@@ -26,14 +26,14 @@ public class TileInfoVM : IViewModel
 
 	private readonly IRunningGame_UIModel_RO _uiModel;
 
-	private readonly ITerrainTypePresentationRepository _terrainTypePresentationRepository;
+	private readonly ITerrainType_TextualPresentation_Repository _terrainTypePresentationRepository;
 
 
 
 	public TileInfoVM(IMap map,
 	                  IRunningGame_UIModel_RO uiModel,
-	                  ITerrainTypePresentationRepository terrainTypePresentationRepository,
-	                  IResourceTypePresentationRepository resourceTypePresentationRepository)
+	                  ITerrainType_TextualPresentation_Repository terrainTypePresentationRepository,
+	                  IResourceType_TextualPresentation_Repository resourceTypePresentationRepository)
 	{
 		_map = map;
 		_uiModel = uiModel;
