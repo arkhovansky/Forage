@@ -10,6 +10,7 @@ using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Databas
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database.DomainSettings.Repositories;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database.Presentation.Repositories;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Locale;
+using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Game.Core;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Services.RunningGameInitializer;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Services.RunningGameInitializer.Features.Impl;
@@ -94,6 +95,8 @@ public class LoadedContextComposer : ILoadedContextComposer
 		IEcsHelper ecsHelper,
 		IResourceType_TextualPresentation_Repository resourceType_TextualPresentation_Repository)
 	{
+		var presentationConfig_Repository = new PresentationConfig_Repository(database.Presentation.Config);
+
 		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
 
 		var terrainType_GraphicalPresentation_Repository =
@@ -113,7 +116,10 @@ public class LoadedContextComposer : ILoadedContextComposer
 		var resourceType_GraphicalPresentation_Repository =
 			new ResourceType_GraphicalPresentation_Repository(database.Presentation.ResourceTypes);
 		var resourcePresentationInitializer =
-			new ResourcePresentationInitializer(resourceType_GraphicalPresentation_Repository, ecsHelper);
+			new ResourcePresentationInitializer(
+				resourceType_GraphicalPresentation_Repository,
+				((IPlantResource_PresentationConfig_Repository) presentationConfig_Repository).Get(),
+				ecsHelper);
 
 		var gameTimeInitializer = new GameTimeInitializer(ecsHelper);
 

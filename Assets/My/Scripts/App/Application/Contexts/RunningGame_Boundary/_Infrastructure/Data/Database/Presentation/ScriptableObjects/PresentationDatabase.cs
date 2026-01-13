@@ -18,6 +18,8 @@ public class PresentationDatabase : ScriptableObject
 	public Material TerrainGridMaterial = null!;
 
 	public ResourceTypes_Presentation ResourceTypes = null!;
+
+	public PresentationConfig Config = null!;
 }
 
 

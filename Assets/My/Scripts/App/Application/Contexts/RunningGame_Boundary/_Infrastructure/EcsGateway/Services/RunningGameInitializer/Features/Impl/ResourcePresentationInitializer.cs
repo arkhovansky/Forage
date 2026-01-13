@@ -14,6 +14,7 @@ using Lib.Util;
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Presentation;
 using App.Game.Database;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Game.ECS.Resource.Plant.Presentation.Components.Config;
 using App.Game.ECS.Resource.Plant.Presentation.Systems;
 using App.Infrastructure.EcsGateway.Contracts.Services;
 
@@ -27,6 +28,8 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 {
 	private readonly IResourceType_GraphicalPresentation_Repository _resourceTypePresentationRepository;
 
+	private readonly PlantResourcePresentation_Config _plantResourcePresentation_Config;
+
 	private readonly IEcsHelper _ecsHelper;
 
 	//----------------------------------------------------------------------------------------------
@@ -34,9 +37,11 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 
 	public ResourcePresentationInitializer(
 		IResourceType_GraphicalPresentation_Repository resourceTypePresentationRepository,
+		PlantResourcePresentation_Config plantResourcePresentation_Config,
 		IEcsHelper ecsHelper)
 	{
 		_resourceTypePresentationRepository = resourceTypePresentationRepository;
+		_plantResourcePresentation_Config = plantResourcePresentation_Config;
 		_ecsHelper = ecsHelper;
 	}
 
@@ -81,6 +86,7 @@ public class ResourcePresentationInitializer : IResourcePresentationInitializer
 
 		var system = world.GetExistingSystem<PlantResourcePresentation>();
 		em.AddComponentData(system, new ResourceIcon_Prototype(prototype));
+		em.AddComponentData(system, _plantResourcePresentation_Config);
 	}
 
 

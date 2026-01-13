@@ -13,6 +13,7 @@ using App.Game.ECS.Map.Components;
 using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Game.ECS.Resource.Plant.Presentation.Components.Config;
 using App.Game.ECS.SystemGroups;
 
 using Random = UnityEngine.Random;
@@ -36,12 +37,6 @@ public partial struct PlantResourcePresentation : ISystem
 
 	//----------------------------------------------------------------------------------------------
 
-	/// <summary>
-	/// Icon side length relative to inner cell diameter.
-	/// </summary>
-	private const float RelativeIconSize = 0.2f;
-
-
 	private NativeList<ResourceIconsCreationData> _creationData;
 
 	private NativeList<Entity> _entitiesToDestroy;
@@ -60,13 +55,14 @@ public partial struct PlantResourcePresentation : ISystem
 	[BurstCompile]
 	public void OnUpdate(ref SystemState state)
 	{
+		var config = SystemAPI.GetComponent<PlantResourcePresentation_Config>(state.SystemHandle);
+
 		foreach (var (resource, position, ripeBiomass, icons, entity)
 		         in SystemAPI.Query<
 			         RefRO<PlantResource>, MapPosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
 			         .WithEntityAccess())
 		{
-			const uint biomassPerIcon = 20;
-			int neededIconCount = Mathf.CeilToInt(ripeBiomass.Value / biomassPerIcon);
+			int neededIconCount = Mathf.CeilToInt(ripeBiomass.Value / config.BiomassPerIcon);
 
 			if (icons.Length == neededIconCount)
 				continue;
@@ -89,6 +85,7 @@ public partial struct PlantResourcePresentation : ISystem
 		}
 
 		CreateIcons(_creationData,
+		            config.RelativeIconSize,
 		            ref state);
 		DestroyIcons(_entitiesToDestroy,
 		             ref state);
@@ -111,6 +108,7 @@ public partial struct PlantResourcePresentation : ISystem
 
 
 	private void CreateIcons(NativeList<ResourceIconsCreationData> creationData,
+	                         float relativeIconSize,
 	                         ref SystemState state)
 	{
 		var prototype = SystemAPI.GetComponent<ResourceIcon_Prototype>(state.SystemHandle).Entity;
@@ -134,7 +132,7 @@ public partial struct PlantResourcePresentation : ISystem
 				uint iconIndexInResource = (uint) resourceIconsBuffer.Length;
 
 				state.EntityManager.SetComponentData(entity,
-					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, gridLayout));
+					GetIconLocalTransform(resourceData.MapPosition, iconIndexInResource, gridLayout, relativeIconSize));
 
 				state.EntityManager.SetComponentData(entity, materialMeshInfo);
 
@@ -165,19 +163,19 @@ public partial struct PlantResourcePresentation : ISystem
 
 
 	private LocalTransform GetIconLocalTransform(AxialPosition tilePosition, uint iconIndexInResource,
-	                                             HexGridLayout_3D gridLayout)
+	                                             HexGridLayout_3D gridLayout, float relativeIconSize)
 	{
-		var inTilePosition = GetIconInTilePosition(iconIndexInResource, gridLayout);
+		var inTilePosition = GetIconInTilePosition(iconIndexInResource, gridLayout, relativeIconSize);
 		return gridLayout.GetCellLocalTransform(tilePosition)
 			.Translate(new float3(inTilePosition.x, 0.01f, inTilePosition.y))
-			.ApplyScale(gridLayout.InnerCellRadius * 2 * RelativeIconSize);  // Assume icon mesh size is 1x1
+			.ApplyScale(gridLayout.InnerCellRadius * 2 * relativeIconSize);  // Assume icon mesh size is 1x1
 	}
 
 	// ReSharper disable once UnusedParameter.Local
 	private Vector2 GetIconInTilePosition(uint iconIndexInResource,
-	                                      HexGridLayout_3D gridLayout)
+	                                      HexGridLayout_3D gridLayout, float relativeIconSize)
 	{
-		var iconRadius = gridLayout.InnerCellRadius * RelativeIconSize;
+		var iconRadius = gridLayout.InnerCellRadius * relativeIconSize;
 		var areaRadius = gridLayout.InnerCellRadius - iconRadius;
 		return Random.insideUnitCircle * areaRadius;
 	}
