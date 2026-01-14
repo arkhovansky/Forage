@@ -57,12 +57,17 @@ public partial struct PlantResourcePresentation : ISystem
 	{
 		var config = SystemAPI.GetComponent<PlantResourcePresentation_Config>(state.SystemHandle);
 
-		foreach (var (resource, position, ripeBiomass, icons, entity)
+		foreach (var (resource, position, icons, entity)
 		         in SystemAPI.Query<
-			         RefRO<PlantResource>, MapPosition, RipeBiomass, DynamicBuffer<ResourceIcon>>()
+			         RefRO<PlantResource>, MapPosition, DynamicBuffer<ResourceIcon>>()
 			         .WithEntityAccess())
 		{
-			int neededIconCount = Mathf.CeilToInt(ripeBiomass.Value / config.BiomassPerIcon);
+			var ripeBiomass =
+				SystemAPI.HasComponent<RipeBiomass>(entity)
+					? SystemAPI.GetComponent<RipeBiomass>(entity).Value
+					: 0;
+
+			int neededIconCount = Mathf.CeilToInt(ripeBiomass / config.BiomassPerIcon);
 
 			if (icons.Length == neededIconCount)
 				continue;

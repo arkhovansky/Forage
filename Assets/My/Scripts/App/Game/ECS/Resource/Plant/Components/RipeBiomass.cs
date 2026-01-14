@@ -9,6 +9,12 @@ namespace App.Game.ECS.Resource.Plant.Components {
 
 
 
+/// <summary>
+/// Biomass of a ripe plant resource, kg
+/// </summary>
+/// <remarks>
+/// Present when the resource is ripe. Can be zero if exhausted.
+/// </remarks>
 public struct RipeBiomass : IComponentData
 {
 	[SerializeField] private float _value;
@@ -28,12 +34,6 @@ public struct RipeBiomass : IComponentData
 	public RipeBiomass(float value)
 	{
 		_value = value;
-	}
-
-
-	public void Reset(float value)
-	{
-		Value = value;
 	}
 
 

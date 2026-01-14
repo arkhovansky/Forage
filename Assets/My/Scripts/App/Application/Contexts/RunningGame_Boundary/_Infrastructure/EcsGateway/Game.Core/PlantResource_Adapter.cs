@@ -32,7 +32,9 @@ public class PlantResource_Adapter : IPlantResource
 
 	public float Get_RipeBiomass()
 	{
-		return _entityManager.GetComponentData<RipeBiomass>(_entity).Value;
+		return _entityManager.HasComponent<RipeBiomass>(_entity)
+			? _entityManager.GetComponentData<RipeBiomass>(_entity).Value
+			: 0;
 	}
 }
 

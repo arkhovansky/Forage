@@ -65,7 +65,7 @@ public class ResourcesInitializer : IResourcesInitializer
 		var ecsMap = CreateEcsMap(map);
 
 		var prototype = em.CreateEntity(
-			typeof(MapPosition), typeof(PlantResource), typeof(RipeBiomass), typeof(ResourceIcon));
+			typeof(MapPosition), typeof(PlantResource), typeof(ResourceIcon));
 
 		using (var clonedEntities = new NativeArray<Entity>(count, Allocator.Temp)) {
 			em.Instantiate(prototype, clonedEntities);
@@ -85,8 +85,6 @@ public class ResourcesInitializer : IResourcesInitializer
 					RipenessPeriod = resourceType.RipenessPeriod,
 					PotentialBiomass = potentialBiomass[i]
 				});
-
-				em.SetComponentData(entity, new RipeBiomass());
 
 #if !DOTS_DISABLE_DEBUG_NAMES
 				var name = _resourceTypePresentationRepository.GetName(resourceTypeId);

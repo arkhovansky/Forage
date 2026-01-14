@@ -3,7 +3,6 @@ using Unity.Entities;
 
 using App.Game.ECS.GameTime.Components.Events;
 using App.Game.ECS.Resource.Plant.Components;
-using App.Game.ECS.Resource.Plant.Rules;
 using App.Game.ECS.SystemGroups;
 
 
@@ -28,10 +27,18 @@ public partial struct PlantCycle : ISystem
 	{
 		var yearPeriod = SystemAPI.GetSingleton<GameTime.Components.GameTime>().YearPeriod;
 
-		foreach (var (resource, ripeBiomass)
-		         in SystemAPI.Query<RefRO<PlantResource>, RefRW<RipeBiomass>>())
+		var ecbs = SystemAPI.GetSingleton<EndFixedStepSimulationEntityCommandBufferSystem.Singleton>();
+		var ecb = ecbs.CreateCommandBuffer(state.WorldUnmanaged);
+
+		foreach (var (resource, resourceEntity)
+		         in SystemAPI.Query<RefRO<PlantResource>>().WithEntityAccess())
 		{
-			PlantCycle_Rules.UpdateRipeBiomass(ref ripeBiomass.ValueRW, resource.ValueRO, yearPeriod);
+			if (resource.ValueRO.RipenessPeriod == yearPeriod) {
+				ecb.AddComponent<RipeBiomass>(resourceEntity);
+				ecb.SetComponent(resourceEntity, new RipeBiomass(resource.ValueRO.PotentialBiomass));
+			}
+			else
+				ecb.RemoveComponent<RipeBiomass>(resourceEntity);
 		}
 	}
 }
