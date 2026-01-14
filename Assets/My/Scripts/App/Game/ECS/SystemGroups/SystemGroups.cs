@@ -19,17 +19,17 @@ public partial class Simulation : ComponentSystemGroup {}
 
 
 [UpdateInGroup(typeof(Simulation))]
+[UpdateBefore(typeof(DomainSimulation))]
+public partial class HumanAI : ComponentSystemGroup {}
+
+
+[UpdateInGroup(typeof(Simulation))]
 public partial class DomainSimulation : ComponentSystemGroup {}
 
 
 [UpdateInGroup(typeof(Simulation))]
 [UpdateAfter(typeof(DomainSimulation))]
 public partial class DiscreteActions : ComponentSystemGroup {}
-
-
-[UpdateInGroup(typeof(Simulation))]
-[UpdateAfter(typeof(DiscreteActions))]
-public partial class HumanAI : ComponentSystemGroup {}
 
 
 
