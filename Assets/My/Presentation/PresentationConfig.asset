@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f86673ff7f4815abdc3891fdf6d9b8, type: 3}
   m_Name: PresentationConfig
   m_EditorClassIdentifier: Assembly-CSharp::App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Database.Presentation.ScriptableObjects.PresentationConfig
+  TerrainGridLinesMaterial: {fileID: 2100000, guid: f8bd0a8c80e84c249949eec8853407da, type: 2}
   PlantResourceIcons:
     BiomassPerIcon: 20
     RelativeIconSize: 0.2

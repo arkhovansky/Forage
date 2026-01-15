@@ -15,6 +15,9 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.Data.Dat
                  order = 10)]
 public class PresentationConfig : ScriptableObject
 {
+	public Material TerrainGridLinesMaterial = null!;
+
+
 	[Serializable]
 	public class PlantResourceIcons_Data
 	{
