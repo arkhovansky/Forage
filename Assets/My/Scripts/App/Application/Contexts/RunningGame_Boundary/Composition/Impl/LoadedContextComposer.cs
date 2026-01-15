@@ -102,8 +102,12 @@ public class LoadedContextComposer : ILoadedContextComposer
 		var terrainType_GraphicalPresentation_Repository =
 			new TerrainType_GraphicalPresentation_Repository(database.Presentation.TerrainTypes, gridLayout);
 		var mapPresentationRepository = new Map_GraphicalPresentation_Repository(database.Presentation);
-		var terrainInitializer = new TerrainInitializer(
-			gridLayout, terrainType_GraphicalPresentation_Repository, mapPresentationRepository, ecsHelper);
+		var terrainInitializer =
+			new TerrainInitializer(
+				gridLayout,
+				terrainType_GraphicalPresentation_Repository,
+				mapPresentationRepository.Get_GridLinesMaterial(),
+				ecsHelper);
 
 		var resourceTypeRepository = new ResourceTypeRepository(database.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(

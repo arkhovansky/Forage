@@ -35,7 +35,8 @@ public class TerrainInitializer : ITerrainInitializer
 	private readonly HexGridLayout_3D _gridLayout;
 
 	private readonly ITerrainType_GraphicalPresentation_Repository _terrainTypePresentationRepository;
-	private readonly IMap_GraphicalPresentation_Repository _mapPresentationRepository;
+
+	private readonly Material _gridLines_Material;
 
 	private readonly IEcsHelper _ecsHelper;
 
@@ -44,12 +45,12 @@ public class TerrainInitializer : ITerrainInitializer
 	public TerrainInitializer(
 		HexGridLayout_3D gridLayout,
 		ITerrainType_GraphicalPresentation_Repository terrainTypePresentationRepository,
-		IMap_GraphicalPresentation_Repository mapPresentationRepository,
+		Material gridLines_Material,
 		IEcsHelper ecsHelper)
 	{
 		_gridLayout = gridLayout;
 		_terrainTypePresentationRepository = terrainTypePresentationRepository;
-		_mapPresentationRepository = mapPresentationRepository;
+		_gridLines_Material = gridLines_Material;
 		_ecsHelper = ecsHelper;
 	}
 
@@ -177,8 +178,7 @@ public class TerrainInitializer : ITerrainInitializer
 		var spatialMap = new Spatial_RectangularHexMap_3D(map, _gridLayout);
 
 		var mesh = spatialMap.GetGridLinesMesh();
-		var material = _mapPresentationRepository.Get_GridLinesMaterial();
-		var renderMeshArray = new RenderMeshArray(new [] { material }, new [] { mesh });
+		var renderMeshArray = new RenderMeshArray(new [] { _gridLines_Material }, new [] { mesh });
 
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
