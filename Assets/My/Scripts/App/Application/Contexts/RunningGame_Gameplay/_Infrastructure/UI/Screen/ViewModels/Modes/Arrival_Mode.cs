@@ -1,4 +1,4 @@
-﻿namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.ViewModels {
+﻿namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.ViewModels {
 
 
 

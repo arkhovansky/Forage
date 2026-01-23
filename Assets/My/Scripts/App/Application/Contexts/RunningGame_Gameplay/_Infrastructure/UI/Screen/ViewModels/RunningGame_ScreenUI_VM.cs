@@ -3,7 +3,7 @@
 using Lib.AppFlow;
 using Lib.UICore.Gui;
 
-using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.ViewModels.Children;
+using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.ViewModels.Children;
 using App.Application.Contexts.RunningGame_Gameplay.Messages.Commands;
 using App.Application.Contexts.RunningGame_Gameplay.Models.UI;
 using App.Application.Contexts.RunningGame_Gameplay.Models.UI.Impl;
@@ -12,7 +12,7 @@ using App.Infrastructure.Shared.Contracts.Database.Presentation;
 
 
 
-namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.ViewModels {
+namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.ViewModels {
 
 
 

@@ -8,8 +8,8 @@ using Lib.UICore.Mvvm;
 
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.EcsGateway.Views;
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI;
-using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.ViewModels;
-using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Views;
+using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.ViewModels;
+using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.Views;
 using App.Application.Contexts.RunningGame_Gameplay.Controller;
 using App.Application.Contexts.RunningGame_Gameplay.Models.UI.Impl;
 using App.Game.Core;

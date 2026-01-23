@@ -3,7 +3,7 @@ using Lib.UICore.Mvvm;
 
 
 
-namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Views {
+namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.Views {
 
 
 
