@@ -1,52 +1,52 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/Resources/Game/Game.uss?fileID=7433441132597879392&amp;guid=53c667ae3b11543439259f9682ed3b83&amp;type=3#Game" />
-    <Style src="project://database/Assets/UI%20Toolkit/Resources/Common.uss?fileID=7433441132597879392&amp;guid=d34eb923d98dfe649ac182ba6299624a&amp;type=3#Common" />
+    <Style src="project://database/Assets/UI%20Toolkit/Resources/Game/Game.uss?fileID=7433441132597879392&amp;guid=53c667ae3b11543439259f9682ed3b83&amp;type=3#Game"/>
+    <Style src="project://database/Assets/UI%20Toolkit/Resources/Common.uss?fileID=7433441132597879392&amp;guid=d34eb923d98dfe649ac182ba6299624a&amp;type=3#Common"/>
     <ui:VisualElement name="topPane" class="pane topPane">
         <ui:VisualElement name="gameTimePane">
-            <ui:Label name="gameTime" text="GameTime" />
+            <ui:Label name="gameTime" text="GameTime"/>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="bandPane" class="bandPane pane">
-        <ui:Label text="Band" class="paneHeader" />
+        <ui:Label text="Band" class="paneHeader"/>
         <ui:VisualElement name="bandMembersBlock">
             <ui:MultiColumnListView name="bandMembers" binding-source-selection-mode="AutoAssign" selection-type="None" show-bound-collection-size="false" allow-remove="false" allow-add="false">
                 <ui:Columns reorderable="false">
-                    <ui:Column name="HumanType" title="Type" optional="false" sortable="false" stretchable="true" />
-                    <ui:Column name="Goal" title="Goal" optional="false" sortable="false" stretchable="true" />
-                    <ui:Column name="Activity" title="Activity" sortable="false" optional="false" stretchable="true" />
-                    <ui:Column name="AverageForagingHours" title="Forage, h" sortable="false" optional="false" stretchable="true" />
-                    <ui:Column name="AverageGatheringHours" title="Gather, h" sortable="false" optional="false" stretchable="true" />
-                    <ui:Column name="AverageMovingHours" title="Move, h" sortable="false" optional="false" stretchable="true" />
-                    <ui:Column name="AverageLeisureHours" title="Leisure, h" sortable="false" optional="false" stretchable="true" />
-                    <ui:Column name="AverageSleepingHours" title="Sleep, h" sortable="false" optional="false" stretchable="true" />
+                    <ui:Column name="HumanType" title="Type" optional="false" sortable="false" stretchable="true"/>
+                    <ui:Column name="Goal" title="Goal" optional="false" sortable="false" stretchable="true"/>
+                    <ui:Column name="Activity" title="Activity" sortable="false" optional="false" stretchable="true"/>
+                    <ui:Column name="AverageForagingHours" title="Forage, h" sortable="false" optional="false" stretchable="true"/>
+                    <ui:Column name="AverageGatheringHours" title="Gather, h" sortable="false" optional="false" stretchable="true"/>
+                    <ui:Column name="AverageMovingHours" title="Move, h" sortable="false" optional="false" stretchable="true"/>
+                    <ui:Column name="AverageLeisureHours" title="Leisure, h" sortable="false" optional="false" stretchable="true"/>
+                    <ui:Column name="AverageSleepingHours" title="Sleep, h" sortable="false" optional="false" stretchable="true"/>
                 </ui:Columns>
             </ui:MultiColumnListView>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="tileInfo" class="pane tileInfoPane">
-        <ui:Label text="Terrain type" name="terrainType" />
+        <ui:Label text="Terrain type" name="terrainType"/>
         <ui:VisualElement name="resourceInfo" style="flex-grow: 1;">
-            <ui:Label text="Resource:" />
-            <ui:Label text="Name" name="name" />
+            <ui:Label text="Resource:"/>
+            <ui:Label text="Name" name="name"/>
             <ui:VisualElement style="flex-direction: row;">
-                <ui:Label text="Ripeness period:" />
-                <ui:Label name="ripenessPeriod" />
+                <ui:Label text="Ripeness period:"/>
+                <ui:Label name="ripenessPeriod"/>
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">
-                <ui:Label text="Potential biomass:" />
-                <ui:Label name="potentialBiomass" />
+                <ui:Label text="Potential biomass:"/>
+                <ui:Label name="potentialBiomass"/>
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">
-                <ui:Label text="Ripe biomass:" />
-                <ui:Label name="ripeBiomass" />
+                <ui:Label text="Ripe biomass:"/>
+                <ui:Label name="ripeBiomass"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="modeButtonPane" class="pane modeButtonPane">
-        <ui:Button text="Place camp" name="enterPlaceCampModeButton" class="text-only-button" />
+        <ui:Button text="Place camp" name="enterPlaceCampModeButton" class="text-only-button"/>
         <ui:VisualElement name="selectCampLocationHint">
-            <ui:Label text="Select camp location" />
+            <ui:Label text="Select camp location"/>
         </ui:VisualElement>
-        <ui:Button text="Run period" display-tooltip-when-elided="true" name="runYearPeriodButton" class="text-only-button" />
+        <ui:Button text="Run period" display-tooltip-when-elided="true" name="runYearPeriodButton" class="text-only-button"/>
     </ui:VisualElement>
 </ui:UXML>
