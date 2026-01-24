@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.codewriter.unimob": {
+      "version": "https://github.com/codewriter-packages/UniMob.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.mono-cecil": "1.10.2"
+      },
+      "hash": "8a523c3b26b66bb81e7a2ee6b8f4038cca3300aa"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
@@ -235,7 +244,7 @@
     },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
