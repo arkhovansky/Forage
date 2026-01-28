@@ -39,6 +39,7 @@ public class InGameMode : IInGameMode
 		_ecsSystems_Service.GameSystems_Enabled = false;
 		_ecsSystems_Service.SetEcsSystemsEnabled(true);
 		await LoadGameScene_Async();
+		SceneManager.SetActiveScene(SceneManager.GetSceneByName(GameSceneName));
 	}
 
 
