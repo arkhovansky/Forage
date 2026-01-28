@@ -22,11 +22,41 @@ MonoBehaviour:
       X: 49
       Y: 14
     ResourceTypeId: 0
-    Biomass: 300
+    Biomass: 200
   - Position:
       X: 51
       Y: 10
     ResourceTypeId: 0
+    Biomass: 300
+  - Position:
+      X: 30
+      Y: 67
+    ResourceTypeId: 0
+    Biomass: 300
+  - Position:
+      X: 80
+      Y: 50
+    ResourceTypeId: 1
+    Biomass: 400
+  - Position:
+      X: 60
+      Y: 35
+    ResourceTypeId: 1
+    Biomass: 200
+  - Position:
+      X: 34
+      Y: 30
+    ResourceTypeId: 2
+    Biomass: 400
+  - Position:
+      X: 25
+      Y: 70
+    ResourceTypeId: 2
+    Biomass: 200
+  - Position:
+      X: 70
+      Y: 60
+    ResourceTypeId: 2
     Biomass: 300
   StartYearPeriod:
     Month: 1
