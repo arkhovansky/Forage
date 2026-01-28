@@ -17,15 +17,19 @@ MonoBehaviour:
     Data:
       Name: Yam
       Material: {fileID: 2100000, guid: 085096c4efd90ca4cb2f2bdc65d01552, type: 2}
+      IconTexture: {fileID: 2800000, guid: d8849f0ae88ecc84d9b8ebf1542b4ec9, type: 3}
   - Id: 1
     Data:
       Name: Acorns
       Material: {fileID: 2100000, guid: 1d4c6de603f40ee4da15169731d71526, type: 2}
+      IconTexture: {fileID: 2800000, guid: 31d3fb4ed9f8a304b84d462c8ee0a59b, type: 3}
   - Id: 2
     Data:
       Name: Bananas
       Material: {fileID: 2100000, guid: fa7a11343c76a3048b923af0f2f49837, type: 2}
+      IconTexture: {fileID: 2800000, guid: e9545d37e7b886b4caebaaa8106be12c, type: 3}
   - Id: 3
     Data:
       Name: Wheat
       Material: {fileID: 2100000, guid: 930e6671b6586834fb79262f0951e959, type: 2}
+      IconTexture: {fileID: 2800000, guid: 7a753af35e21f4a489582ec65f091660, type: 3}

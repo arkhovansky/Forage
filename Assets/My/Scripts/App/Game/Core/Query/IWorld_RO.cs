@@ -8,6 +8,8 @@ public interface IWorld_RO
 
 	IMap Map { get; }
 
+	IPlantResources PlantResources { get; }
+
 	IBand_RO Band { get; }
 }
 

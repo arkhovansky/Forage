@@ -2,12 +2,16 @@
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
+using UniMob;
+using AtomLifetime = UniMob.Lifetime;
+
 using Lib.AppFlow;
 using Lib.Grid;
 using Lib.Grid.Spatial;
 
 using App.Application.Contexts.RunningGame_Gameplay.Messages.InputEvents;
 using App.Application.Contexts.RunningGame_Gameplay.Messages.PresentationEvents;
+using App.Application.Contexts.RunningGame_Gameplay.Models.UI;
 
 
 
@@ -19,7 +23,9 @@ namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI {
 /// Acts as both View and Controller for the scene. Encapsulates low-level details of reading user input, moving camera,
 /// and generates high-level hovering/selection events.
 /// </summary>
-public class SceneViewController : View
+public class SceneViewController
+	: View,
+	  ICamera_ReadOnlyModel
 {
 	private const int MapOverviewVerticalMargin = 50;
 	private const float ZoomSpeed = 1.0f;
@@ -36,6 +42,8 @@ public class SceneViewController : View
 	private readonly InputAction _rightClickAction;
 	private readonly InputAction _zoomAction;
 
+	private readonly MutableAtom<Transform> _cameraTransform_Atom;
+
 	private AxialPosition? _hoveredTile;
 
 
@@ -44,7 +52,8 @@ public class SceneViewController : View
 		Plane AnchorPlane,
 		Camera Camera
 	) {
-		public void Update(Vector2 screenPoint)
+		public void Update(Vector2 screenPoint,
+		                   ref bool cameraTransform_Changed)
 		{
 			var cameraRay = Camera.ScreenPointToRay(new Vector3(screenPoint.x, screenPoint.y, 0));
 			if (!AnchorPlane.Raycast(cameraRay, out var distance))
@@ -52,6 +61,7 @@ public class SceneViewController : View
 			var worldPoint = cameraRay.GetPoint(distance);
 
 			Camera.transform.Translate(Anchor - worldPoint, Space.World);
+			cameraTransform_Changed = true;
 		}
 	}
 
@@ -61,8 +71,10 @@ public class SceneViewController : View
 	//----------------------------------------------------------------------------------------------
 
 
-	public SceneViewController(Camera camera,
-	                           Spatial_RectangularHexMap_3D map)
+	public SceneViewController(
+		Camera camera,
+		Spatial_RectangularHexMap_3D map,
+		AtomLifetime atomLifetime)
 	{
 		_camera = camera;
 		_map = map;
@@ -71,6 +83,11 @@ public class SceneViewController : View
 		_clickAction = InputSystem.actions.FindAction("Click");
 		_rightClickAction = InputSystem.actions.FindAction("RightClick");
 		_zoomAction = InputSystem.actions.FindAction("ScrollWheel");
+
+		_cameraTransform_Atom =
+			Atom.Value(atomLifetime,
+			           camera.transform,
+			           "CameraTransform");
 
 		base.Add_PresentationEvent_Handler<PositionCameraToOverview_Request>(On_PositionCameraToOverview);
 	}
@@ -88,13 +105,16 @@ public class SceneViewController : View
 
 	public override void Update()
 	{
+		bool cameraTransform_Changed = false;
+
 		var screenPoint = _pointAction.ReadValue<Vector2>();
 
 		if (_rightClickAction.WasReleasedThisFrame())
 			_mapScrollMode = null;
 
 		if (_mapScrollMode != null)
-			_mapScrollMode.Update(screenPoint);
+			_mapScrollMode.Update(screenPoint,
+			                      ref cameraTransform_Changed);
 		else {
 			if (_rightClickAction.IsPressed()) {
 				if (GetMapPlanePoint(screenPoint, out Vector3 mapPoint))
@@ -103,7 +123,10 @@ public class SceneViewController : View
 		}
 
 		var zoomControlDelta = _zoomAction.ReadValue<Vector2>().y;
-		Zoom(zoomControlDelta);
+		if (zoomControlDelta != 0) {
+			Zoom(zoomControlDelta);
+			cameraTransform_Changed = true;
+		}
 
 		UpdateHoveredTile(screenPoint);
 
@@ -111,7 +134,18 @@ public class SceneViewController : View
 			if (_hoveredTile.HasValue)
 				_inputEvent_Emitter.Emit(new TileClicked(_hoveredTile.Value));
 		}
+
+		if (cameraTransform_Changed)
+			_cameraTransform_Atom.Invalidate();
 	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// ICamera_ReadOnlyModel
+
+
+	public Atom<Transform> CameraTransform_Atom
+		=> _cameraTransform_Atom;
 
 
 	//----------------------------------------------------------------------------------------------
@@ -133,6 +167,8 @@ public class SceneViewController : View
 		var mapScreenRect = new RectInt(0, MapOverviewVerticalMargin,
 		                                _camera.pixelWidth, _camera.pixelHeight - 2 * MapOverviewVerticalMargin);
 		FitMapRectToScreenRect(_map.BoundingRect2D, mapScreenRect);
+
+		_cameraTransform_Atom.Invalidate();
 	}
 
 

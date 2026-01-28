@@ -3,6 +3,8 @@ using UnityEngine.UIElements;
 
 using Cysharp.Threading.Tasks;
 
+using UniMob.Core;
+
 using Lib.AppFlow;
 using Lib.AppFlow.Impl;
 using Lib.AppFlow.Resolution;
@@ -115,6 +117,8 @@ public class Bootstrap : MonoBehaviour
 			return;
 
 		_applicationContext.LateUpdate();
+
+		AtomScheduler.Sync();
 	}
 
 

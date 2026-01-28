@@ -31,6 +31,7 @@ public class ResourceTypes_Presentation : ScriptableObject
 	{
 		public string Name = null!;
 		public Material Material = null!;
+		public Texture2D IconTexture = null!;
 	}
 
 

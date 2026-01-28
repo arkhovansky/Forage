@@ -8,6 +8,7 @@ using Lib.UICore.Mvvm;
 
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.EcsGateway.Views;
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI;
+using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.ResourceMarkers;
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.ViewModels;
 using App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI.Screen.Views;
 using App.Application.Contexts.RunningGame_Gameplay.Controller;
@@ -62,12 +63,26 @@ public class EntryPoint : IContextEntryPoint
 
 		var controller = new RunningGameController(runningGameInstance, uiModel);
 
-		var map = runningGameInstance.World.Map.Get_GridMap();
 		var gridLayout = contextData.Get<HexGridLayout_3D>();
+		var camera = Camera.main!;
+
+		var atomLifetimeController = new UniMob.LifetimeController();
+
+		var map = runningGameInstance.World.Map.Get_GridMap();
 		var spatialMap = new Spatial_RectangularHexMap_3D(map, gridLayout);
-		var sceneViewController = new SceneViewController(Camera.main!, spatialMap);
+		var sceneViewController = new SceneViewController(camera, spatialMap, atomLifetimeController.Lifetime);
 
 		var worldUI_View = new WorldUI_View(contextData.Get<IEcsHelper>());
+
+		var resourceMarkers_PresentationLayer =
+			ResourceMarkers_PresentationLayer_Composer.Compose(
+				runningGameInstance.World.PlantResources, runningGameInstance.World.Time,
+				in gridLayout,
+				contextData.Get<IResourceMarker_Config_Repository>(),
+				contextData.Get<IResourceType_Icon_Repository>(),
+				camera,
+				sceneViewController.CameraTransform_Atom,
+				atomLifetimeController.Lifetime);
 
 		var gui = contextData.Get<IGui>();
 
@@ -88,8 +103,10 @@ public class EntryPoint : IContextEntryPoint
 			sceneViewController,
 			sceneViewController,
 			worldUI_View,
+			resourceMarkers_PresentationLayer,
 			screenUI_VM,
-			screenUI_View);
+			screenUI_View,
+			atomLifetimeController);
 
 		uiModel.Init_PresentationEvent_Emitter(context);
 		controller.Init_Command_Emitter(context);

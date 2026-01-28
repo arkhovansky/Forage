@@ -19,26 +19,35 @@ public class RunningGame_Gameplay_Context : Context
 
 	private readonly ILoopComponent _sceneController;
 
+	private readonly ILoopComponent _resourceMarkers_PresentationLayer;
+
 	private readonly ILoopComponent _screenUI_VM;
 	private readonly Lib.UICore.Gui.IView _screenUI_View;
+
+	private readonly UniMob.LifetimeController _atomLifetimeController;
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public RunningGame_Gameplay_Context(ILoopComponent runningGame,
-	                                    ILoopComponent uiModel,
-	                                    IController controller,
-	                                    ILoopComponent sceneController,
-	                                    IView camera_View,
-	                                    IView worldUI_View,
-	                                    ILoopComponent screenUI_VM,
-	                                    Lib.UICore.Gui.IView screenUI_View)
+	public RunningGame_Gameplay_Context(
+		ILoopComponent runningGame,
+		ILoopComponent uiModel,
+		IController controller,
+		ILoopComponent sceneController,
+		IView camera_View,
+		IView worldUI_View,
+		ILoopComponent resourceMarkers_PresentationLayer,
+		ILoopComponent screenUI_VM,
+		Lib.UICore.Gui.IView screenUI_View,
+		UniMob.LifetimeController atomLifetimeController)
 	{
 		_runningGame = runningGame;
 		_uiModel = uiModel;
 		_sceneController = sceneController;
+		_resourceMarkers_PresentationLayer = resourceMarkers_PresentationLayer;
 		_screenUI_VM = screenUI_VM;
 		_screenUI_View = screenUI_View;
+		_atomLifetimeController = atomLifetimeController;
 
 		Controller = controller;
 
@@ -69,7 +78,15 @@ public class RunningGame_Gameplay_Context : Context
 	{
 		// Update model first because it can change UI mode
 		_runningGame.LateUpdate();
+
+		_resourceMarkers_PresentationLayer.LateUpdate();
 		_screenUI_VM.LateUpdate();
+	}
+
+
+	public override void Destroy()
+	{
+		_atomLifetimeController.Dispose();
 	}
 }
 

@@ -9,10 +9,11 @@ namespace App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGatew
 
 public class World_Adapter : IWorld
 {
-	public World_Adapter(ITime time, IMap map, IBand band)
+	public World_Adapter(ITime time, IMap map, IPlantResources plantResources, IBand band)
 	{
 		Time = time;
 		Map = map;
+		PlantResources = plantResources;
 		Band = band;
 	}
 
@@ -31,6 +32,8 @@ public class World_Adapter : IWorld
 	//----------------------------------------------------------------------------------------------
 	// IWorld implementation
 
+
+	public IPlantResources PlantResources { get; }
 
 	public IBand Band { get; }
 }

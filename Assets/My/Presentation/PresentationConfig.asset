@@ -16,3 +16,9 @@ MonoBehaviour:
   PlantResourceIcons:
     BiomassPerIcon: 20
     RelativeIconSize: 0.2
+  ResourceMarkers:
+    Prefab: {fileID: 2119584100611372797, guid: aa0962a5c4db03744a23fc697334c938, type: 3}
+    Parameters:
+      AreaCoefficient: 5
+      MinCoreRadius: 10
+      BorderToCoreRatio: 0.2

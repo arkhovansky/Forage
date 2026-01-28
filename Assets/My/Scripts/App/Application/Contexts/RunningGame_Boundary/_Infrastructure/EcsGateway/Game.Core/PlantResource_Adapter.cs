@@ -1,6 +1,9 @@
 ﻿using Unity.Entities;
 
+using Lib.Grid;
+
 using App.Game.Core.Query;
+using App.Game.ECS.Map.Components;
 using App.Game.ECS.Resource.Plant.Components;
 
 
@@ -21,6 +24,12 @@ public class PlantResource_Adapter : IPlantResource
 	public PlantResource_Adapter(Entity entity)
 	{
 		_entity = entity;
+	}
+
+
+	public AxialPosition Get_Position()
+	{
+		return _entityManager.GetComponentData<MapPosition>(_entity).Value;
 	}
 
 

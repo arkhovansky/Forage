@@ -56,7 +56,11 @@ public class LoadedContextComposer : ILoadedContextComposer
 		var ecsHelper = new EcsHelper();
 
 		var runningGameInstance = new RunningGameInstance(
-			new World_Adapter(new Time_Adapter(ecsHelper), new Map_Adapter(ecsHelper), new Band_Adapter(ecsHelper)),
+			new World_Adapter(
+				new Time_Adapter(ecsHelper),
+				new Map_Adapter(ecsHelper),
+				new PlantResources_Adapter(),
+				new Band_Adapter(ecsHelper)),
 			_contextData.Get<IEcsSystems_Service>(), ecsHelper);
 		runningGame = runningGameInstance;
 
@@ -73,12 +77,18 @@ public class LoadedContextComposer : ILoadedContextComposer
 			new ResourceType_TextualPresentation_Repository(database.Presentation.ResourceTypes);
 		var humanType_TextualPresentation_Repository = new HumanType_TextualPresentation_Repository();
 
+		var presentationConfig_Repository = new PresentationConfig_Repository(database.Presentation.Config);
+
 		runningGameInitializer = Create_RunningGameInitializer(
-			database, gridLayout, ecsHelper, resourceType_TextualPresentation_Repository);
+			database, gridLayout, ecsHelper,
+			presentationConfig_Repository, resourceType_TextualPresentation_Repository);
 
 
 		_contextData.Add<IEcsHelper>(ecsHelper);
 		_contextData.Add(gridLayout);
+		_contextData.Add<IResourceMarker_Config_Repository>(presentationConfig_Repository);
+		_contextData.Add<IResourceType_Icon_Repository>(
+			new ResourceType_Icon_Repository(database.Presentation.ResourceTypes));
 		_contextData.Add<ITerrainType_TextualPresentation_Repository>(terrainType_TextualPresentation_Repository);
 		_contextData.Add<IResourceType_TextualPresentation_Repository>(resourceType_TextualPresentation_Repository);
 		_contextData.Add<IHumanType_TextualPresentation_Repository>(humanType_TextualPresentation_Repository);
@@ -93,10 +103,9 @@ public class LoadedContextComposer : ILoadedContextComposer
 		GameDatabase database,
 		HexGridLayout_3D gridLayout,
 		IEcsHelper ecsHelper,
+		PresentationConfig_Repository presentationConfig_Repository,
 		IResourceType_TextualPresentation_Repository resourceType_TextualPresentation_Repository)
 	{
-		var presentationConfig_Repository = new PresentationConfig_Repository(database.Presentation.Config);
-
 		var mapDataInitializer = new MapDataInitializer(gridLayout, ecsHelper);
 
 		var terrainType_GraphicalPresentation_Repository =
