@@ -64,6 +64,15 @@ public class EcsHelper : IEcsHelper
 	}
 
 
+	public T GetSingleton_Anywhere<T>()
+		where T : unmanaged, IComponentData
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		using var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<T>());
+		return query.GetSingleton<T>();
+	}
+
+
 	public EcsMap GetEcsMap()
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;

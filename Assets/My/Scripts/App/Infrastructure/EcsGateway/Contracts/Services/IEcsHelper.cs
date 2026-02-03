@@ -65,6 +65,15 @@ public interface IEcsHelper
 		where T : unmanaged, IComponentData;
 
 	/// <summary>
+	/// Get the singleton component of the provided type from anywhere,
+	/// i.e., not necessarily from the Singleton Entity.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <returns></returns>
+	public T GetSingleton_Anywhere<T>()
+		where T : unmanaged, IComponentData;
+
+	/// <summary>
 	/// Get <see cref="EcsMap"/>.
 	/// </summary>
 	/// <returns></returns>
