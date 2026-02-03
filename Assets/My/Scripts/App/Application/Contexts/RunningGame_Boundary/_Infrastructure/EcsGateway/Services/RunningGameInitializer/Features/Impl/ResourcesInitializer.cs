@@ -8,11 +8,10 @@ using Lib.Grid;
 
 using App.Application.Contexts.RunningGame_Boundary._Infrastructure.EcsGateway.Contracts.Database.Domain;
 using App.Game.Database;
-using App.Game.ECS.Map;
 using App.Game.ECS.Map.Components;
-using App.Game.ECS.Map.Components.Singletons;
 using App.Game.ECS.Resource.Plant.Components;
 using App.Game.ECS.Resource.Plant.Presentation.Components;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 #if !DOTS_DISABLE_DEBUG_NAMES
 using App.Infrastructure.Shared.Contracts.Database.Presentation;
 #endif
@@ -27,6 +26,8 @@ public class ResourcesInitializer : IResourcesInitializer
 {
 	private readonly IResourceTypeRepository _resourceTypeRepository;
 
+	private readonly IEcsHelper _ecsHelper;
+
 #if !DOTS_DISABLE_DEBUG_NAMES
 	private readonly IResourceType_TextualPresentation_Repository _resourceTypePresentationRepository;
 #endif
@@ -35,13 +36,15 @@ public class ResourcesInitializer : IResourcesInitializer
 
 
 	public ResourcesInitializer(
-		IResourceTypeRepository resourceTypeRepository
+		IResourceTypeRepository resourceTypeRepository,
+		IEcsHelper ecsHelper
 #if !DOTS_DISABLE_DEBUG_NAMES
 		, IResourceType_TextualPresentation_Repository resourceTypePresentationRepository
 #endif
 	)
 	{
 		_resourceTypeRepository = resourceTypeRepository;
+		_ecsHelper = ecsHelper;
 #if !DOTS_DISABLE_DEBUG_NAMES
 		_resourceTypePresentationRepository = resourceTypePresentationRepository;
 #endif
@@ -66,7 +69,7 @@ public class ResourcesInitializer : IResourcesInitializer
 
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var ecsMap = CreateEcsMap(map);
+		var ecsMap = _ecsHelper.GetEcsMap();
 
 		var prototype = em.CreateEntity(
 			typeof(MapPosition), typeof(PlantResource), typeof(ResourceIcon));
@@ -105,16 +108,6 @@ public class ResourcesInitializer : IResourcesInitializer
 
 	//----------------------------------------------------------------------------------------------
 	// private
-
-
-	private EcsMap CreateEcsMap(in RectangularHexMap map)
-	{
-		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var tileBuffer =
-			em.CreateEntityQuery(typeof(MapTileEntity)).GetSingletonBuffer<MapTileEntity>(isReadOnly: true);
-		return new EcsMap(map, tileBuffer);
-	}
 
 
 	private void Set_TilePlantResource(Entity tileEntity, Entity resourceEntity)

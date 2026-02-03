@@ -119,7 +119,8 @@ public class LoadedContextComposer : ILoadedContextComposer
 
 		var resourceTypeRepository = new ResourceTypeRepository(database.Domain.PlantResourceTypes);
 		var resourcesInitializer = new ResourcesInitializer(
-			resourceTypeRepository
+			resourceTypeRepository,
+			ecsHelper
 #if !DOTS_DISABLE_DEBUG_NAMES
 			, resourceType_TextualPresentation_Repository
 #endif
