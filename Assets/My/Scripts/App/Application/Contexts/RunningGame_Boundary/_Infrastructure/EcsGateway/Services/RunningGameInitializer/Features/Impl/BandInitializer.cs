@@ -14,6 +14,7 @@ using App.Game.ECS.BandMember.General.Initialization;
 using App.Game.ECS.BandMember.Movement.Initialization;
 using App.Game.ECS.BandMember.Statistics.Initialization;
 using App.Game.ECS.Prefabs.Components;
+using App.Infrastructure.EcsGateway.Contracts.Services;
 
 
 
@@ -25,13 +26,17 @@ public class BandInitializer : IBandInitializer
 {
 	private readonly IHumanTypeRepository _humanTypeRepository;
 
+	private readonly IEcsHelper _ecsHelper;
 
 	//----------------------------------------------------------------------------------------------
 
 
-	public BandInitializer(IHumanTypeRepository humanTypeRepository)
+	public BandInitializer(
+		IHumanTypeRepository humanTypeRepository,
+		IEcsHelper ecsHelper)
 	{
 		_humanTypeRepository = humanTypeRepository;
+		_ecsHelper = ecsHelper;
 	}
 
 
@@ -42,9 +47,7 @@ public class BandInitializer : IBandInitializer
 	public void Init(IDictionary<HumanTypeId, uint> humanTypeCounts)
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-		var prefabReferences =
-			entityManager.CreateEntityQuery(typeof(PrefabReferences)).GetSingleton<PrefabReferences>();
+		var prefabReferences = _ecsHelper.GetSingleton_Anywhere<PrefabReferences>();
 
 		int iBandMember = 0;
 		foreach (var (typeId, countOfType) in humanTypeCounts) {

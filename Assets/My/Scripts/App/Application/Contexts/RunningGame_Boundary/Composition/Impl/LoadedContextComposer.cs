@@ -136,7 +136,7 @@ public class LoadedContextComposer : ILoadedContextComposer
 		var gameTimeInitializer = new GameTimeInitializer(ecsHelper);
 
 		var humanTypeRepository = new HumanTypeRepository(database.Domain.HumanTypes);
-		var bandInitializer = new BandInitializer(humanTypeRepository);
+		var bandInitializer = new BandInitializer(humanTypeRepository, ecsHelper);
 
 		var systemParametersRepository = new SystemParametersRepository(database.Domain.SystemParameters);
 		var domainSettingsRepository = new DomainSettingsRepository(database.DomainSettings);
