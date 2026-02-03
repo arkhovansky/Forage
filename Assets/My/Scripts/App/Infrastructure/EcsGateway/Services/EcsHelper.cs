@@ -11,9 +11,6 @@ namespace App.Infrastructure.EcsGateway.Services {
 
 
 
-/// <remarks>
-/// ECS uses single entity for all singleton components. It is tagged with SingletonEntity_Tag component.
-/// </remarks>
 public class EcsHelper : IEcsHelper
 {
 	public Entity GetSingletonEntity()
