@@ -35,6 +35,9 @@ public class BandInitializer : IBandInitializer
 	}
 
 
+	//----------------------------------------------------------------------------------------------
+	// IBandInitializer
+
 
 	public void Init(IDictionary<HumanTypeId, uint> humanTypeCounts)
 	{

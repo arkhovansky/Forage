@@ -31,6 +31,7 @@ public class ResourcesInitializer : IResourcesInitializer
 	private readonly IResourceType_TextualPresentation_Repository _resourceTypePresentationRepository;
 #endif
 
+	//----------------------------------------------------------------------------------------------
 
 
 	public ResourcesInitializer(
@@ -46,6 +47,9 @@ public class ResourcesInitializer : IResourcesInitializer
 #endif
 	}
 
+
+	//----------------------------------------------------------------------------------------------
+	// IResourcesInitializer
 
 
 	public void Init(IReadOnlyList<AxialPosition> mapPositions,
@@ -98,6 +102,9 @@ public class ResourcesInitializer : IResourcesInitializer
 		em.DestroyEntity(prototype);
 	}
 
+
+	//----------------------------------------------------------------------------------------------
+	// private
 
 
 	private EcsMap CreateEcsMap(in RectangularHexMap map)

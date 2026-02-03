@@ -40,6 +40,7 @@ public class TerrainInitializer : ITerrainInitializer
 
 	private readonly IEcsHelper _ecsHelper;
 
+	//----------------------------------------------------------------------------------------------
 
 
 	public TerrainInitializer(
@@ -54,6 +55,9 @@ public class TerrainInitializer : ITerrainInitializer
 		_ecsHelper = ecsHelper;
 	}
 
+
+	//----------------------------------------------------------------------------------------------
+	// ITerrainInitializer
 
 
 	public void Init(IReadOnlyList<TerrainTypeId> tileTerrainTypes,
