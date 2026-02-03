@@ -13,21 +13,23 @@ namespace App.Infrastructure.EcsGateway.Services {
 
 public class EcsHelper : IEcsHelper
 {
+	private readonly Entity _singletonEntity
+		= Do_GetSingletonEntity();
+
+
+	//----------------------------------------------------------------------------------------------
+	// IEcsHelper
+
+
 	public Entity GetSingletonEntity()
-	{
-		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		return entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>())
-			.GetSingletonEntity();
-	}
+		=> _singletonEntity;
 
 
 	public void AddSingletonComponent<T>(T componentData)
 		where T : unmanaged, IComponentData
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = GetSingletonEntity();
-
-		entityManager.AddComponentData(singletonEntity, componentData);
+		entityManager.AddComponentData(_singletonEntity, componentData);
 	}
 
 
@@ -35,7 +37,7 @@ public class EcsHelper : IEcsHelper
 		where T : unmanaged, IComponentData
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		return entityManager.GetComponentData<T>(GetSingletonEntity());
+		return entityManager.GetComponentData<T>(_singletonEntity);
 	}
 
 
@@ -50,9 +52,7 @@ public class EcsHelper : IEcsHelper
 		where T : unmanaged, IComponentData
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = GetSingletonEntity();
-
-		return entityManager.HasComponent<T>(singletonEntity);
+		return entityManager.HasComponent<T>(_singletonEntity);
 	}
 
 
@@ -67,11 +67,22 @@ public class EcsHelper : IEcsHelper
 	public EcsMap GetEcsMap()
 	{
 		var em = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var singletonEntity = GetSingletonEntity();
 
-		var map = em.GetComponentData<Map>(singletonEntity);
-		var tileBuffer = em.GetBuffer<MapTileEntity>(singletonEntity, isReadOnly: true);
+		var map = em.GetComponentData<Map>(_singletonEntity);
+		var tileBuffer = em.GetBuffer<MapTileEntity>(_singletonEntity, isReadOnly: true);
 		return new EcsMap(map, tileBuffer);
+	}
+
+
+	//----------------------------------------------------------------------------------------------
+	// private
+
+
+	private static Entity Do_GetSingletonEntity()
+	{
+		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+		using var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<SingletonEntity_Tag>());
+		return query.GetSingletonEntity();
 	}
 }
 
