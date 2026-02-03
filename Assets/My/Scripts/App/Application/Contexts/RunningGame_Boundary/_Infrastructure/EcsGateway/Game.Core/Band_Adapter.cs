@@ -63,7 +63,7 @@ public class Band_Adapter : IBand
 
 	public void PlaceCamp(AxialPosition position)
 	{
-		if (_ecsHelper.SingletonExistsAnywhere<Camp>())
+		if (_ecsHelper.HasSingleton_Anywhere<Camp>())
 			throw new InvalidOperationException("Camp already exists");
 
 		_ecsHelper.SendEcsCommand(new PlaceCamp(position));

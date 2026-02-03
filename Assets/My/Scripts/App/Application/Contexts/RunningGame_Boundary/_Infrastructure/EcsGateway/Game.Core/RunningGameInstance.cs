@@ -95,7 +95,7 @@ public class RunningGameInstance
 
 	private bool CampExists()
 	{
-		return _ecsHelper.SingletonExistsAnywhere<Camp>();
+		return _ecsHelper.HasSingleton_Anywhere<Camp>();
 	}
 }
 

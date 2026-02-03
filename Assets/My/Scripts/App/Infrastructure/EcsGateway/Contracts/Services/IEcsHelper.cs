@@ -61,7 +61,7 @@ public interface IEcsHelper
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	/// <returns></returns>
-	bool SingletonExistsAnywhere<T>()
+	bool HasSingleton_Anywhere<T>()
 		where T : unmanaged, IComponentData;
 
 	/// <summary>

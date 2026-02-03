@@ -56,7 +56,7 @@ public class EcsHelper : IEcsHelper
 	}
 
 
-	public bool SingletonExistsAnywhere<T>()
+	public bool HasSingleton_Anywhere<T>()
 		where T : unmanaged, IComponentData
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
