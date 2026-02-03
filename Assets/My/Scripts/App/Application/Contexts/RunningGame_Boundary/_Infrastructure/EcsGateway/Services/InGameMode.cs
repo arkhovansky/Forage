@@ -67,7 +67,7 @@ public class InGameMode : IInGameMode
 	private async UniTask WaitForSubsceneLoading()
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<PrefabReferences>());
+		using var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<PrefabReferences>());
 
 		await UniTask.WaitWhile(() => query.IsEmpty);
 	}

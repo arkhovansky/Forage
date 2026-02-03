@@ -17,7 +17,7 @@ public class PlantResources_Adapter : IPlantResources
 	public IReadOnlyList<IPlantResource> Get_RipeResources()
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<RipeBiomass>());
+		using var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<RipeBiomass>());
 		var entities = query.ToEntityArray(Allocator.Temp);
 
 		var list = new List<IPlantResource>(entities.Length);

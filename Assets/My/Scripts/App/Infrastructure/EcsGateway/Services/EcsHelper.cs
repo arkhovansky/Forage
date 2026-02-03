@@ -60,7 +60,8 @@ public class EcsHelper : IEcsHelper
 		where T : unmanaged, IComponentData
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-		return entityManager.CreateEntityQuery(ComponentType.ReadOnly<T>()).HasSingleton<T>();
+		using var query = entityManager.CreateEntityQuery(ComponentType.ReadOnly<T>());
+		return query.HasSingleton<T>();
 	}
 
 

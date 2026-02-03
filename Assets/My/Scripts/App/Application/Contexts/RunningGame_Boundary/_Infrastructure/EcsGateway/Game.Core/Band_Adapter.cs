@@ -40,7 +40,7 @@ public class Band_Adapter : IBand
 	{
 		var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-		var query = entityManager.CreateEntityQuery(
+		using var query = entityManager.CreateEntityQuery(
 			ComponentType.ReadOnly<BandMember>(),
 			ComponentType.ReadOnly<Human>());
 
