@@ -20,10 +20,12 @@ namespace App.Application.Contexts.RunningGame_Gameplay._Infrastructure.UI {
 
 
 /// <summary>
-/// Acts as both View and Controller for the scene. Encapsulates low-level details of reading user input, moving camera,
-/// and generates high-level hovering/selection events.
+/// Handles scene-level interaction.
+/// Responsibilities:
+/// - camera navigation;
+/// - translation of raw input into scene-semantic Input Events (e.g., hovering or clicking on objects).
 /// </summary>
-public class SceneViewController
+public class SceneInteractionController
 	: View,
 	  ICamera_ReadOnlyModel
 {
@@ -71,7 +73,7 @@ public class SceneViewController
 	//----------------------------------------------------------------------------------------------
 
 
-	public SceneViewController(
+	public SceneInteractionController(
 		Camera camera,
 		Spatial_RectangularHexMap_3D map,
 		AtomLifetime atomLifetime)

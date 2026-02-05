@@ -17,7 +17,7 @@ public class RunningGame_Gameplay_Context : Context
 
 	private readonly ILoopComponent _uiModel;
 
-	private readonly ILoopComponent _sceneController;
+	private readonly ILoopComponent _sceneInteractionController;
 
 	private readonly ILoopComponent _resourceMarkers_PresentationLayer;
 
@@ -33,7 +33,7 @@ public class RunningGame_Gameplay_Context : Context
 		ILoopComponent runningGame,
 		ILoopComponent uiModel,
 		IController controller,
-		ILoopComponent sceneController,
+		ILoopComponent sceneInteractionController,
 		IView camera_View,
 		IView worldUI_View,
 		ILoopComponent resourceMarkers_PresentationLayer,
@@ -43,7 +43,7 @@ public class RunningGame_Gameplay_Context : Context
 	{
 		_runningGame = runningGame;
 		_uiModel = uiModel;
-		_sceneController = sceneController;
+		_sceneInteractionController = sceneInteractionController;
 		_resourceMarkers_PresentationLayer = resourceMarkers_PresentationLayer;
 		_screenUI_VM = screenUI_VM;
 		_screenUI_View = screenUI_View;
@@ -70,7 +70,7 @@ public class RunningGame_Gameplay_Context : Context
 	{
 		// Controller should be updated first to handle Model-originating state changes in previous frame's LateUpdate()
 		UpdateController();
-		_sceneController.Update();
+		_sceneInteractionController.Update();
 	}
 
 

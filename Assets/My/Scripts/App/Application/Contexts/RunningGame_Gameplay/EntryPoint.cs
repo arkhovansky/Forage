@@ -70,7 +70,8 @@ public class EntryPoint : IContextEntryPoint
 
 		var map = runningGameInstance.World.Map.Get_GridMap();
 		var spatialMap = new Spatial_RectangularHexMap_3D(map, gridLayout);
-		var sceneViewController = new SceneViewController(camera, spatialMap, atomLifetimeController.Lifetime);
+		var sceneInteractionController =
+			new SceneInteractionController(camera, spatialMap, atomLifetimeController.Lifetime);
 
 		var worldUI_View = new WorldUI_View(contextData.Get<IEcsHelper>());
 
@@ -81,7 +82,7 @@ public class EntryPoint : IContextEntryPoint
 				contextData.Get<IResourceMarker_Config_Repository>(),
 				contextData.Get<IResourceType_Icon_Repository>(),
 				camera,
-				sceneViewController.CameraTransform_Atom,
+				sceneInteractionController.CameraTransform_Atom,
 				atomLifetimeController.Lifetime);
 
 		var gui = contextData.Get<IGui>();
@@ -100,8 +101,8 @@ public class EntryPoint : IContextEntryPoint
 			(ILoopComponent) runningGameInstance,
 			uiModel,
 			controller,
-			sceneViewController,
-			sceneViewController,
+			sceneInteractionController,
+			sceneInteractionController,
 			worldUI_View,
 			resourceMarkers_PresentationLayer,
 			screenUI_VM,
@@ -110,7 +111,7 @@ public class EntryPoint : IContextEntryPoint
 
 		uiModel.Init_PresentationEvent_Emitter(context);
 		controller.Init_Command_Emitter(context);
-		sceneViewController.Init_InputEvent_Emitter(context);
+		sceneInteractionController.Init_InputEvent_Emitter(context);
 		screenUI_VM.Init_Command_Emitter(context);
 
 		gui.AddView(screenUI_View);
